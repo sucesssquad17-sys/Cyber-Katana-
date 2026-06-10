@@ -50,10 +50,12 @@ export default function KatanaCanvas({ scrollYProgress }) {
     const hRatio = canvas.width / img.width;
     const vRatio = canvas.height / img.height;
     
-    // On desktop, 'cover' is great. On mobile portrait, 'cover' zooms in way too much. 
-    // We use a blend: min (contain) scaled up by 1.25x so it feels cinematic but doesn't crop the blade.
+    // On mobile, 'cover' zooms in way too much and cuts off the blade. 
+    // 'contain' makes it a tiny sliver. 
+    // We use a 60% 'cover' scale on mobile. This makes the katana large enough to look premium, 
+    // but leaves cinematic black bars at the top and bottom where our text UI can safely live!
     const isMobileViewport = window.innerWidth < 768;
-    const ratio = isMobileViewport ? Math.min(hRatio, vRatio) * 1.4 : Math.max(hRatio, vRatio);
+    const ratio = isMobileViewport ? Math.max(hRatio, vRatio) * 0.6 : Math.max(hRatio, vRatio);
     
     const centerShift_x = (canvas.width - img.width * ratio) / 2;
     const centerShift_y = (canvas.height - img.height * ratio) / 2;

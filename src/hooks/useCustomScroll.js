@@ -83,14 +83,14 @@ export function useCustomScroll(enabled = true) {
       const delta = lastTouchY - touchY;
       lastTouchY = touchY;
       
-      let multiplier = 1.5; // Base touch multiplier
+      let multiplier = 3.5; // High base touch multiplier for effortless swiping
       
       // If scrolling within the cinematic section, check if we are near a checkpoint
       if (currentScroll < getCinematicHeight()) {
         for (let i = 0; i < checkpoints.length; i++) {
           const cp = checkpoints[i];
           if (Math.abs(currentScroll - cp) < frictionZone) {
-            multiplier = 0.5; // Slow down sensitivity
+            multiplier = 1.5; // Friction slows it down, but still faster than desktop
             break;
           }
         }
@@ -98,7 +98,7 @@ export function useCustomScroll(enabled = true) {
       
       // Halve speed for the final segment
       if (currentScroll > window.innerHeight * 3) {
-        multiplier *= 0.5;
+        multiplier *= 0.6;
       }
       
       currentScroll += delta * multiplier;
