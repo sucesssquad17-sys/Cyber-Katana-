@@ -49,9 +49,14 @@ function App() {
             <div className="absolute inset-0 bg-red-600/10 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-out" />
             
             <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse shadow-[0_0_10px_rgba(220,38,38,0.8)]" />
-            <span className="text-red-500 font-mono tracking-[0.3em] uppercase text-sm relative z-10 group-hover:text-red-400 transition-colors">
-              Click to Enter
-            </span>
+            <div className="flex flex-col items-start relative z-10">
+              <span className="text-red-500 font-mono tracking-[0.3em] uppercase text-sm group-hover:text-red-400 transition-colors">
+                Initialize Sequence
+              </span>
+              <span className="text-red-700 font-mono tracking-[0.2em] uppercase text-[10px] mt-1 group-hover:text-red-500 transition-colors">
+                ( Click to Enter )
+              </span>
+            </div>
             
             {/* Cyberpunk corner accents */}
             <div className="absolute top-0 left-0 w-2 h-[1px] bg-red-500/50" />
