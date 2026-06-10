@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useMotionValue, useSpring } from 'framer-motion';
 
-export function useCustomScroll() {
+export function useCustomScroll(enabled = true) {
   const rawProgress = useMotionValue(0);
   
   // Add a spring physics layer to make the custom wheel inputs feel smooth and native
@@ -44,6 +44,7 @@ export function useCustomScroll() {
 
     const handleWheel = (e) => {
       e.preventDefault();
+      if (!enabled) return; // Block scrolling if not enabled
       const delta = e.deltaY;
       
       let multiplier = 1.0;
@@ -72,6 +73,7 @@ export function useCustomScroll() {
     
     const handleTouchMove = (e) => {
       e.preventDefault();
+      if (!enabled) return; // Block scrolling if not enabled
       const touchY = e.touches[0].clientY;
       const delta = lastTouchY - touchY;
       lastTouchY = touchY;
@@ -104,7 +106,7 @@ export function useCustomScroll() {
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
     };
-  }, [rawProgress]);
+  }, [rawProgress, enabled]);
 
   return { scrollYProgress };
 }
