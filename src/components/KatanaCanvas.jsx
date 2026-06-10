@@ -6,7 +6,7 @@ export default function KatanaCanvas({ scrollYProgress }) {
   const canvasRef = useRef(null);
   const glowCanvasRef = useRef(null);
   const [images, setImages] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(0);
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -18,61 +18,31 @@ export default function KatanaCanvas({ scrollYProgress }) {
 
   // Preload images
   useEffect(() => {
-    const loadImages = async () => {
-      try {
-        const loadedImages = new Array(FRAME_COUNT).fill(null);
-        
-        // Priority 1: Load just the VERY FIRST frame so we can immediately show the site
-        const firstImg = new Image();
-        firstImg.src = `${import.meta.env.BASE_URL}frames/frame_0000.webp`;
-        await new Promise((resolve) => {
-          firstImg.onload = () => {
-            loadedImages[0] = firstImg;
-            resolve();
-          };
-          firstImg.onerror = resolve; // Continue even on error
-        });
-
-        // Set images and hide the loader instantly!
-        setImages(loadedImages);
-        setIsLoaded(true);
-
-        // Priority 2: Background lazy-load the rest of the frames
-        let currentIndex = 1;
-        const loadNextBatch = async () => {
-          const batchSize = 10;
-          const promises = [];
-          
-          for (let i = 0; i < batchSize && currentIndex < FRAME_COUNT; i++, currentIndex++) {
-            const index = currentIndex;
-            promises.push(new Promise((resolve) => {
-              const img = new Image();
-              img.src = `${import.meta.env.BASE_URL}frames/frame_${index.toString().padStart(4, '0')}.webp`;
-              img.onload = () => {
-                loadedImages[index] = img;
-                resolve();
-              };
-              img.onerror = resolve;
-            }));
-          }
-          
-          if (promises.length > 0) {
-            await Promise.all(promises);
-            setImages([...loadedImages]);
-            if (currentIndex < FRAME_COUNT) {
-              setTimeout(loadNextBatch, 10);
-            }
-          }
-        };
-
-        loadNextBatch();
-      } catch (error) {
-        console.error("Error loading frames:", error);
-        setIsLoaded(true);
+    const loadedImages = [];
+    let loadedCount = 0;
+    
+    for (let i = 0; i < FRAME_COUNT; i++) {
+      const img = new Image();
+      img.decoding = 'async'; // Prevents main thread blocking during massive image decodes
+      if (i < 10) {
+        img.fetchPriority = 'high'; // Prioritize the first frames for instant visual feedback
+      } else {
+        img.fetchPriority = 'low'; // Load the rest lazily
       }
-    };
-
-    loadImages();
+      img.src = `${import.meta.env.BASE_URL}frames/frame_${i.toString().padStart(4, '0')}.webp`;
+      img.onload = () => {
+        loadedCount++;
+        setImagesLoaded(loadedCount);
+      };
+      img.onerror = () => {
+        // If a frame fails, we still increment so we don't get stuck forever
+        console.warn(`Frame ${i} failed to load`);
+        loadedCount++;
+        setImagesLoaded(loadedCount);
+      };
+      loadedImages.push(img);
+    }
+    setImages(loadedImages);
   }, []);
 
   const drawImage = (img, canvas, ctx, glowCanvas, glowCtx) => {
@@ -80,6 +50,10 @@ export default function KatanaCanvas({ scrollYProgress }) {
     const hRatio = canvas.width / img.width;
     const vRatio = canvas.height / img.height;
     
+    // On mobile, 'cover' zooms in way too much and cuts off the blade. 
+    // 'contain' makes it a tiny sliver. 
+    // We use a 60% 'cover' scale on mobile. This makes the katana large enough to look premium, 
+    // but leaves cinematic black bars at the top and bottom where our text UI can safely live!
     const isMobileViewport = window.innerWidth < 768;
     const ratio = isMobileViewport ? Math.max(hRatio, vRatio) * 0.6 : Math.max(hRatio, vRatio);
     
@@ -155,10 +129,17 @@ export default function KatanaCanvas({ scrollYProgress }) {
 
   return (
     <div className="absolute top-0 left-0 w-screen h-[100dvh] overflow-hidden bg-black z-0 flex items-center justify-center">
-      {!isLoaded && (
+      {imagesLoaded < FRAME_COUNT && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black z-50">
-          <div className="w-12 h-12 border-4 border-red-900 border-t-red-500 rounded-full animate-spin"></div>
-          <div className="text-red-500 font-mono text-sm tracking-widest animate-pulse mt-4">INITIALIZING SYSTEM</div>
+          <div className="text-red-500 font-mono mb-4 animate-pulse tracking-widest text-sm uppercase">
+            Initializing blade core... {Math.round((imagesLoaded / FRAME_COUNT) * 100)}%
+          </div>
+          <div className="w-64 h-1 bg-neutral-900 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-red-600 transition-all duration-300"
+              style={{ width: `${(imagesLoaded / FRAME_COUNT) * 100}%` }}
+            />
+          </div>
         </div>
       )}
       
