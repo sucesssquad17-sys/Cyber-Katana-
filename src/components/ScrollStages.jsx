@@ -2,7 +2,7 @@ import React from 'react';
 import { motion, useTransform, useMotionValueEvent } from 'framer-motion';
 import { audio } from '../utils/AudioEngine';
 
-export default function ScrollStages({ scrollYProgress }) {
+export default function ScrollStages({ scrollYProgress, onOpenSpecs, onOpenCheckout }) {
   const prevScroll = React.useRef(0);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
@@ -81,14 +81,14 @@ export default function ScrollStages({ scrollYProgress }) {
           <div className="flex flex-col sm:flex-row gap-4 mt-8 w-full md:w-auto">
             <button 
               onMouseEnter={() => audio.playGlassTap()}
-              onClick={() => audio.playBeep()}
+              onClick={() => { audio.playBeep(); onOpenCheckout(); }}
               className="px-8 py-4 bg-red-600 hover:bg-red-500 text-white font-bold uppercase tracking-widest text-xs transition-colors shadow-[0_0_15px_rgba(220,38,38,0.5)]"
             >
               Buy Now
             </button>
             <button 
               onMouseEnter={() => audio.playGlassTap()}
-              onClick={() => audio.playBeep()}
+              onClick={() => { audio.playBeep(); onOpenSpecs(); }}
               className="px-8 py-4 border border-white/20 hover:border-white/50 text-white font-bold uppercase tracking-widest text-xs transition-colors bg-black/40 backdrop-blur-sm"
             >
               View Specs
@@ -189,7 +189,7 @@ export default function ScrollStages({ scrollYProgress }) {
           
           <button 
             onMouseEnter={() => audio.playGlassTap()}
-            onClick={() => audio.playBeep()}
+            onClick={() => { audio.playBeep(); onOpenCheckout(); }}
             className="w-full py-3 bg-red-600 hover:bg-red-500 text-white font-bold uppercase tracking-widest text-xs transition-colors mb-3 relative group overflow-hidden"
           >
             <span className="relative z-10">Buy Now</span>

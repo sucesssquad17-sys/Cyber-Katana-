@@ -1,16 +1,21 @@
 import React, { useRef, useState, useEffect } from 'react';
 import KatanaCanvas from './components/KatanaCanvas';
 import ScrollStages from './components/ScrollStages';
+import SpecsModal from './components/SpecsModal';
+import CheckoutPanel from './components/CheckoutPanel';
 import { audio } from './utils/AudioEngine';
 import { useCustomScroll } from './hooks/useCustomScroll';
 
 function App() {
   const containerRef = useRef(null);
   const [audioInitialized, setAudioInitialized] = useState(false);
+  const [isSpecsOpen, setIsSpecsOpen] = useState(false);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   
   // Drives the entire application with custom directional logic.
-  // We pass audioInitialized to block scrolling until the user clicks 'Initialize'.
-  const { scrollYProgress } = useCustomScroll(audioInitialized);
+  // Block scrolling if audio is not initialized OR if a modal is open.
+  const isScrollEnabled = audioInitialized && !isSpecsOpen && !isCheckoutOpen;
+  const { scrollYProgress } = useCustomScroll(isScrollEnabled);
 
   const handleInitialize = async () => {
     try {
@@ -40,7 +45,7 @@ function App() {
       
       {/* Initialization Overlay */}
       {!audioInitialized && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm transition-opacity duration-500">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-sm transition-opacity duration-500">
           <button 
             onClick={handleInitialize}
             className="group relative px-6 md:px-8 py-4 bg-transparent border border-red-900/50 hover:border-red-500/80 transition-all duration-300 cursor-pointer overflow-hidden rounded-sm flex items-center gap-4 w-[90vw] max-w-sm"
@@ -67,9 +72,17 @@ function App() {
         </div>
       )}
 
+      {/* Cinematic Modals */}
+      <SpecsModal isOpen={isSpecsOpen} onClose={() => setIsSpecsOpen(false)} />
+      <CheckoutPanel isOpen={isCheckoutOpen} onClose={() => setIsCheckoutOpen(false)} />
+
       <div className="fixed top-0 left-0 w-full h-[100dvh] bg-black z-10 overflow-hidden">
         <KatanaCanvas scrollYProgress={scrollYProgress} />
-        <ScrollStages scrollYProgress={scrollYProgress} />
+        <ScrollStages 
+          scrollYProgress={scrollYProgress} 
+          onOpenSpecs={() => setIsSpecsOpen(true)}
+          onOpenCheckout={() => setIsCheckoutOpen(true)}
+        />
       </div>
     </div>
   );
