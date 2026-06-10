@@ -48,8 +48,8 @@ export function useCustomScroll() {
       
       let multiplier = 1.0;
       
-      // If scrolling DOWN, check if we are near a checkpoint
-      if (delta > 0 && currentScroll < getCinematicHeight()) {
+      // If scrolling within the cinematic section, check if we are near a checkpoint
+      if (currentScroll < getCinematicHeight()) {
         for (let i = 0; i < checkpoints.length; i++) {
           const cp = checkpoints[i];
           if (Math.abs(currentScroll - cp) < frictionZone) {
@@ -78,8 +78,8 @@ export function useCustomScroll() {
       
       let multiplier = 1.5; // Base touch multiplier
       
-      // If scrolling DOWN, check if we are near a checkpoint
-      if (delta > 0 && currentScroll < getCinematicHeight()) {
+      // If scrolling within the cinematic section, check if we are near a checkpoint
+      if (currentScroll < getCinematicHeight()) {
         for (let i = 0; i < checkpoints.length; i++) {
           const cp = checkpoints[i];
           if (Math.abs(currentScroll - cp) < frictionZone) {
