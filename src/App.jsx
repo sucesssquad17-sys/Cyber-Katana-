@@ -50,7 +50,7 @@ function App() {
             
             <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse shadow-[0_0_10px_rgba(220,38,38,0.8)]" />
             <span className="text-red-500 font-mono tracking-[0.3em] uppercase text-sm relative z-10 group-hover:text-red-400 transition-colors">
-              Initialize Sequence
+              Click to Enter
             </span>
             
             {/* Cyberpunk corner accents */}
