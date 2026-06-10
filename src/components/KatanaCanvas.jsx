@@ -18,12 +18,6 @@ export default function KatanaCanvas({ scrollYProgress }) {
 
   // Preload images
   useEffect(() => {
-    const loadedImages = [];
-    let loadedCount = 0;
-    
-    for (let i = 0; i < FRAME_COUNT; i++) {
-      const img = new Image();
-      img.decoding = 'async'; // Prevents main thread blocking during massive image decodes
     const loadImages = async () => {
       try {
         const loadedImages = new Array(FRAME_COUNT).fill(null);
