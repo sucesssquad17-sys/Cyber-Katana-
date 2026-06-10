@@ -60,6 +60,11 @@ export function useCustomScroll(enabled = true) {
         }
       }
       
+      // Halve speed for the final segment (the last rotation/retreat)
+      if (currentScroll > window.innerHeight * 3) {
+        multiplier *= 0.5;
+      }
+      
       currentScroll += delta * multiplier;
       currentScroll = Math.max(0, Math.min(currentScroll, maxScroll));
       handleScrollUpdate();
@@ -89,6 +94,11 @@ export function useCustomScroll(enabled = true) {
             break;
           }
         }
+      }
+      
+      // Halve speed for the final segment
+      if (currentScroll > window.innerHeight * 3) {
+        multiplier *= 0.5;
       }
       
       currentScroll += delta * multiplier;
