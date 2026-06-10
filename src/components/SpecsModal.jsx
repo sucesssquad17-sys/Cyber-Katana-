@@ -143,7 +143,10 @@ export default function SpecsModal({ isOpen, onClose }) {
                   {farLeft.isMain ? (
                     <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[120%] h-auto object-cover -rotate-45 pb-8 mix-blend-screen opacity-50" />
                   ) : (
-                    <div className={`absolute inset-0 opacity-20 ${farLeft.bg}`} />
+                    <>
+                      <div className={`absolute inset-0 opacity-20 ${farLeft.bg}`} />
+                      <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[200%] h-auto object-cover -rotate-12 pb-8 mix-blend-screen opacity-30 filter grayscale" />
+                    </>
                   )}
                 </div>
                 <p className="text-neutral-500 text-xs leading-relaxed tracking-wide">
@@ -160,7 +163,10 @@ export default function SpecsModal({ isOpen, onClose }) {
                   {midLeft.isMain ? (
                     <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[120%] h-auto object-cover -rotate-45 pb-8 mix-blend-screen opacity-50" />
                   ) : (
-                    <div className={`absolute inset-0 opacity-20 ${midLeft.bg}`} />
+                    <>
+                      <div className={`absolute inset-0 opacity-20 ${midLeft.bg}`} />
+                      <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[200%] h-auto object-cover -rotate-12 pb-8 mix-blend-screen opacity-30 filter grayscale" />
+                    </>
                   )}
                 </div>
                 <p className="text-neutral-500 text-xs leading-relaxed tracking-wide">
@@ -188,7 +194,10 @@ export default function SpecsModal({ isOpen, onClose }) {
                       <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Cyber Katana" className="w-[120%] h-auto object-cover scale-150 rotate-[25deg] pb-8 mix-blend-screen relative z-10 filter contrast-125 saturate-150" />
                     </>
                   ) : (
-                    <div className={`absolute inset-0 opacity-40 ${center.bg || "bg-[url('https://www.transparenttextures.com/patterns/brushed-alum.png')]"}`} />
+                    <>
+                      <div className={`absolute inset-0 opacity-40 ${center.bg || "bg-[url('https://www.transparenttextures.com/patterns/brushed-alum.png')]"}`} />
+                      <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Cyber Katana" className="w-[150%] h-auto object-cover scale-150 rotate-[25deg] pb-8 mix-blend-screen relative z-10 filter grayscale opacity-40" />
+                    </>
                   )}
                 </div>
 
@@ -225,7 +234,10 @@ export default function SpecsModal({ isOpen, onClose }) {
                   {midRight.isMain ? (
                     <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[120%] h-auto object-cover -rotate-45 pb-8 mix-blend-screen opacity-50" />
                   ) : (
-                    <div className={`absolute inset-0 opacity-20 ${midRight.bg}`} />
+                    <>
+                      <div className={`absolute inset-0 opacity-20 ${midRight.bg}`} />
+                      <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[200%] h-auto object-cover -rotate-12 pb-8 mix-blend-screen opacity-30 filter grayscale" />
+                    </>
                   )}
                 </div>
                 <p className="text-neutral-500 text-xs leading-relaxed tracking-wide">
@@ -242,7 +254,10 @@ export default function SpecsModal({ isOpen, onClose }) {
                   {farRight.isMain ? (
                     <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[120%] h-auto object-cover -rotate-45 pb-8 mix-blend-screen opacity-50" />
                   ) : (
-                    <div className={`absolute inset-0 opacity-20 ${farRight.bg}`} />
+                    <>
+                      <div className={`absolute inset-0 opacity-20 ${farRight.bg}`} />
+                      <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[200%] h-auto object-cover -rotate-12 pb-8 mix-blend-screen opacity-30 filter grayscale" />
+                    </>
                   )}
                 </div>
                 <p className="text-neutral-500 text-xs leading-relaxed tracking-wide">
