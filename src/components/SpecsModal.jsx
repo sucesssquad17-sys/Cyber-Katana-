@@ -98,9 +98,8 @@ export default function SpecsModal({ isOpen, onClose }) {
                 animate={{ scale: 1 }}
                 className="w-full max-w-[500px] h-[650px] bg-black/60 backdrop-blur-md relative p-8 flex flex-col shadow-[0_0_50px_rgba(220,38,38,0.15)]"
               >
-                {/* Glowing Red Border Box */}
+                {/* Red Border Box */}
                 <div className="absolute inset-0 border-2 border-red-600 rounded-lg pointer-events-none" />
-                <div className="absolute inset-0 border-[4px] border-red-500 blur-[8px] opacity-50 rounded-lg pointer-events-none" />
                 
                 <h3 className="text-white font-bold tracking-widest text-sm uppercase mb-1">Cyber Katana X-01</h3>
                 <p className="text-red-500 border border-red-500/30 inline-block px-2 py-1 text-[9px] font-mono tracking-widest uppercase mb-8 self-start bg-red-950/30">Primary System</p>

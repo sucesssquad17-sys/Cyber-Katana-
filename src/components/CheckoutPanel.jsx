@@ -147,10 +147,8 @@ export default function CheckoutPanel({ isOpen, onClose }) {
                 animate={{ scale: 1, opacity: 1 }}
                 className="w-full max-w-[450px] bg-black/80 backdrop-blur-xl relative flex flex-col shadow-[0_0_50px_rgba(220,38,38,0.2)] z-20 border border-red-900/50"
               >
-                {/* Glowing Borders */}
+                {/* Borders */}
                 <div className="absolute inset-0 border-2 border-red-600 pointer-events-none" />
-                <div className="absolute top-0 left-0 w-full h-1 bg-red-500 blur-[8px]" />
-                <div className="absolute bottom-0 left-0 w-full h-1 bg-red-500 blur-[8px]" />
 
                 {/* Hero Image Block */}
                 <div className="w-full h-[250px] bg-gradient-to-b from-neutral-900 to-black relative overflow-hidden flex flex-col items-center justify-center p-6 border-b border-white/10">
