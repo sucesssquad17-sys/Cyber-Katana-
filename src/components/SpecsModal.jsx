@@ -110,7 +110,7 @@ export default function SpecsModal({ isOpen, onClose }) {
                   {/* Glowing background blob */}
                   <div className="absolute w-[80%] h-[40%] bg-red-600/30 blur-[40px] rounded-full rotate-12" />
                   {/* Using the frame image for the center representation */}
-                  <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Cyber Katana" className="w-[120%] h-auto object-cover scale-150 rotate-[25deg] mix-blend-screen relative z-10 filter contrast-125 saturate-150" />
+                  <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Cyber Katana" className="w-[120%] h-auto object-cover scale-150 rotate-[25deg] pb-8 mix-blend-screen relative z-10 filter contrast-125 saturate-150" />
                 </div>
 
                 {/* Specs List */}

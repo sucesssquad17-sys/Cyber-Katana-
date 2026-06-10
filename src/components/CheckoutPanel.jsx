@@ -3,9 +3,18 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { audio } from '../utils/AudioEngine';
 import { ChevronLeft, ChevronRight, Fingerprint, ShieldCheck } from 'lucide-react';
 
+const VARIANTS = [
+  { id: 0, name: 'Phantom', desc: 'White Core / Unavailable', filter: 'grayscale brightness-150 contrast-125', color: 'text-neutral-300', price: '$2,499' },
+  { id: 1, name: 'Azure Void', desc: 'Cobalt Core / Select', filter: 'hue-rotate-180 brightness-110 contrast-125', color: 'text-blue-500', price: '$2,699' },
+  { id: 2, name: 'Bloodline Red', desc: 'Plasma Core / Base', filter: 'contrast-125 saturate-150', color: 'text-red-500', price: '$2,499' },
+  { id: 3, name: 'Viper', desc: 'Emerald Core / Select', filter: 'hue-rotate-[120deg] brightness-110 contrast-125', color: 'text-emerald-500', price: '$2,699' },
+  { id: 4, name: 'Sovereign', desc: 'Gold Core / Waitlist', filter: 'hue-rotate-[60deg] brightness-125 contrast-125', color: 'text-amber-500', price: '$3,199' }
+];
+
 export default function CheckoutPanel({ isOpen, onClose }) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [offset, setOffset] = useState(2); // Start with Bloodline Red in center
 
   const handleClose = () => {
     audio.playBeep();
@@ -28,6 +37,29 @@ export default function CheckoutPanel({ isOpen, onClose }) {
     }, 2000);
   };
 
+  const nextSlide = () => {
+    audio.playGlassTap();
+    setOffset((prev) => prev + 1);
+  };
+
+  const prevSlide = () => {
+    audio.playGlassTap();
+    setOffset((prev) => prev - 1);
+  };
+
+  // Helper to get circular item
+  const getItem = (relativeIndex) => {
+    const len = VARIANTS.length;
+    const index = (((offset + relativeIndex) % len) + len) % len;
+    return VARIANTS[index];
+  };
+
+  const farLeft = getItem(-2);
+  const midLeft = getItem(-1);
+  const center = getItem(0);
+  const midRight = getItem(1);
+  const farRight = getItem(2);
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -36,7 +68,7 @@ export default function CheckoutPanel({ isOpen, onClose }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
-          className="fixed inset-0 z-[100] flex flex-col bg-[#050914]" // Deep navy/black cyber background
+          className="fixed inset-0 z-[100] flex flex-col bg-[#050914]"
         >
           {/* Background Grid & HUD Elements */}
           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none" />
@@ -74,43 +106,45 @@ export default function CheckoutPanel({ isOpen, onClose }) {
           {/* Carousel Area */}
           <div className="flex-1 w-full flex items-center justify-center px-4 relative z-10 -mt-4">
             
-            <button onMouseEnter={playHover} className="absolute left-8 w-12 h-12 rounded-full border border-red-500/30 flex items-center justify-center text-white hover:bg-red-900/40 hover:border-red-500 transition-all z-30">
+            <button onClick={prevSlide} onMouseEnter={playHover} className="absolute left-8 w-12 h-12 rounded-full border border-red-500/30 flex items-center justify-center text-white hover:bg-red-900/40 hover:border-red-500 transition-all z-30">
               <ChevronLeft size={20} />
             </button>
 
             <div className="flex items-center justify-center gap-6 lg:gap-12 max-w-[1600px] w-full perspective-1000">
               
-              {/* Left Variant: Phantom White */}
-              <div className="hidden lg:flex flex-col w-[250px] h-[450px] bg-black/40 border border-white/5 backdrop-blur-sm relative transition-all duration-500 transform rotate-y-12 scale-90 opacity-60 hover:opacity-100 hover:scale-95 cursor-pointer">
+              {/* Left Variant 2 */}
+              <div className="hidden lg:flex flex-col w-[250px] h-[450px] bg-black/40 border border-white/5 backdrop-blur-sm relative transition-all duration-500 transform rotate-y-12 scale-90 opacity-60 hover:opacity-100 hover:scale-95 cursor-pointer" onClick={prevSlide}>
                 <div className="w-full h-full p-4 flex flex-col items-center">
                   <div className="w-full flex-1 bg-gradient-to-t from-neutral-900 to-black relative overflow-hidden flex items-center justify-center">
-                    <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[150%] h-[150%] object-cover -rotate-45 filter grayscale brightness-150 contrast-125 mix-blend-screen opacity-50" />
+                    {/* Added pb-8 to fix framing */}
+                    <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className={`w-[150%] h-[150%] object-cover -rotate-45 pb-8 mix-blend-screen opacity-50 ${farLeft.filter}`} />
                   </div>
                   <div className="w-full pt-4 text-center">
-                    <h3 className="text-white font-bold tracking-widest text-xs uppercase mb-1">Phantom</h3>
-                    <p className="text-neutral-500 text-[9px] font-mono tracking-widest uppercase">White Core / Unavailable</p>
+                    <h3 className="text-white font-bold tracking-widest text-xs uppercase mb-1">{farLeft.name}</h3>
+                    <p className={`${farLeft.color} text-[9px] font-mono tracking-widest uppercase`}>{farLeft.desc}</p>
                   </div>
                 </div>
               </div>
 
-              {/* Left Variant: Azure Blue */}
-              <div className="hidden md:flex flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm relative transition-all duration-500 transform rotate-y-6 scale-95 opacity-80 hover:opacity-100 hover:scale-100 cursor-pointer">
+              {/* Left Variant 1 */}
+              <div className="hidden md:flex flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm relative transition-all duration-500 transform rotate-y-6 scale-95 opacity-80 hover:opacity-100 hover:scale-100 cursor-pointer" onClick={prevSlide}>
                 <div className="w-full h-full p-4 flex flex-col items-center">
-                  <div className="w-full flex-1 bg-gradient-to-t from-blue-950/40 to-black border border-blue-900/30 relative overflow-hidden flex items-center justify-center">
-                    <div className="absolute inset-0 bg-blue-500/10 mix-blend-screen" />
-                    <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[150%] h-[150%] object-cover -rotate-45 filter hue-rotate-180 brightness-110 contrast-125 mix-blend-screen opacity-80" />
+                  <div className="w-full flex-1 bg-gradient-to-t from-neutral-900 to-black border border-white/10 relative overflow-hidden flex items-center justify-center">
+                    {/* Added pb-8 to fix framing */}
+                    <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className={`w-[150%] h-[150%] object-cover -rotate-45 pb-8 mix-blend-screen opacity-80 ${midLeft.filter}`} />
                   </div>
                   <div className="w-full pt-4 text-center">
-                    <h3 className="text-white font-bold tracking-widest text-xs uppercase mb-1">Azure Void</h3>
-                    <p className="text-blue-500 text-[9px] font-mono tracking-widest uppercase">Cobalt Core / Select</p>
+                    <h3 className="text-white font-bold tracking-widest text-xs uppercase mb-1">{midLeft.name}</h3>
+                    <p className={`${midLeft.color} text-[9px] font-mono tracking-widest uppercase`}>{midLeft.desc}</p>
                   </div>
                 </div>
               </div>
 
               {/* CENTER CARD: Primary Purchase Checkout */}
               <motion.div 
-                initial={{ scale: 0.95 }}
-                animate={{ scale: 1 }}
+                key={center.id}
+                initial={{ scale: 0.95, opacity: 0.5 }}
+                animate={{ scale: 1, opacity: 1 }}
                 className="w-full max-w-[450px] bg-black/80 backdrop-blur-xl relative flex flex-col shadow-[0_0_50px_rgba(220,38,38,0.2)] z-20 border border-red-900/50"
               >
                 {/* Glowing Borders */}
@@ -119,12 +153,13 @@ export default function CheckoutPanel({ isOpen, onClose }) {
                 <div className="absolute bottom-0 left-0 w-full h-1 bg-red-500 blur-[8px]" />
 
                 {/* Hero Image Block */}
-                <div className="w-full h-[250px] bg-gradient-to-b from-red-950/20 to-black relative overflow-hidden flex flex-col items-center justify-center p-6 border-b border-red-900/30">
-                   <div className="absolute w-[60%] h-[60%] bg-red-600/20 blur-[40px] rounded-full" />
-                   <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Cyber Katana" className="w-[140%] h-[140%] object-cover rotate-[20deg] mix-blend-screen relative z-10 filter contrast-125 saturate-150" />
+                <div className="w-full h-[250px] bg-gradient-to-b from-neutral-900 to-black relative overflow-hidden flex flex-col items-center justify-center p-6 border-b border-white/10">
+                   <div className="absolute w-[60%] h-[60%] bg-white/5 blur-[40px] rounded-full" />
+                   {/* Added pb-8 to give room at bottom */}
+                   <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Cyber Katana" className={`w-[140%] h-[140%] object-cover rotate-[20deg] pb-8 mix-blend-screen relative z-10 ${center.filter}`} />
                    
-                   <div className="absolute top-4 left-4 border border-red-500/30 bg-red-950/50 px-2 py-1">
-                     <span className="text-red-500 font-mono text-[9px] tracking-widest uppercase">X-01 Base Model</span>
+                   <div className="absolute top-4 left-4 border border-white/10 bg-black/50 px-2 py-1">
+                     <span className="text-white font-mono text-[9px] tracking-widest uppercase">Variant: {center.name}</span>
                    </div>
                 </div>
 
@@ -135,12 +170,12 @@ export default function CheckoutPanel({ isOpen, onClose }) {
                     <>
                       <div className="flex justify-between items-end border-b border-white/5 pb-4">
                         <div className="flex flex-col">
-                          <h2 className="text-white text-xl font-bold uppercase tracking-widest mb-1">Bloodline Red</h2>
-                          <p className="text-neutral-500 font-mono text-[10px] tracking-widest uppercase">Plasma Core</p>
+                          <h2 className="text-white text-xl font-bold uppercase tracking-widest mb-1">{center.name}</h2>
+                          <p className={`${center.color} font-mono text-[10px] tracking-widest uppercase`}>{center.desc}</p>
                         </div>
                         <div className="text-right">
-                          <p className="text-white text-2xl font-light tracking-widest">$2,499</p>
-                          <p className="text-red-500 font-mono text-[9px] tracking-widest uppercase">USDT / Crypto</p>
+                          <p className="text-white text-2xl font-light tracking-widest">{center.price}</p>
+                          <p className="text-neutral-500 font-mono text-[9px] tracking-widest uppercase">USDT / Crypto</p>
                         </div>
                       </div>
 
@@ -197,37 +232,35 @@ export default function CheckoutPanel({ isOpen, onClose }) {
                 </div>
               </motion.div>
 
-              {/* Right Variant: Emerald Green */}
-              <div className="hidden md:flex flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm relative transition-all duration-500 transform -rotate-y-6 scale-95 opacity-80 hover:opacity-100 hover:scale-100 cursor-pointer">
+              {/* Right Variant 1 */}
+              <div className="hidden md:flex flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm relative transition-all duration-500 transform -rotate-y-6 scale-95 opacity-80 hover:opacity-100 hover:scale-100 cursor-pointer" onClick={nextSlide}>
                 <div className="w-full h-full p-4 flex flex-col items-center">
-                  <div className="w-full flex-1 bg-gradient-to-t from-emerald-950/40 to-black border border-emerald-900/30 relative overflow-hidden flex items-center justify-center">
-                    <div className="absolute inset-0 bg-emerald-500/10 mix-blend-screen" />
-                    <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[150%] h-[150%] object-cover -rotate-45 filter hue-rotate-[120deg] brightness-110 contrast-125 mix-blend-screen opacity-80" />
+                  <div className="w-full flex-1 bg-gradient-to-t from-neutral-900 to-black border border-white/10 relative overflow-hidden flex items-center justify-center">
+                    <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className={`w-[150%] h-[150%] object-cover -rotate-45 pb-8 mix-blend-screen opacity-80 ${midRight.filter}`} />
                   </div>
                   <div className="w-full pt-4 text-center">
-                    <h3 className="text-white font-bold tracking-widest text-xs uppercase mb-1">Viper</h3>
-                    <p className="text-emerald-500 text-[9px] font-mono tracking-widest uppercase">Emerald Core / Select</p>
+                    <h3 className="text-white font-bold tracking-widest text-xs uppercase mb-1">{midRight.name}</h3>
+                    <p className={`${midRight.color} text-[9px] font-mono tracking-widest uppercase`}>{midRight.desc}</p>
                   </div>
                 </div>
               </div>
 
-              {/* Right Variant: Gold */}
-              <div className="hidden lg:flex flex-col w-[250px] h-[450px] bg-black/40 border border-white/5 backdrop-blur-sm relative transition-all duration-500 transform -rotate-y-12 scale-90 opacity-60 hover:opacity-100 hover:scale-95 cursor-pointer">
+              {/* Right Variant 2 */}
+              <div className="hidden lg:flex flex-col w-[250px] h-[450px] bg-black/40 border border-white/5 backdrop-blur-sm relative transition-all duration-500 transform -rotate-y-12 scale-90 opacity-60 hover:opacity-100 hover:scale-95 cursor-pointer" onClick={nextSlide}>
                 <div className="w-full h-full p-4 flex flex-col items-center">
-                  <div className="w-full flex-1 bg-gradient-to-t from-amber-950/40 to-black border border-amber-900/30 relative overflow-hidden flex items-center justify-center">
-                    <div className="absolute inset-0 bg-amber-500/10 mix-blend-screen" />
-                    <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[150%] h-[150%] object-cover -rotate-45 filter hue-rotate-[60deg] brightness-125 contrast-125 mix-blend-screen opacity-70" />
+                  <div className="w-full flex-1 bg-gradient-to-t from-neutral-900 to-black border border-white/10 relative overflow-hidden flex items-center justify-center">
+                    <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className={`w-[150%] h-[150%] object-cover -rotate-45 pb-8 mix-blend-screen opacity-70 ${farRight.filter}`} />
                   </div>
                   <div className="w-full pt-4 text-center">
-                    <h3 className="text-white font-bold tracking-widest text-xs uppercase mb-1">Sovereign</h3>
-                    <p className="text-amber-500 text-[9px] font-mono tracking-widest uppercase">Gold Core / Waitlist</p>
+                    <h3 className="text-white font-bold tracking-widest text-xs uppercase mb-1">{farRight.name}</h3>
+                    <p className={`${farRight.color} text-[9px] font-mono tracking-widest uppercase`}>{farRight.desc}</p>
                   </div>
                 </div>
               </div>
 
             </div>
 
-            <button onMouseEnter={playHover} className="absolute right-8 w-12 h-12 rounded-full border border-red-500/30 flex items-center justify-center text-white hover:bg-red-900/40 hover:border-red-500 transition-all z-30">
+            <button onClick={nextSlide} onMouseEnter={playHover} className="absolute right-8 w-12 h-12 rounded-full border border-red-500/30 flex items-center justify-center text-white hover:bg-red-900/40 hover:border-red-500 transition-all z-30">
               <ChevronRight size={20} />
             </button>
             
@@ -235,11 +268,15 @@ export default function CheckoutPanel({ isOpen, onClose }) {
 
           {/* Pagination Dots */}
           <div className="flex justify-center items-center gap-3 pb-8 relative z-20">
-            <div className="w-1.5 h-1.5 bg-neutral-600 rounded-full cursor-pointer hover:bg-white transition-colors" />
-            <div className="w-1.5 h-1.5 bg-neutral-600 rounded-full cursor-pointer hover:bg-white transition-colors" />
-            <div className="w-2 h-2 bg-red-500 rotate-45" /> {/* Active dot */}
-            <div className="w-1.5 h-1.5 bg-neutral-600 rounded-full cursor-pointer hover:bg-white transition-colors" />
-            <div className="w-1.5 h-1.5 bg-neutral-600 rounded-full cursor-pointer hover:bg-white transition-colors" />
+            {VARIANTS.map((variant, index) => {
+              const isActive = (((offset) % VARIANTS.length) + VARIANTS.length) % VARIANTS.length === index;
+              return (
+                <div 
+                  key={index}
+                  className={`cursor-pointer transition-all ${isActive ? 'w-2 h-2 bg-red-500 rotate-45' : 'w-1.5 h-1.5 bg-neutral-600 rounded-full hover:bg-white'}`} 
+                />
+              );
+            })}
           </div>
 
         </motion.div>
