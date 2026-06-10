@@ -1,15 +1,84 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { audio } from '../utils/AudioEngine';
 import { ChevronLeft, ChevronRight, Swords, Zap, Fingerprint, Shield, Move } from 'lucide-react';
 
+const SPECS_DATA = [
+  { 
+    id: 0, 
+    title: 'Blade Core', 
+    subtitle: 'Aurora-X Titanium', 
+    isMain: false, 
+    bg: "bg-[url('https://www.transparenttextures.com/patterns/brushed-alum.png')]", 
+    gradient: "from-neutral-800 to-black",
+    desc: 'High-frequency forged titanium alloy with plasma-infused edge channel for maximum durability and heat efficiency.' 
+  },
+  { 
+    id: 1, 
+    title: 'Grip System', 
+    subtitle: 'Neuro-Wrap', 
+    isMain: false, 
+    bg: "bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]", 
+    gradient: "from-neutral-800 to-black",
+    desc: 'Adaptive neuro-material wrap for enhanced tactile feedback, silent handling, and absolute control.' 
+  },
+  { 
+    id: 2, 
+    title: 'Cyber Katana X-01', 
+    subtitle: 'Primary System', 
+    isMain: true 
+  },
+  { 
+    id: 3, 
+    title: 'Tsuba Unit', 
+    subtitle: 'Vector Guard', 
+    isMain: false, 
+    bg: "bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')]", 
+    gradient: "from-neutral-800 to-black",
+    desc: 'Aerodynamic vector guard optimized for deflection, balance, and close-quarters maneuverability.' 
+  },
+  { 
+    id: 4, 
+    title: 'Sheath System', 
+    subtitle: 'Mag-Lock Zero Draw', 
+    isMain: false, 
+    bg: "bg-[url('https://www.transparenttextures.com/patterns/brushed-alum.png')]", 
+    gradient: "from-neutral-800 to-black",
+    desc: 'Magnetic lock sheath with zero-draw resistance and motion-stabilized lining for ultra-fast deployment and secure carry.' 
+  }
+];
+
 export default function SpecsModal({ isOpen, onClose }) {
+  const [offset, setOffset] = useState(2); // Start with Katana in center
+
   const handleClose = () => {
     audio.playBeep();
     onClose();
   };
 
   const playHover = () => audio.playGlassTap();
+
+  const nextSlide = () => {
+    audio.playGlassTap();
+    setOffset((prev) => prev + 1);
+  };
+
+  const prevSlide = () => {
+    audio.playGlassTap();
+    setOffset((prev) => prev - 1);
+  };
+
+  const getItem = (relativeIndex) => {
+    const len = SPECS_DATA.length;
+    const index = (((offset + relativeIndex) % len) + len) % len;
+    return SPECS_DATA[index];
+  };
+
+  const farLeft = getItem(-2);
+  const midLeft = getItem(-1);
+  const center = getItem(0);
+  const midRight = getItem(1);
+  const farRight = getItem(2);
 
   return (
     <AnimatePresence>
@@ -19,7 +88,7 @@ export default function SpecsModal({ isOpen, onClose }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
-          className="fixed inset-0 z-[100] flex flex-col bg-[#050914]" // Deep navy/black cyber background
+          className="fixed inset-0 z-[100] flex flex-col bg-[#050914] overflow-hidden"
         >
           {/* Background Grid & HUD Elements */}
           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none" />
@@ -58,37 +127,44 @@ export default function SpecsModal({ isOpen, onClose }) {
           <div className="flex-1 w-full flex items-center justify-center px-4 relative z-10 -mt-8">
             
             {/* Left Arrow */}
-            <button onMouseEnter={playHover} className="absolute left-8 w-12 h-12 rounded-full border border-red-500/30 flex items-center justify-center text-white hover:bg-red-900/40 hover:border-red-500 transition-all z-30">
+            <button onClick={prevSlide} onMouseEnter={playHover} className="absolute left-4 md:left-8 w-12 h-12 rounded-full border border-red-500/30 flex items-center justify-center text-white hover:bg-red-900/40 hover:border-red-500 transition-all z-30 bg-black/50 backdrop-blur-sm">
               <ChevronLeft size={20} />
             </button>
 
             {/* Grid Container */}
             <div className="flex items-center justify-center gap-4 md:gap-6 lg:gap-8 max-w-[1600px] w-full">
               
-              {/* Card 1: Blade Core */}
-              <div className="hidden xl:flex flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm relative p-6 transition-transform hover:-translate-y-2 group">
+              {/* Card 1: Far Left */}
+              <div className="hidden xl:flex flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm relative p-6 transition-transform hover:-translate-y-2 group cursor-pointer" onClick={prevSlide}>
                 <CornerAccents />
-                <h3 className="text-white font-bold tracking-widest text-sm uppercase mb-1">Blade Core</h3>
-                <p className="text-red-500 text-[9px] font-mono tracking-widest uppercase mb-6">Aurora-X Titanium</p>
-                <div className="w-full h-[250px] bg-gradient-to-br from-neutral-800 to-black border border-white/10 mb-6 relative overflow-hidden group-hover:border-red-500/30 transition-colors">
-                  {/* Placeholder for actual image */}
-                  <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/brushed-alum.png')]" />
+                <h3 className="text-white font-bold tracking-widest text-sm uppercase mb-1">{farLeft.title}</h3>
+                <p className="text-red-500 text-[9px] font-mono tracking-widest uppercase mb-6">{farLeft.subtitle}</p>
+                <div className={`w-full h-[250px] bg-gradient-to-br ${farLeft.gradient || 'from-neutral-800 to-black'} border border-white/10 mb-6 relative overflow-hidden group-hover:border-red-500/30 transition-colors flex items-center justify-center`}>
+                  {farLeft.isMain ? (
+                    <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[120%] h-auto object-cover -rotate-45 pb-8 mix-blend-screen opacity-50" />
+                  ) : (
+                    <div className={`absolute inset-0 opacity-20 ${farLeft.bg}`} />
+                  )}
                 </div>
                 <p className="text-neutral-500 text-xs leading-relaxed tracking-wide">
-                  High-frequency forged titanium alloy with plasma-infused edge channel for maximum durability and heat efficiency.
+                  {farLeft.desc || 'Primary asset module loading...'}
                 </p>
               </div>
 
-              {/* Card 2: Grip System */}
-              <div className="hidden lg:flex flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm relative p-6 transition-transform hover:-translate-y-2 group">
+              {/* Card 2: Mid Left */}
+              <div className="hidden lg:flex flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm relative p-6 transition-transform hover:-translate-y-2 group cursor-pointer" onClick={prevSlide}>
                 <CornerAccents />
-                <h3 className="text-white font-bold tracking-widest text-sm uppercase mb-1">Grip System</h3>
-                <p className="text-red-500 text-[9px] font-mono tracking-widest uppercase mb-6">Neuro-Wrap</p>
-                <div className="w-full h-[250px] bg-gradient-to-bl from-neutral-800 to-black border border-white/10 mb-6 relative overflow-hidden group-hover:border-red-500/30 transition-colors">
-                  <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
+                <h3 className="text-white font-bold tracking-widest text-sm uppercase mb-1">{midLeft.title}</h3>
+                <p className="text-red-500 text-[9px] font-mono tracking-widest uppercase mb-6">{midLeft.subtitle}</p>
+                <div className={`w-full h-[250px] bg-gradient-to-br ${midLeft.gradient || 'from-neutral-800 to-black'} border border-white/10 mb-6 relative overflow-hidden group-hover:border-red-500/30 transition-colors flex items-center justify-center`}>
+                  {midLeft.isMain ? (
+                    <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[120%] h-auto object-cover -rotate-45 pb-8 mix-blend-screen opacity-50" />
+                  ) : (
+                    <div className={`absolute inset-0 opacity-20 ${midLeft.bg}`} />
+                  )}
                 </div>
                 <p className="text-neutral-500 text-xs leading-relaxed tracking-wide">
-                  Adaptive neuro-material wrap for enhanced tactile feedback, silent handling, and absolute control.
+                  {midLeft.desc || 'Primary asset module loading...'}
                 </p>
               </div>
 
@@ -96,29 +172,41 @@ export default function SpecsModal({ isOpen, onClose }) {
               <motion.div 
                 initial={{ scale: 0.95 }}
                 animate={{ scale: 1 }}
-                className="w-full max-w-[500px] h-[650px] bg-black/60 backdrop-blur-md relative p-8 flex flex-col shadow-[0_0_50px_rgba(220,38,38,0.15)]"
+                className="w-[90vw] max-w-[500px] h-[650px] bg-black/60 backdrop-blur-md relative p-8 flex flex-col shadow-[0_0_50px_rgba(220,38,38,0.15)]"
               >
                 {/* Red Border Box */}
                 <div className="absolute inset-0 border-2 border-red-600 rounded-lg pointer-events-none" />
                 
-                <h3 className="text-white font-bold tracking-widest text-sm uppercase mb-1">Cyber Katana X-01</h3>
-                <p className="text-red-500 border border-red-500/30 inline-block px-2 py-1 text-[9px] font-mono tracking-widest uppercase mb-8 self-start bg-red-950/30">Primary System</p>
+                <h3 className="text-white font-bold tracking-widest text-sm uppercase mb-1">{center.title}</h3>
+                <p className="text-red-500 border border-red-500/30 inline-block px-2 py-1 text-[9px] font-mono tracking-widest uppercase mb-8 self-start bg-red-950/30">{center.subtitle}</p>
                 
                 {/* Main Katana Hero Area */}
-                <div className="w-full h-[220px] flex items-center justify-center relative mb-8">
-                  {/* Glowing background blob */}
-                  <div className="absolute w-[80%] h-[40%] bg-red-600/30 blur-[40px] rounded-full rotate-12" />
-                  {/* Using the frame image for the center representation */}
-                  <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Cyber Katana" className="w-[120%] h-auto object-cover scale-150 rotate-[25deg] pb-8 mix-blend-screen relative z-10 filter contrast-125 saturate-150" />
+                <div className="w-full h-[220px] flex items-center justify-center relative mb-8 border-b border-white/10 pb-4 overflow-hidden">
+                  {center.isMain ? (
+                    <>
+                      <div className="absolute w-[80%] h-[40%] bg-red-600/30 blur-[40px] rounded-full rotate-12" />
+                      <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Cyber Katana" className="w-[120%] h-auto object-cover scale-150 rotate-[25deg] pb-8 mix-blend-screen relative z-10 filter contrast-125 saturate-150" />
+                    </>
+                  ) : (
+                    <div className={`absolute inset-0 opacity-40 ${center.bg || "bg-[url('https://www.transparenttextures.com/patterns/brushed-alum.png')]"}`} />
+                  )}
                 </div>
 
                 {/* Specs List */}
                 <div className="flex-1 flex flex-col justify-center gap-4 px-4">
-                  <SpecItem icon={<Swords size={18} />} title="Blade Material" desc="Aurora-X Titanium Alloy" />
-                  <SpecItem icon={<Zap size={18} />} title="Plasma Edge" desc="Redline Plasma Conduit" />
-                  <SpecItem icon={<Fingerprint size={18} />} title="Grip System" desc="Neuro-Wrap Silent Grip" />
-                  <SpecItem icon={<Shield size={18} />} title="Sheath Tech" desc="Mag-Lock Zero Draw" />
-                  <SpecItem icon={<Move size={18} />} title="Dimensions" desc="1020mm / 40.2in (Overall)" />
+                  {center.isMain ? (
+                    <>
+                      <SpecItem icon={<Swords size={18} />} title="Blade Material" desc="Aurora-X Titanium Alloy" />
+                      <SpecItem icon={<Zap size={18} />} title="Plasma Edge" desc="Redline Plasma Conduit" />
+                      <SpecItem icon={<Fingerprint size={18} />} title="Grip System" desc="Neuro-Wrap Silent Grip" />
+                      <SpecItem icon={<Shield size={18} />} title="Sheath Tech" desc="Mag-Lock Zero Draw" />
+                      <SpecItem icon={<Move size={18} />} title="Dimensions" desc="1020mm / 40.2in (Overall)" />
+                    </>
+                  ) : (
+                    <div className="flex items-center justify-center h-full text-center p-4">
+                      <p className="text-neutral-400 font-mono text-xs leading-relaxed uppercase tracking-widest">{center.desc}</p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Bottom Bar */}
@@ -128,36 +216,44 @@ export default function SpecsModal({ isOpen, onClose }) {
                 </div>
               </motion.div>
 
-              {/* Card 4: Tsuba Unit */}
-              <div className="hidden lg:flex flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm relative p-6 transition-transform hover:-translate-y-2 group">
+              {/* Card 4: Mid Right */}
+              <div className="hidden lg:flex flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm relative p-6 transition-transform hover:-translate-y-2 group cursor-pointer" onClick={nextSlide}>
                 <CornerAccents />
-                <h3 className="text-white font-bold tracking-widest text-sm uppercase mb-1">Tsuba Unit</h3>
-                <p className="text-red-500 text-[9px] font-mono tracking-widest uppercase mb-6">Vector Guard</p>
-                <div className="w-full h-[250px] bg-gradient-to-tr from-neutral-800 to-black border border-white/10 mb-6 relative overflow-hidden group-hover:border-red-500/30 transition-colors">
-                  <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')]" />
+                <h3 className="text-white font-bold tracking-widest text-sm uppercase mb-1">{midRight.title}</h3>
+                <p className="text-red-500 text-[9px] font-mono tracking-widest uppercase mb-6">{midRight.subtitle}</p>
+                <div className={`w-full h-[250px] bg-gradient-to-br ${midRight.gradient || 'from-neutral-800 to-black'} border border-white/10 mb-6 relative overflow-hidden group-hover:border-red-500/30 transition-colors flex items-center justify-center`}>
+                  {midRight.isMain ? (
+                    <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[120%] h-auto object-cover -rotate-45 pb-8 mix-blend-screen opacity-50" />
+                  ) : (
+                    <div className={`absolute inset-0 opacity-20 ${midRight.bg}`} />
+                  )}
                 </div>
                 <p className="text-neutral-500 text-xs leading-relaxed tracking-wide">
-                  Aerodynamic vector guard optimized for deflection, balance, and close-quarters maneuverability.
+                  {midRight.desc || 'Primary asset module loading...'}
                 </p>
               </div>
 
-              {/* Card 5: Sheath System */}
-              <div className="hidden xl:flex flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm relative p-6 transition-transform hover:-translate-y-2 group">
+              {/* Card 5: Far Right */}
+              <div className="hidden xl:flex flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm relative p-6 transition-transform hover:-translate-y-2 group cursor-pointer" onClick={nextSlide}>
                 <CornerAccents />
-                <h3 className="text-white font-bold tracking-widest text-sm uppercase mb-1">Sheath System</h3>
-                <p className="text-red-500 text-[9px] font-mono tracking-widest uppercase mb-6">Mag-Lock Zero Draw</p>
-                <div className="w-full h-[250px] bg-gradient-to-tl from-neutral-800 to-black border border-white/10 mb-6 relative overflow-hidden group-hover:border-red-500/30 transition-colors">
-                  <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/brushed-alum.png')]" />
+                <h3 className="text-white font-bold tracking-widest text-sm uppercase mb-1">{farRight.title}</h3>
+                <p className="text-red-500 text-[9px] font-mono tracking-widest uppercase mb-6">{farRight.subtitle}</p>
+                <div className={`w-full h-[250px] bg-gradient-to-br ${farRight.gradient || 'from-neutral-800 to-black'} border border-white/10 mb-6 relative overflow-hidden group-hover:border-red-500/30 transition-colors flex items-center justify-center`}>
+                  {farRight.isMain ? (
+                    <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[120%] h-auto object-cover -rotate-45 pb-8 mix-blend-screen opacity-50" />
+                  ) : (
+                    <div className={`absolute inset-0 opacity-20 ${farRight.bg}`} />
+                  )}
                 </div>
                 <p className="text-neutral-500 text-xs leading-relaxed tracking-wide">
-                  Magnetic lock sheath with zero-draw resistance and motion-stabilized lining for ultra-fast deployment and secure carry.
+                  {farRight.desc || 'Primary asset module loading...'}
                 </p>
               </div>
 
             </div>
 
             {/* Right Arrow */}
-            <button onMouseEnter={playHover} className="absolute right-8 w-12 h-12 rounded-full border border-red-500/30 flex items-center justify-center text-white hover:bg-red-900/40 hover:border-red-500 transition-all z-30">
+            <button onClick={nextSlide} onMouseEnter={playHover} className="absolute right-4 md:right-8 w-12 h-12 rounded-full border border-red-500/30 flex items-center justify-center text-white hover:bg-red-900/40 hover:border-red-500 transition-all z-30 bg-black/50 backdrop-blur-sm">
               <ChevronRight size={20} />
             </button>
             
@@ -165,11 +261,15 @@ export default function SpecsModal({ isOpen, onClose }) {
 
           {/* Pagination Dots */}
           <div className="flex justify-center items-center gap-3 pb-8 relative z-20">
-            <div className="w-1.5 h-1.5 bg-neutral-600 rounded-full cursor-pointer hover:bg-white transition-colors" />
-            <div className="w-1.5 h-1.5 bg-neutral-600 rounded-full cursor-pointer hover:bg-white transition-colors" />
-            <div className="w-2 h-2 bg-red-500 rotate-45" /> {/* Active dot */}
-            <div className="w-1.5 h-1.5 bg-neutral-600 rounded-full cursor-pointer hover:bg-white transition-colors" />
-            <div className="w-1.5 h-1.5 bg-neutral-600 rounded-full cursor-pointer hover:bg-white transition-colors" />
+            {SPECS_DATA.map((_, index) => {
+              const isActive = (((offset) % SPECS_DATA.length) + SPECS_DATA.length) % SPECS_DATA.length === index;
+              return (
+                <div 
+                  key={index}
+                  className={`cursor-pointer transition-all ${isActive ? 'w-2 h-2 bg-red-500 rotate-45' : 'w-1.5 h-1.5 bg-neutral-600 rounded-full hover:bg-white'}`} 
+                />
+              );
+            })}
           </div>
 
         </motion.div>
@@ -178,19 +278,15 @@ export default function SpecsModal({ isOpen, onClose }) {
   );
 }
 
-// Small component for the corner L-brackets on side cards
 function CornerAccents() {
   return (
     <>
       <div className="absolute top-4 left-4 w-2 h-[1px] bg-white/30" />
       <div className="absolute top-4 left-4 w-[1px] h-2 bg-white/30" />
-      
       <div className="absolute top-4 right-4 w-2 h-[1px] bg-white/30" />
       <div className="absolute top-4 right-4 w-[1px] h-2 bg-white/30 right-0 transform -translate-x-[7px]" />
-      
       <div className="absolute bottom-4 left-4 w-2 h-[1px] bg-white/30" />
       <div className="absolute bottom-4 left-4 w-[1px] h-2 bg-white/30 transform -translate-y-[7px]" />
-      
       <div className="absolute bottom-4 right-4 w-2 h-[1px] bg-white/30" />
       <div className="absolute bottom-4 right-4 w-[1px] h-2 bg-white/30 transform -translate-x-[7px] -translate-y-[7px]" />
     </>
