@@ -63,11 +63,11 @@ export default function ScrollStages({ scrollYProgress }) {
       {/* STAGE 1: Hero */}
       <motion.div 
         style={{ opacity: stage1Opacity, y: stage1Y, display: stage1Display }}
-        className="absolute top-0 left-0 w-full h-[100dvh] flex flex-col justify-start pt-24 md:pt-0 md:justify-center px-8 md:px-16"
+        className="absolute top-0 left-0 w-full h-[100dvh] flex flex-col justify-start pt-24 md:pt-0 md:justify-center px-4 md:px-16"
       >
         <div className="md:w-1/3 lg:w-1/4 flex flex-col items-start gap-4">
           <span className="text-red-500 font-mono text-xs tracking-[0.3em]">CYBER KATANA // X-01</span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider text-white leading-tight">Forged for <br/>silent <span className="text-red-600">impact.</span></h1>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider text-white leading-tight">Forged for <br/>silent <span className="text-red-600">impact.</span></h1>
           
           <div className="border-l-2 border-red-600 pl-3 inline-block">
             <motion.p 
@@ -100,9 +100,9 @@ export default function ScrollStages({ scrollYProgress }) {
       {/* STAGE 2: Approach */}
       <motion.div 
         style={{ opacity: stage2Opacity, x: stage2X, display: stage2Display }}
-        className="absolute top-0 right-0 w-full h-[100dvh] flex flex-col justify-end pb-32 md:pb-0 md:justify-center items-end px-8 md:px-16"
+        className="absolute top-0 right-0 w-full h-[100dvh] flex flex-col justify-end pb-24 md:pb-0 md:justify-center items-end px-4 md:px-16"
       >
-        <div className="w-full sm:w-2/3 md:w-1/3 lg:w-1/4 flex flex-col gap-6 items-end text-right">
+        <div className="w-full sm:w-2/3 md:w-1/3 lg:w-1/4 flex flex-col gap-4 md:gap-6 items-end text-right">
           <div onMouseEnter={() => audio.playGlassTap()} className="bg-black/50 backdrop-blur-md border border-white/5 hover:border-red-500/30 transition-colors p-6 rounded-xl w-full cursor-default">
             <h3 className="text-sm font-bold text-white mb-2 uppercase tracking-widest text-red-500">Grip</h3>
             <p className="text-white text-lg font-bold uppercase tracking-wide mb-1">Carbon-Forged</p>
@@ -126,22 +126,22 @@ export default function ScrollStages({ scrollYProgress }) {
         style={{ opacity: stage3Opacity, scale: stage3Scale, display: stage3Display }}
         className="absolute top-0 left-0 w-full h-[100dvh]"
       >
-        <div className="absolute top-24 left-8 md:top-12 md:left-12 border-l-2 border-t-2 border-red-500/50 p-3 bg-red-900/10 backdrop-blur-sm">
+        <div className="absolute top-24 left-4 md:top-12 md:left-12 border-l-2 border-t-2 border-red-500/50 p-2 md:p-3 bg-red-900/10 backdrop-blur-sm">
           <motion.div style={{ clipPath: hudClip1 }} className="whitespace-nowrap">
             <span className="text-red-500 font-mono text-[10px] md:text-xs tracking-widest uppercase">Plasma edge stabilized</span>
           </motion.div>
         </div>
-        <div className="absolute bottom-24 right-8 md:bottom-32 md:right-12 border-r-2 border-b-2 border-red-500/50 p-3 bg-red-900/10 backdrop-blur-sm text-right flex justify-end">
+        <div className="absolute bottom-24 right-4 md:bottom-32 md:right-12 border-r-2 border-b-2 border-red-500/50 p-2 md:p-3 bg-red-900/10 backdrop-blur-sm text-right flex justify-end">
           <motion.div style={{ clipPath: hudClip2 }} className="whitespace-nowrap">
             <span className="text-red-500 font-mono text-[10px] md:text-xs tracking-widest uppercase">Motion core active</span>
           </motion.div>
         </div>
-        <div className="absolute top-24 right-8 md:top-12 md:right-12 border-r-2 border-t-2 border-red-500/50 p-3 bg-red-900/10 backdrop-blur-sm text-right flex justify-end">
+        <div className="absolute top-24 right-4 md:top-12 md:right-12 border-r-2 border-t-2 border-red-500/50 p-2 md:p-3 bg-red-900/10 backdrop-blur-sm text-right flex justify-end">
           <motion.div style={{ clipPath: hudClip3 }} className="whitespace-nowrap">
             <span className="text-red-500 font-mono text-[10px] md:text-xs tracking-widest uppercase">Target locked</span>
           </motion.div>
         </div>
-        <div className="absolute bottom-24 left-8 md:bottom-32 md:left-12 border-l-2 border-b-2 border-red-500/50 p-3 bg-red-900/10 backdrop-blur-sm">
+        <div className="absolute bottom-24 left-4 md:bottom-32 md:left-12 border-l-2 border-b-2 border-red-500/50 p-2 md:p-3 bg-red-900/10 backdrop-blur-sm">
           <motion.div style={{ clipPath: hudClip4 }} className="whitespace-nowrap">
             <span className="text-red-500 font-mono text-[10px] md:text-xs tracking-widest uppercase">Silent strike mode</span>
           </motion.div>
@@ -151,7 +151,7 @@ export default function ScrollStages({ scrollYProgress }) {
       {/* STAGE 4: Return */}
       <motion.div 
         style={{ opacity: stage4Opacity, y: stage4Y, display: stage4Display }}
-        className="absolute top-0 left-0 w-full h-[100dvh] flex flex-col justify-start items-start px-8 md:px-16 pt-4 md:pt-8"
+        className="absolute top-0 left-0 w-full h-[100dvh] flex flex-col justify-start items-start px-4 md:px-16 pt-16 md:pt-8"
       >
         <div className="w-full md:w-1/3 lg:w-1/4 flex flex-col gap-2 bg-black/60 backdrop-blur-xl border border-red-900/50 p-8 rounded-xl shadow-2xl">
           <div className="flex items-center gap-3 mb-6">
@@ -177,9 +177,9 @@ export default function ScrollStages({ scrollYProgress }) {
       {/* STAGE 5: Final Buy */}
       <motion.div 
         style={{ opacity: stage5Opacity, y: stage5Y, display: stage5Display }}
-        className="absolute bottom-0 left-0 w-full h-[100dvh] flex flex-col justify-end items-end pb-4 md:pb-6 px-8 md:px-16"
+        className="absolute bottom-0 left-0 w-full h-[100dvh] flex flex-col justify-end items-end pb-4 md:pb-6 px-4 md:px-16"
       >
-        <div className="w-full max-w-sm bg-black/80 backdrop-blur-2xl border border-red-600/30 p-6 md:p-8 rounded-2xl flex flex-col items-center text-center shadow-[0_0_50px_rgba(220,38,38,0.15)] relative overflow-hidden">
+        <div className="w-[90vw] md:w-full max-w-sm bg-black/80 backdrop-blur-2xl border border-red-600/30 p-6 md:p-8 rounded-2xl flex flex-col items-center text-center shadow-[0_0_50px_rgba(220,38,38,0.15)] relative overflow-hidden">
           <div className="absolute top-0 left-1/4 right-1/4 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent opacity-50"></div>
           
           <h2 className="text-xl md:text-2xl font-bold uppercase tracking-widest text-white mb-2">Cyber Katana X-01</h2>

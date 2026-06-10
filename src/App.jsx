@@ -43,7 +43,7 @@ function App() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm transition-opacity duration-500">
           <button 
             onClick={handleInitialize}
-            className="group relative px-8 py-4 bg-transparent border border-red-900/50 hover:border-red-500/80 transition-all duration-300 cursor-pointer overflow-hidden rounded-sm flex items-center gap-4"
+            className="group relative px-6 md:px-8 py-4 bg-transparent border border-red-900/50 hover:border-red-500/80 transition-all duration-300 cursor-pointer overflow-hidden rounded-sm flex items-center gap-4 w-[90vw] max-w-sm"
           >
             {/* Background glow on hover */}
             <div className="absolute inset-0 bg-red-600/10 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-out" />

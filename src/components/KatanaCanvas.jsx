@@ -8,6 +8,14 @@ export default function KatanaCanvas({ scrollYProgress }) {
   const [images, setImages] = useState([]);
   const [imagesLoaded, setImagesLoaded] = useState(0);
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   // Preload images
   useEffect(() => {
     const loadedImages = [];
@@ -38,10 +46,15 @@ export default function KatanaCanvas({ scrollYProgress }) {
   }, []);
 
   const drawImage = (img, canvas, ctx, glowCanvas, glowCtx) => {
-    if (!img || !canvas || !ctx || !glowCanvas || !glowCtx) return;
+    if (!img || !canvas || !ctx) return;
     const hRatio = canvas.width / img.width;
     const vRatio = canvas.height / img.height;
-    const ratio = Math.max(hRatio, vRatio);
+    
+    // On desktop, 'cover' is great. On mobile portrait, 'cover' zooms in way too much. 
+    // We use a blend: min (contain) scaled up by 1.25x so it feels cinematic but doesn't crop the blade.
+    const isMobileViewport = window.innerWidth < 768;
+    const ratio = isMobileViewport ? Math.min(hRatio, vRatio) * 1.4 : Math.max(hRatio, vRatio);
+    
     const centerShift_x = (canvas.width - img.width * ratio) / 2;
     const centerShift_y = (canvas.height - img.height * ratio) / 2;
     
@@ -50,36 +63,44 @@ export default function KatanaCanvas({ scrollYProgress }) {
     ctx.drawImage(img, 0, 0, img.width, img.height,
                       centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
                       
-    // Draw glow layer
-    glowCtx.clearRect(0, 0, glowCanvas.width, glowCanvas.height);
-    glowCtx.drawImage(img, 0, 0, img.width, img.height,
-                      centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
+    // Draw glow layer (only if not mobile)
+    if (!isMobileViewport && glowCanvas && glowCtx) {
+      glowCtx.clearRect(0, 0, glowCanvas.width, glowCanvas.height);
+      glowCtx.drawImage(img, 0, 0, img.width, img.height,
+                        centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
+    }
   };
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const glowCanvas = glowCanvasRef.current;
-    if (!canvas || !glowCanvas) return;
+    if (!canvas) return;
     
     // Base layer without alpha for performance
     const ctx = canvas.getContext('2d', { alpha: false });
     // Glow layer needs alpha to blend properly if we were masking, but here we just use CSS mix-blend-mode
-    const glowCtx = glowCanvas.getContext('2d', { alpha: false });
+    const glowCtx = glowCanvas ? glowCanvas.getContext('2d', { alpha: false }) : null;
     
     const resizeCanvas = () => {
-      const dpr = window.devicePixelRatio || 1;
+      const isMobileViewport = window.innerWidth < 768;
+      // Cap DPR to 1 on mobile to save massive amounts of GPU rendering
+      const dpr = isMobileViewport ? 1 : (window.devicePixelRatio || 1);
       
       // Scale internal resolution to match the physical screen pixels (fixes Retina/4K blur)
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
-      glowCanvas.width = window.innerWidth * dpr;
-      glowCanvas.height = window.innerHeight * dpr;
+      if (glowCanvas) {
+        glowCanvas.width = window.innerWidth * dpr;
+        glowCanvas.height = window.innerHeight * dpr;
+      }
       
       // Force hardware-accelerated high-quality upscaling
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
-      glowCtx.imageSmoothingEnabled = true;
-      glowCtx.imageSmoothingQuality = 'high';
+      if (glowCtx) {
+        glowCtx.imageSmoothingEnabled = true;
+        glowCtx.imageSmoothingQuality = 'high';
+      }
       
       const progress = scrollYProgress.get();
       const frameIndex = Math.min(FRAME_COUNT - 1, Math.floor(progress * FRAME_COUNT));
@@ -102,7 +123,7 @@ export default function KatanaCanvas({ scrollYProgress }) {
       window.removeEventListener('resize', resizeCanvas);
       unsubscribe();
     };
-  }, [images, scrollYProgress]);
+  }, [images, scrollYProgress, isMobile]);
 
   return (
     <div className="absolute top-0 left-0 w-screen h-[100dvh] overflow-hidden bg-black z-0 flex items-center justify-center">
@@ -120,17 +141,19 @@ export default function KatanaCanvas({ scrollYProgress }) {
         </div>
       )}
       
-      {/* Base layer: Increased contrast and saturation to punch up the dull frames */}
+      {/* Base layer: Increased contrast and saturation to punch up the dull frames (disabled on mobile to save GPU) */}
       <canvas 
         ref={canvasRef} 
-        className="absolute inset-0 w-full h-full object-cover z-10 filter contrast-125 saturate-[1.2] brightness-105" 
+        className={`absolute inset-0 w-full h-full object-cover z-10 ${!isMobile ? 'filter contrast-125 saturate-[1.2] brightness-105' : ''}`} 
       />
       
-      {/* Bloom layer: Blurred heavily and layered with screen to make bright pixels (red edge) glow */}
-      <canvas 
-        ref={glowCanvasRef} 
-        className="absolute inset-0 w-full h-full object-cover z-10 filter blur-[15px] sm:blur-[25px] opacity-70 mix-blend-screen saturate-200 pointer-events-none" 
-      />
+      {/* Bloom layer: Blurred heavily and layered with screen to make bright pixels (red edge) glow. Removed on mobile for performance. */}
+      {!isMobile && (
+        <canvas 
+          ref={glowCanvasRef} 
+          className="absolute inset-0 w-full h-full object-cover z-10 filter blur-[15px] sm:blur-[25px] opacity-70 mix-blend-screen saturate-200 pointer-events-none" 
+        />
+      )}
       
       {/* Subtle vignette/gradient overlay for better text contrast at edges without blocking center */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 pointer-events-none z-20" />
