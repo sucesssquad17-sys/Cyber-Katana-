@@ -21,7 +21,7 @@ export default function KatanaCanvas({ scrollYProgress }) {
       } else {
         img.fetchPriority = 'low'; // Load the rest lazily
       }
-      img.src = `/frames/frame_${i.toString().padStart(4, '0')}.webp`;
+      img.src = `${import.meta.env.BASE_URL}frames/frame_${i.toString().padStart(4, '0')}.webp`;
       img.onload = () => {
         loadedCount++;
         setImagesLoaded(loadedCount);
