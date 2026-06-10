@@ -127,7 +127,7 @@ export default function CheckoutPanel({ isOpen, onClose }) {
               </div>
 
               {/* Left Variant 1 */}
-              <div className="hidden md:flex flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm relative transition-all duration-500 transform rotate-y-6 scale-95 opacity-80 hover:opacity-100 hover:scale-100 cursor-pointer" onClick={prevSlide}>
+              <div className="flex absolute md:relative -left-24 sm:-left-12 md:left-auto z-0 flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm transition-all duration-500 transform rotate-y-6 scale-[0.6] md:scale-95 opacity-50 md:opacity-80 hover:opacity-100 hover:scale-[0.65] md:hover:scale-100 cursor-pointer" onClick={prevSlide}>
                 <div className="w-full h-full p-4 flex flex-col items-center">
                   <div className="w-full flex-1 bg-gradient-to-t from-neutral-900 to-black border border-white/10 relative overflow-hidden flex items-center justify-center">
                     {/* Added pb-8 to fix framing */}
@@ -145,7 +145,7 @@ export default function CheckoutPanel({ isOpen, onClose }) {
                 key={center.id}
                 initial={{ scale: 0.95, opacity: 0.5 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="w-full max-w-[450px] bg-black/80 backdrop-blur-xl relative flex flex-col shadow-[0_0_50px_rgba(220,38,38,0.2)] z-20 border border-red-900/50"
+                className="w-[90vw] max-w-[450px] bg-black/80 backdrop-blur-xl relative flex flex-col shadow-[0_0_50px_rgba(220,38,38,0.2)] z-20 border border-red-900/50"
               >
                 {/* Borders */}
                 <div className="absolute inset-0 border-2 border-red-600 pointer-events-none" />
@@ -199,7 +199,9 @@ export default function CheckoutPanel({ isOpen, onClose }) {
                             </span>
                           ) : (
                             <>
-                              <span className="relative z-10">Authorize Purchase</span>
+                              <span className="relative z-10 flex items-center justify-center gap-2">
+                                Authorize Purchase
+                              </span>
                               <div className="absolute inset-0 h-full w-full bg-white/20 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></div>
                             </>
                           )}
@@ -231,7 +233,7 @@ export default function CheckoutPanel({ isOpen, onClose }) {
               </motion.div>
 
               {/* Right Variant 1 */}
-              <div className="hidden md:flex flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm relative transition-all duration-500 transform -rotate-y-6 scale-95 opacity-80 hover:opacity-100 hover:scale-100 cursor-pointer" onClick={nextSlide}>
+              <div className="flex absolute md:relative -right-24 sm:-right-12 md:right-auto z-0 flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm transition-all duration-500 transform -rotate-y-6 scale-[0.6] md:scale-95 opacity-50 md:opacity-80 hover:opacity-100 hover:scale-[0.65] md:hover:scale-100 cursor-pointer" onClick={nextSlide}>
                 <div className="w-full h-full p-4 flex flex-col items-center">
                   <div className="w-full flex-1 bg-gradient-to-t from-neutral-900 to-black border border-white/10 relative overflow-hidden flex items-center justify-center">
                     <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className={`w-[150%] h-[150%] object-cover -rotate-45 pb-8 mix-blend-screen opacity-80 ${midRight.filter}`} />
