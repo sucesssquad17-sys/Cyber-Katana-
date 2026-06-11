@@ -45,30 +45,35 @@ function App() {
       
       {/* Initialization Overlay */}
       {!audioInitialized && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-sm transition-opacity duration-500">
-          <button 
-            onClick={handleInitialize}
-            className="group relative px-6 md:px-8 py-4 bg-transparent border border-red-900/50 hover:border-red-500/80 transition-all duration-300 cursor-pointer overflow-hidden rounded-sm flex items-center gap-4 w-[90vw] max-w-sm"
-          >
-            {/* Background glow on hover */}
-            <div className="absolute inset-0 bg-red-600/10 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-            
-            <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse shadow-[0_0_10px_rgba(220,38,38,0.8)]" />
-            <div className="flex flex-col items-start relative z-10">
-              <span className="text-red-500 font-mono tracking-[0.3em] uppercase text-sm group-hover:text-red-400 transition-colors">
-                Initialize Sequence
-              </span>
-              <span className="text-red-700 font-mono tracking-[0.2em] uppercase text-[10px] mt-1 group-hover:text-red-500 transition-colors">
-                ( Click to Enter )
-              </span>
+        <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-black transition-opacity duration-1000">
+          
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.15]">
+            <div className="w-[50vw] max-w-[500px] aspect-square rounded-full border-[1px] border-red-500/30 animate-[spin_32s_linear_infinite]" style={{ borderStyle: 'dashed' }}></div>
+            <div className="absolute w-[40vw] max-w-[400px] aspect-square rounded-full border-[1px] border-white/5 animate-[spin_48s_linear_infinite_reverse]"></div>
+          </div>
+
+          <div className="flex flex-col items-center gap-24 z-10">
+            <div className="flex flex-col items-center gap-6 text-center">
+              <div className="text-red-500 font-mono text-[10px] md:text-[12px] tracking-[0.5em] uppercase animate-pulse">
+                System.Standby
+              </div>
+              <h1 className="text-white text-4xl md:text-6xl font-light tracking-[0.2em] uppercase drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                Cyber Katana <span className="font-bold text-red-500 drop-shadow-[0_0_15px_rgba(220,38,38,0.4)]">X-01</span>
+              </h1>
             </div>
-            
-            {/* Cyberpunk corner accents */}
-            <div className="absolute top-0 left-0 w-2 h-[1px] bg-red-500/50" />
-            <div className="absolute top-0 left-0 w-[1px] h-2 bg-red-500/50" />
-            <div className="absolute bottom-0 right-0 w-2 h-[1px] bg-red-500/50" />
-            <div className="absolute bottom-0 right-0 w-[1px] h-2 bg-red-500/50" />
-          </button>
+
+            <button 
+              onClick={handleInitialize}
+              className="group flex flex-col items-center gap-4 transition-transform duration-500 hover:scale-105 cursor-pointer"
+            >
+              <div className="text-white font-mono text-sm md:text-base tracking-[0.3em] uppercase group-hover:text-red-500 transition-colors duration-500 drop-shadow-[0_0_8px_rgba(255,255,255,0.2)] group-hover:drop-shadow-[0_0_15px_rgba(220,38,38,0.8)]">
+                Initialize Sequence
+              </div>
+              <div className="text-neutral-500 font-mono text-[9px] md:text-[10px] tracking-[0.4em] uppercase opacity-50 group-hover:opacity-100 transition-opacity duration-500">
+                ( Click to Enter )
+              </div>
+            </button>
+          </div>
         </div>
       )}
 

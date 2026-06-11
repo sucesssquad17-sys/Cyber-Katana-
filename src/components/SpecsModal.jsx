@@ -135,11 +135,11 @@ export default function SpecsModal({ isOpen, onClose }) {
             <div className="flex items-center justify-center gap-4 md:gap-6 lg:gap-8 max-w-[1600px] w-full">
               
               {/* Card 1: Far Left */}
-              <div className="hidden xl:flex flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm relative p-6 transition-transform hover:-translate-y-2 group cursor-pointer" onClick={prevSlide}>
+              <div className="hidden xl:flex flex-col w-[250px] h-[500px] bg-black/40 border border-white/5 backdrop-blur-sm relative p-6 transition-transform hover:-translate-y-2 group cursor-pointer" onClick={prevSlide}>
                 <CornerAccents />
                 <h3 className="text-white font-bold tracking-widest text-sm uppercase mb-1">{farLeft.title}</h3>
                 <p className="text-red-500 text-[9px] font-mono tracking-widest uppercase mb-6">{farLeft.subtitle}</p>
-                <div className={`w-full h-[250px] bg-gradient-to-br ${farLeft.gradient || 'from-neutral-800 to-black'} border border-white/10 mb-6 relative overflow-hidden group-hover:border-red-500/30 transition-colors flex items-center justify-center`}>
+                <div className={`w-full h-[220px] bg-gradient-to-br ${farLeft.gradient || 'from-neutral-800 to-black'} border border-white/10 mb-6 relative overflow-hidden group-hover:border-red-500/30 transition-colors flex items-center justify-center`}>
                   {farLeft.isMain ? (
                     <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[120%] h-auto object-cover -rotate-45 pb-8 mix-blend-screen opacity-50" />
                   ) : (
@@ -155,11 +155,11 @@ export default function SpecsModal({ isOpen, onClose }) {
               </div>
 
               {/* Card 2: Mid Left */}
-              <div className="hidden lg:flex flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm relative p-6 transition-transform hover:-translate-y-2 group cursor-pointer" onClick={prevSlide}>
+              <div className="hidden lg:flex flex-col w-[250px] h-[500px] bg-black/40 border border-white/5 backdrop-blur-sm relative p-6 transition-transform hover:-translate-y-2 group cursor-pointer" onClick={prevSlide}>
                 <CornerAccents />
                 <h3 className="text-white font-bold tracking-widest text-sm uppercase mb-1">{midLeft.title}</h3>
                 <p className="text-red-500 text-[9px] font-mono tracking-widest uppercase mb-6">{midLeft.subtitle}</p>
-                <div className={`w-full h-[250px] bg-gradient-to-br ${midLeft.gradient || 'from-neutral-800 to-black'} border border-white/10 mb-6 relative overflow-hidden group-hover:border-red-500/30 transition-colors flex items-center justify-center`}>
+                <div className={`w-full h-[220px] bg-gradient-to-br ${midLeft.gradient || 'from-neutral-800 to-black'} border border-white/10 mb-6 relative overflow-hidden group-hover:border-red-500/30 transition-colors flex items-center justify-center`}>
                   {midLeft.isMain ? (
                     <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[120%] h-auto object-cover -rotate-45 pb-8 mix-blend-screen opacity-50" />
                   ) : (
@@ -178,16 +178,16 @@ export default function SpecsModal({ isOpen, onClose }) {
               <motion.div 
                 initial={{ scale: 0.95 }}
                 animate={{ scale: 1 }}
-                className="w-[90vw] max-w-[500px] h-[650px] bg-black/60 backdrop-blur-md relative p-8 flex flex-col shadow-[0_0_50px_rgba(220,38,38,0.15)]"
+                className="w-[90vw] max-w-[450px] h-auto min-h-[610px] bg-black/60 backdrop-blur-md relative p-6 pb-20 flex flex-col shadow-[0_0_50px_rgba(220,38,38,0.15)]"
               >
                 {/* Red Border Box */}
                 <div className="absolute inset-0 border-2 border-red-600 rounded-lg pointer-events-none" />
                 
                 <h3 className="text-white font-bold tracking-widest text-sm uppercase mb-1">{center.title}</h3>
-                <p className="text-red-500 border border-red-500/30 inline-block px-2 py-1 text-[9px] font-mono tracking-widest uppercase mb-8 self-start bg-red-950/30">{center.subtitle}</p>
+                <p className="text-red-500 border border-red-500/30 inline-block px-2 py-1 text-[9px] font-mono tracking-widest uppercase mb-4 self-start bg-red-950/30">{center.subtitle}</p>
                 
                 {/* Main Katana Hero Area */}
-                <div className="w-full h-[220px] flex items-center justify-center relative mb-8 border-b border-white/10 pb-4 overflow-hidden">
+                <div className="w-full h-[180px] flex items-center justify-center relative mb-4 border-b border-white/10 pb-4 overflow-hidden">
                   {center.isMain ? (
                     <>
                       <div className="absolute w-[80%] h-[40%] bg-red-600/30 blur-[40px] rounded-full rotate-12" />
@@ -202,7 +202,7 @@ export default function SpecsModal({ isOpen, onClose }) {
                 </div>
 
                 {/* Specs List */}
-                <div className="flex-1 flex flex-col justify-center gap-4 px-4">
+                <div className="flex-1 flex flex-col justify-center gap-3 px-4 pb-12">
                   {center.isMain ? (
                     <>
                       <SpecItem icon={<Swords size={18} />} title="Blade Material" desc="Aurora-X Titanium Alloy" />
@@ -226,11 +226,11 @@ export default function SpecsModal({ isOpen, onClose }) {
               </motion.div>
 
               {/* Card 4: Mid Right */}
-              <div className="hidden lg:flex flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm relative p-6 transition-transform hover:-translate-y-2 group cursor-pointer" onClick={nextSlide}>
+              <div className="hidden lg:flex flex-col w-[250px] h-[500px] bg-black/40 border border-white/5 backdrop-blur-sm relative p-6 transition-transform hover:-translate-y-2 group cursor-pointer" onClick={nextSlide}>
                 <CornerAccents />
                 <h3 className="text-white font-bold tracking-widest text-sm uppercase mb-1">{midRight.title}</h3>
                 <p className="text-red-500 text-[9px] font-mono tracking-widest uppercase mb-6">{midRight.subtitle}</p>
-                <div className={`w-full h-[250px] bg-gradient-to-br ${midRight.gradient || 'from-neutral-800 to-black'} border border-white/10 mb-6 relative overflow-hidden group-hover:border-red-500/30 transition-colors flex items-center justify-center`}>
+                <div className={`w-full h-[220px] bg-gradient-to-br ${midRight.gradient || 'from-neutral-800 to-black'} border border-white/10 mb-6 relative overflow-hidden group-hover:border-red-500/30 transition-colors flex items-center justify-center`}>
                   {midRight.isMain ? (
                     <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[120%] h-auto object-cover -rotate-45 pb-8 mix-blend-screen opacity-50" />
                   ) : (
@@ -246,11 +246,11 @@ export default function SpecsModal({ isOpen, onClose }) {
               </div>
 
               {/* Card 5: Far Right */}
-              <div className="hidden xl:flex flex-col w-[280px] h-[550px] bg-black/40 border border-white/5 backdrop-blur-sm relative p-6 transition-transform hover:-translate-y-2 group cursor-pointer" onClick={nextSlide}>
+              <div className="hidden xl:flex flex-col w-[250px] h-[500px] bg-black/40 border border-white/5 backdrop-blur-sm relative p-6 transition-transform hover:-translate-y-2 group cursor-pointer" onClick={nextSlide}>
                 <CornerAccents />
                 <h3 className="text-white font-bold tracking-widest text-sm uppercase mb-1">{farRight.title}</h3>
                 <p className="text-red-500 text-[9px] font-mono tracking-widest uppercase mb-6">{farRight.subtitle}</p>
-                <div className={`w-full h-[250px] bg-gradient-to-br ${farRight.gradient || 'from-neutral-800 to-black'} border border-white/10 mb-6 relative overflow-hidden group-hover:border-red-500/30 transition-colors flex items-center justify-center`}>
+                <div className={`w-full h-[220px] bg-gradient-to-br ${farRight.gradient || 'from-neutral-800 to-black'} border border-white/10 mb-6 relative overflow-hidden group-hover:border-red-500/30 transition-colors flex items-center justify-center`}>
                   {farRight.isMain ? (
                     <img src={`${import.meta.env.BASE_URL}frames/frame_0180.webp`} alt="Katana" className="w-[120%] h-auto object-cover -rotate-45 pb-8 mix-blend-screen opacity-50" />
                   ) : (

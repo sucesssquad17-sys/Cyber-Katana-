@@ -179,7 +179,7 @@ export default function CheckoutPanel({ isOpen, onClose }) {
                       <div className="flex flex-col gap-4">
                         <input 
                           type="text" 
-                          placeholder="NEURAL LINK ID"
+                          placeholder="PROMO CODE"
                           className="w-full bg-white/5 border border-white/10 text-white font-mono text-xs p-4 outline-none focus:border-red-500 focus:bg-red-950/10 transition-colors uppercase tracking-widest placeholder-neutral-600"
                         />
                         <button 

@@ -103,18 +103,18 @@ export default function ScrollStages({ scrollYProgress, onOpenSpecs, onOpenCheck
         className="absolute top-0 right-0 w-full h-[100dvh] flex flex-col justify-end pb-24 md:pb-0 md:justify-center items-end px-4 md:px-16"
       >
         <div className="w-full sm:w-2/3 md:w-1/3 lg:w-1/4 flex flex-col gap-4 md:gap-6 items-end text-right">
-          <div onMouseEnter={() => audio.playGlassTap()} className="bg-black/50 backdrop-blur-md border border-white/5 hover:border-red-500/30 transition-colors p-6 rounded-xl w-full cursor-default">
-            <h3 className="text-sm font-bold text-white mb-2 uppercase tracking-widest text-red-500">Grip</h3>
+          <div onMouseEnter={() => audio.playGlassTap()} className="w-full cursor-default border-b border-red-500/50 pb-4">
+            <h3 className="text-sm font-bold mb-2 uppercase tracking-widest text-red-500">Grip</h3>
             <p className="text-white text-lg font-bold uppercase tracking-wide mb-1">Carbon-Forged</p>
             <p className="text-neutral-400 text-xs tracking-wider">Engineered for absolute control.</p>
           </div>
-          <div onMouseEnter={() => audio.playGlassTap()} className="bg-black/50 backdrop-blur-md border border-white/5 hover:border-red-500/30 transition-colors p-6 rounded-xl w-full cursor-default">
-            <h3 className="text-sm font-bold text-white mb-2 uppercase tracking-widest text-red-500">Sheath</h3>
+          <div onMouseEnter={() => audio.playGlassTap()} className="w-full cursor-default border-b border-red-500/50 pb-4">
+            <h3 className="text-sm font-bold mb-2 uppercase tracking-widest text-red-500">Sheath</h3>
             <p className="text-white text-lg font-bold uppercase tracking-wide mb-1">Titanium Cyber</p>
             <p className="text-neutral-400 text-xs tracking-wider">Magnetic lock with instant release.</p>
           </div>
-          <div onMouseEnter={() => audio.playGlassTap()} className="bg-black/50 backdrop-blur-md border border-white/5 hover:border-red-500/30 transition-colors p-6 rounded-xl w-full cursor-default">
-            <h3 className="text-sm font-bold text-white mb-2 uppercase tracking-widest text-red-500">Balance</h3>
+          <div onMouseEnter={() => audio.playGlassTap()} className="w-full cursor-default border-b border-red-500/50 pb-4">
+            <h3 className="text-sm font-bold mb-2 uppercase tracking-widest text-red-500">Balance</h3>
             <p className="text-white text-lg font-bold uppercase tracking-wide mb-1">Precision Tuned</p>
             <p className="text-neutral-400 text-xs tracking-wider">Perfect weight distribution.</p>
           </div>
@@ -153,23 +153,23 @@ export default function ScrollStages({ scrollYProgress, onOpenSpecs, onOpenCheck
         style={{ opacity: stage4Opacity, y: stage4Y, display: stage4Display }}
         className="absolute top-0 left-0 w-full h-[100dvh] flex flex-col justify-start items-start px-4 md:px-16 pt-16 md:pt-8"
       >
-        <div className="w-full md:w-1/3 lg:w-1/4 flex flex-col gap-2 bg-black/60 backdrop-blur-xl border border-red-900/50 p-8 rounded-xl shadow-2xl">
+        <div className="w-full md:w-1/3 lg:w-1/4 flex flex-col gap-2">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-            <h2 className="text-red-500 font-mono text-xs tracking-[0.2em] uppercase">SPECS</h2>
+            <h2 className="text-red-500 font-mono text-xl tracking-[0.2em] font-bold uppercase">SPECS</h2>
           </div>
           
-          <div className="flex justify-between border-b border-white/5 pb-3">
+          <div className="flex justify-between border-b border-red-500/50 pb-3">
             <span className="text-neutral-500 font-mono text-xs tracking-wider">Material</span>
             <span className="text-white font-mono text-xs uppercase tracking-wider">Titanium alloy</span>
           </div>
-          <div className="flex justify-between border-b border-white/5 pb-3 pt-3">
+          <div className="flex justify-between border-b border-red-500/50 pb-3 pt-3">
             <span className="text-neutral-500 font-mono text-xs tracking-wider">Edge</span>
             <span className="text-white font-mono text-xs uppercase tracking-wider">Neon plasma finish</span>
           </div>
-          <div className="flex justify-between pt-3">
+          <div className="flex justify-between border-b border-red-500/50 pb-3 pt-3">
             <span className="text-neutral-500 font-mono text-xs tracking-wider">Edition</span>
-            <span className="text-red-400 font-mono text-xs uppercase tracking-wider font-bold">Limited cyber series</span>
+            <span className="text-white font-mono text-xs uppercase tracking-wider font-bold">Limited cyber series</span>
           </div>
         </div>
       </motion.div>
@@ -177,32 +177,32 @@ export default function ScrollStages({ scrollYProgress, onOpenSpecs, onOpenCheck
       {/* STAGE 5: Final Buy */}
       <motion.div 
         style={{ opacity: stage5Opacity, y: stage5Y, display: stage5Display }}
-        className="absolute bottom-0 left-0 w-full h-[100dvh] flex flex-col justify-end items-end pb-4 md:pb-6 px-4 md:px-16"
+        className="absolute bottom-0 left-0 w-full h-[100dvh] flex flex-col justify-end items-end pb-8 md:pb-12 px-4 md:px-16"
       >
-        <div className="w-[90vw] md:w-full max-w-sm bg-black/80 backdrop-blur-2xl border border-red-600/30 p-6 md:p-8 rounded-2xl flex flex-col items-center text-center shadow-[0_0_50px_rgba(220,38,38,0.15)] relative overflow-hidden">
-          <div className="absolute top-0 left-1/4 right-1/4 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent opacity-50"></div>
+        <div className="w-[90vw] md:w-full max-w-sm flex flex-col items-end text-right relative">
           
-          <h2 className="text-xl md:text-2xl font-bold uppercase tracking-widest text-white mb-2">Cyber Katana X-01</h2>
-          <p className="text-red-500 font-mono text-[9px] md:text-[10px] tracking-[0.3em] mb-6">LIMITED COLLECTOR EDITION</p>
+          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white mb-2 leading-none">Cyber Katana<br/><span className="text-red-600">X-01</span></h2>
+          <p className="text-red-500 font-mono text-[10px] md:text-xs tracking-[0.3em] mb-8 border-r-2 border-red-500 pr-3">LIMITED COLLECTOR EDITION</p>
           
-          <div className="text-3xl font-light text-white mb-6 tracking-widest">$2,499<span className="text-lg text-neutral-500">.00</span></div>
+          <div className="text-5xl md:text-7xl font-bold text-white mb-8 tracking-tighter">$2,499<span className="text-2xl text-red-500">.00</span></div>
           
-          <button 
-            onMouseEnter={() => audio.playGlassTap()}
-            onClick={() => { audio.playBeep(); onOpenCheckout(); }}
-            className="w-full py-3 bg-red-600 hover:bg-red-500 text-white font-bold uppercase tracking-widest text-xs transition-colors mb-3 relative group overflow-hidden"
-          >
-            <span className="relative z-10">Buy Now</span>
-            <div className="absolute inset-0 h-full w-full bg-white/20 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></div>
-          </button>
-          
-          <button 
-            onMouseEnter={() => audio.playGlassTap()}
-            onClick={() => audio.playBeep()}
-            className="w-full py-3 border border-white/10 hover:border-white/30 text-neutral-400 hover:text-white font-bold uppercase tracking-widest text-[10px] transition-colors"
-          >
-            Contact Studio
-          </button>
+          <div className="w-full flex justify-end gap-4">
+            <button 
+              onMouseEnter={() => audio.playGlassTap()}
+              onClick={() => audio.playBeep()}
+              className="px-6 py-4 border-r-2 border-white/20 hover:border-white text-neutral-400 hover:text-white font-bold uppercase tracking-widest text-[10px] transition-colors"
+            >
+              Contact Studio
+            </button>
+            <button 
+              onMouseEnter={() => audio.playGlassTap()}
+              onClick={() => { audio.playBeep(); onOpenCheckout(); }}
+              style={{ clipPath: 'polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)' }}
+              className="px-10 py-4 bg-red-600 hover:bg-white hover:text-black text-white font-bold uppercase tracking-widest text-xs transition-all duration-300 shadow-[0_0_15px_rgba(220,38,38,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]"
+            >
+              Acquire
+            </button>
+          </div>
         </div>
       </motion.div>
 
