@@ -87,7 +87,7 @@
   }
 
   .cyber-button {
-    @apply inline-flex items-center justify-center gap-2 border border-red-500/45 bg-red-600/85 font-mono uppercase tracking-[0.34em] text-white transition-all duration-300;
+    @apply inline-flex items-center justify-center gap-2 border border-red-500/45 bg-red-600/85 font-mono uppercase tracking-[0.18em] text-white transition-all duration-300 md:tracking-[0.34em];
     box-shadow: 0 0 28px rgba(220, 38, 38, 0.22);
   }
 

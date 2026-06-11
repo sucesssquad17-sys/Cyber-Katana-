@@ -141,11 +141,14 @@ export default function ScrollStages({ scrollYProgress, onOpenSpecs, onOpenCheck
             <div className="flex flex-col gap-4 rounded-[1.75rem] border border-white/10 bg-black/55 px-6 py-6 backdrop-blur-md md:flex-row md:items-center md:justify-between">
               <div className="flex flex-col gap-2">
                 <span className="font-mono text-[11px] uppercase tracking-[0.44em] text-red-500">
-                  Transition Protocol
+                  Archive Handshake
                 </span>
                 <h2 className="font-display text-3xl uppercase tracking-[0.12em] text-white md:text-4xl">
-                  The Portfolio World Is About To Open.
+                  Archive Seal Broken.
                 </h2>
+                <p className="text-sm text-white/55 md:text-base">
+                  X-01 memory layer restored.
+                </p>
               </div>
               <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-white/55">
                 <ScanLine size={16} className="text-red-400" />
