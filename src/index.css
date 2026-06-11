@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;800&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -15,22 +16,93 @@
   .perspective-1000 {
     perspective: 1000px;
   }
+
   .rotate-y-6 {
     transform: rotateY(6deg);
   }
+
   .rotate-y-12 {
     transform: rotateY(12deg);
   }
+
   .-rotate-y-6 {
     transform: rotateY(-6deg);
   }
+
   .-rotate-y-12 {
     transform: rotateY(-12deg);
   }
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    background: #000;
+  }
+
   body {
-    @apply bg-black text-white overflow-x-hidden;
+    @apply overflow-x-hidden bg-black text-white;
+    font-family: "Chakra Petch", sans-serif;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  ::selection {
+    background: rgba(220, 38, 38, 0.35);
+    color: #fff;
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: "Orbitron", sans-serif;
+  }
+
+  .hud-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: radial-gradient(circle at center, black, transparent 78%);
+  }
+
+  .noise-overlay {
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.07), transparent 18%),
+      radial-gradient(circle at 80% 30%, rgba(220, 38, 38, 0.08), transparent 22%),
+      radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.035), transparent 18%);
+  }
+
+  .section-shell {
+    @apply relative isolate overflow-hidden border-t border-white/10 px-6 py-24 md:px-10 lg:px-16;
+  }
+
+  .blade-panel {
+    @apply border border-white/10 bg-black/55 backdrop-blur-md;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.03),
+      0 24px 60px rgba(0, 0, 0, 0.38);
+  }
+
+  .cyber-button {
+    @apply inline-flex items-center justify-center gap-2 border border-red-500/45 bg-red-600/85 font-mono uppercase tracking-[0.34em] text-white transition-all duration-300;
+    box-shadow: 0 0 28px rgba(220, 38, 38, 0.22);
+  }
+
+  .cyber-button:hover {
+    @apply border-white/55 bg-white text-black;
+    box-shadow: 0 0 36px rgba(255, 255, 255, 0.18);
+  }
+
+  .cyber-button--ghost {
+    @apply border-white/15 bg-black/35 text-white;
+    box-shadow: none;
+  }
+
+  .cyber-button--ghost:hover {
+    @apply border-red-500/55 bg-red-950/28 text-white;
+    box-shadow: 0 0 26px rgba(220, 38, 38, 0.15);
   }
 }

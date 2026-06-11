@@ -1,21 +1,14 @@
-import React, { useRef, useState, useEffect } from 'react';
-import KatanaCanvas from './components/KatanaCanvas';
-import ScrollStages from './components/ScrollStages';
+import { useEffect, useState } from 'react';
+import IntroExperience from './components/IntroExperience';
+import ArchiveSections from './components/ArchiveSections';
 import SpecsModal from './components/SpecsModal';
 import CheckoutPanel from './components/CheckoutPanel';
 import { audio } from './utils/AudioEngine';
-import { useCustomScroll } from './hooks/useCustomScroll';
 
 function App() {
-  const containerRef = useRef(null);
   const [audioInitialized, setAudioInitialized] = useState(false);
   const [isSpecsOpen, setIsSpecsOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  
-  // Drives the entire application with custom directional logic.
-  // Block scrolling if audio is not initialized OR if a modal is open.
-  const isScrollEnabled = audioInitialized && !isSpecsOpen && !isCheckoutOpen;
-  const { scrollYProgress } = useCustomScroll(isScrollEnabled);
 
   const handleInitialize = async () => {
     try {
@@ -23,72 +16,71 @@ function App() {
       if (unlocked) {
         setAudioInitialized(true);
       }
-    } catch (e) {
-      console.error("Failed to unlock audio", e);
-      // Even if audio fails, let them see the site
+    } catch (error) {
+      console.error('Failed to unlock audio', error);
       setAudioInitialized(true);
     }
   };
 
   useEffect(() => {
-    const unsubscribe = scrollYProgress.on('change', (latest) => {
-      audio.setScrollProgress(latest);
-    });
+    const shouldLockScroll = !audioInitialized || isSpecsOpen || isCheckoutOpen;
+    document.body.style.overflow = shouldLockScroll ? 'hidden' : 'auto';
 
     return () => {
-      unsubscribe();
+      document.body.style.overflow = 'auto';
     };
-  }, [scrollYProgress]);
+  }, [audioInitialized, isCheckoutOpen, isSpecsOpen]);
 
   return (
-    <div ref={containerRef} className="w-full bg-black relative">
-      
-      {/* Initialization Overlay */}
+    <div className="relative min-h-screen bg-black text-white">
       {!audioInitialized && (
-        <div className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-black transition-opacity duration-1000">
-          
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.15]">
-            <div className="w-[50vw] max-w-[500px] aspect-square rounded-full border-[1px] border-red-500/30 animate-[spin_32s_linear_infinite]" style={{ borderStyle: 'dashed' }}></div>
-            <div className="absolute w-[40vw] max-w-[400px] aspect-square rounded-full border-[1px] border-white/5 animate-[spin_48s_linear_infinite_reverse]"></div>
+        <div className="fixed inset-0 z-[200] flex items-center justify-center overflow-hidden bg-black">
+          <div className="hud-grid absolute inset-0 opacity-30" />
+          <div className="noise-overlay absolute inset-0 opacity-60" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.12),transparent_42%)]" />
+
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+            <div className="h-[44vw] w-[44vw] max-h-[520px] max-w-[520px] rounded-full border border-red-500/20 animate-[spin_32s_linear_infinite]" />
+            <div className="absolute h-[36vw] w-[36vw] max-h-[440px] max-w-[440px] rounded-full border border-white/8 animate-[spin_48s_linear_infinite_reverse]" />
+            <div className="absolute h-[52vw] w-[52vw] max-h-[620px] max-w-[620px] rounded-full border border-red-500/10 [border-style:dashed]" />
           </div>
 
-          <div className="flex flex-col items-center gap-24 z-10">
-            <div className="flex flex-col items-center gap-6 text-center">
-              <div className="text-red-500 font-mono text-[10px] md:text-[12px] tracking-[0.5em] uppercase animate-pulse">
-                System.Standby
-              </div>
-              <h1 className="text-white text-4xl md:text-6xl font-light tracking-[0.2em] uppercase drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-                Cyber Katana <span className="font-bold text-red-500 drop-shadow-[0_0_15px_rgba(220,38,38,0.4)]">X-01</span>
+          <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center gap-12 px-6 text-center">
+            <div className="flex flex-col items-center gap-5">
+              <span className="font-mono text-[11px] uppercase tracking-[0.55em] text-red-500/90">
+                System Standby / Archive Locked
+              </span>
+              <h1 className="font-display text-5xl uppercase tracking-[0.18em] text-white md:text-7xl">
+                Cyber Katana <span className="text-red-500">X-01</span>
               </h1>
+              <p className="max-w-2xl text-sm uppercase tracking-[0.28em] text-white/45 md:text-base">
+                A cinematic concept landing page where the blade opens the rest of the world.
+              </p>
             </div>
 
-            <button 
+            <button
               onClick={handleInitialize}
-              className="group flex flex-col items-center gap-4 transition-transform duration-500 hover:scale-105 cursor-pointer"
+              className="cyber-button group px-10 py-5"
             >
-              <div className="text-white font-mono text-sm md:text-base tracking-[0.3em] uppercase group-hover:text-red-500 transition-colors duration-500 drop-shadow-[0_0_8px_rgba(255,255,255,0.2)] group-hover:drop-shadow-[0_0_15px_rgba(220,38,38,0.8)]">
-                Initialize Sequence
-              </div>
-              <div className="text-neutral-500 font-mono text-[9px] md:text-[10px] tracking-[0.4em] uppercase opacity-50 group-hover:opacity-100 transition-opacity duration-500">
-                ( Click to Enter )
-              </div>
+              <span>Initialize Sequence</span>
             </button>
           </div>
         </div>
       )}
 
-      {/* Cinematic Modals */}
       <SpecsModal isOpen={isSpecsOpen} onClose={() => setIsSpecsOpen(false)} />
       <CheckoutPanel isOpen={isCheckoutOpen} onClose={() => setIsCheckoutOpen(false)} />
 
-      <div className="fixed top-0 left-0 w-full h-[100dvh] bg-black z-10 overflow-hidden">
-        <KatanaCanvas scrollYProgress={scrollYProgress} />
-        <ScrollStages 
-          scrollYProgress={scrollYProgress} 
+      <main className="relative">
+        <IntroExperience
           onOpenSpecs={() => setIsSpecsOpen(true)}
           onOpenCheckout={() => setIsCheckoutOpen(true)}
         />
-      </div>
+        <ArchiveSections
+          onOpenSpecs={() => setIsSpecsOpen(true)}
+          onOpenCheckout={() => setIsCheckoutOpen(true)}
+        />
+      </main>
     </div>
   );
 }

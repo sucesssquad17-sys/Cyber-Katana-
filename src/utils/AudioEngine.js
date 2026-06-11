@@ -28,7 +28,7 @@ class AudioEngine {
     if (this.ctx && this.ctx.state === 'suspended') {
       try {
         await this.ctx.resume();
-      } catch (e) {
+      } catch {
         return false;
       }
     }
@@ -51,7 +51,7 @@ class AudioEngine {
     }
   }
 
-  setScrollProgress(progress) {
+  setScrollProgress() {
     if (!this.initialized || this.isMuted) return;
     // Drone pitch shift removed
   }

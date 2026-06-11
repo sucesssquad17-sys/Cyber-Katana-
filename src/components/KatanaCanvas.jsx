@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const FRAME_COUNT = 240;
 
 export default function KatanaCanvas({ scrollYProgress }) {
   const canvasRef = useRef(null);
   const glowCanvasRef = useRef(null);
-  const [images, setImages] = useState([]);
+  const imagesRef = useRef([]);
   const [imagesLoaded, setImagesLoaded] = useState(0);
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -42,7 +42,7 @@ export default function KatanaCanvas({ scrollYProgress }) {
       };
       loadedImages.push(img);
     }
-    setImages(loadedImages);
+    imagesRef.current = loadedImages;
   }, []);
 
   const drawImage = (img, canvas, ctx, glowCanvas, glowCtx) => {
@@ -106,8 +106,9 @@ export default function KatanaCanvas({ scrollYProgress }) {
       
       const progress = scrollYProgress.get();
       const frameIndex = Math.min(FRAME_COUNT - 1, Math.floor(progress * FRAME_COUNT));
-      if (images[frameIndex] && images[frameIndex].complete) {
-        drawImage(images[frameIndex], canvas, ctx, glowCanvas, glowCtx);
+      const currentImage = imagesRef.current[frameIndex];
+      if (currentImage && currentImage.complete) {
+        drawImage(currentImage, canvas, ctx, glowCanvas, glowCtx);
       }
     };
 
@@ -116,8 +117,9 @@ export default function KatanaCanvas({ scrollYProgress }) {
 
     const unsubscribe = scrollYProgress.on('change', (latest) => {
       const frameIndex = Math.min(FRAME_COUNT - 1, Math.floor(latest * FRAME_COUNT));
-      if (images[frameIndex] && images[frameIndex].complete) {
-        requestAnimationFrame(() => drawImage(images[frameIndex], canvas, ctx, glowCanvas, glowCtx));
+      const currentImage = imagesRef.current[frameIndex];
+      if (currentImage && currentImage.complete) {
+        requestAnimationFrame(() => drawImage(currentImage, canvas, ctx, glowCanvas, glowCtx));
       }
     });
 
@@ -125,7 +127,7 @@ export default function KatanaCanvas({ scrollYProgress }) {
       window.removeEventListener('resize', resizeCanvas);
       unsubscribe();
     };
-  }, [images, scrollYProgress, isMobile]);
+  }, [scrollYProgress, isMobile]);
 
   return (
     <div className="absolute top-0 left-0 w-screen h-[100dvh] overflow-hidden bg-black z-0 flex items-center justify-center">

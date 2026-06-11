@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { audio } from '../utils/AudioEngine';
 import { ChevronLeft, ChevronRight, Swords, Zap, Fingerprint, Shield, Move } from 'lucide-react';

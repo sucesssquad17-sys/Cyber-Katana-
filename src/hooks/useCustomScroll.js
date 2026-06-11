@@ -181,7 +181,7 @@ export function useCustomScroll(enabled = true) {
       window.removeEventListener('touchmove', handleTouchMove);
       stopAutoScroll();
     };
-  }, [rawProgress, enabled]);
+  }, [rawProgress, enabled, scrollYProgress]);
 
   return { scrollYProgress };
 }

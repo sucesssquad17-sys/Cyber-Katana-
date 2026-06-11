@@ -1,211 +1,181 @@
-import React from 'react';
-import { motion, useTransform, useMotionValueEvent } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useMotionValueEvent, useTransform } from 'framer-motion';
+import { ArrowRight, Crosshair, ScanLine, Shield, Sparkles } from 'lucide-react';
 import { audio } from '../utils/AudioEngine';
 
-export default function ScrollStages({ scrollYProgress, onOpenSpecs, onOpenCheckout }) {
-  const prevScroll = React.useRef(0);
+function scrollToArchive() {
+  const element = document.getElementById('archive-unlock');
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const prev = prevScroll.current;
-    
-    // Trigger sounds exactly when crossing the threshold going downwards
-    if (prev <= 0.05 && latest > 0.05) audio.playShing();
-    if (prev <= 0.20 && latest > 0.20) audio.playWhoosh();
-    if (prev <= 0.25 && latest > 0.25) audio.playBladeGlide();
-    
-    if (prev <= 0.40 && latest > 0.40) audio.playPulse();
-    if (prev <= 0.42 && latest > 0.42) audio.playPulse();
-    if (prev <= 0.44 && latest > 0.44) audio.playPulse();
-    if (prev <= 0.46 && latest > 0.46) audio.playPulse();
-    
-    if (prev <= 0.60 && latest > 0.60) audio.playResheath();
-    if (prev <= 0.80 && latest > 0.80) audio.playWhoosh();
-    if (prev <= 0.83 && latest > 0.83) audio.playImpact();
-    
-    prevScroll.current = latest;
+export default function ScrollStages({ scrollYProgress, onOpenSpecs, onOpenCheckout }) {
+  const previous = useRef(0);
+
+  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
+    const prev = previous.current;
+
+    if (prev <= 0.06 && latest > 0.06) audio.playShing();
+    if (prev <= 0.22 && latest > 0.22) audio.playWhoosh();
+    if (prev <= 0.38 && latest > 0.38) audio.playBladeGlide();
+    if (prev <= 0.58 && latest > 0.58) audio.playPulse();
+    if (prev <= 0.76 && latest > 0.76) audio.playWhoosh();
+    if (prev <= 0.9 && latest > 0.9) audio.playImpact();
+
+    previous.current = latest;
   });
 
-  // Stage 1: Hero (0% - 20%)
-  const stage1Opacity = useTransform(scrollYProgress, [0, 0.15, 0.2], [1, 1, 0]);
-  const stage1Y = useTransform(scrollYProgress, [0, 0.2], [0, -50]);
-  const heroTypewriter = useTransform(scrollYProgress, [0, 0.1], ["inset(0 100% 0 0)", "inset(0 0% 0 0)"]);
-  const stage1Display = useTransform(scrollYProgress, [0, 0.19, 0.2], ["flex", "flex", "none"]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.22, 0.34], [1, 1, 0]);
+  const heroY = useTransform(scrollYProgress, [0, 0.34], [0, -70]);
+  const heroClip = useTransform(scrollYProgress, [0.03, 0.16], ['inset(0 100% 0 0)', 'inset(0 0% 0 0)']);
 
-  // Stage 2: Approach (20% - 40%)
-  const stage2Opacity = useTransform(scrollYProgress, [0.2, 0.25, 0.35, 0.4], [0, 1, 1, 0]);
-  const stage2X = useTransform(scrollYProgress, [0.2, 0.25], [50, 0]);
-  const stage2Display = useTransform(scrollYProgress, [0.19, 0.2, 0.4, 0.41], ["none", "flex", "flex", "none"]);
+  const systemsOpacity = useTransform(scrollYProgress, [0.18, 0.34, 0.62, 0.74], [0, 1, 1, 0]);
+  const systemsX = useTransform(scrollYProgress, [0.18, 0.32], [80, 0]);
 
-  // Stage 3: Flash (40% - 60%)
-  const stage3Opacity = useTransform(scrollYProgress, [0.4, 0.45, 0.55, 0.6], [0, 1, 1, 0]);
-  const stage3Scale = useTransform(scrollYProgress, [0.4, 0.5, 0.6], [0.95, 1, 0.95]);
-  const stage3Display = useTransform(scrollYProgress, [0.39, 0.4, 0.6, 0.61], ["none", "block", "block", "none"]);
-  
-  // Typewriter clips for HUD elements
-  const hudClip1 = useTransform(scrollYProgress, [0.4, 0.43], ["inset(0 100% 0 0)", "inset(0 0% 0 0)"]);
-  const hudClip2 = useTransform(scrollYProgress, [0.42, 0.45], ["inset(0 100% 0 0)", "inset(0 0% 0 0)"]);
-  const hudClip3 = useTransform(scrollYProgress, [0.44, 0.47], ["inset(0 100% 0 0)", "inset(0 0% 0 0)"]);
-  const hudClip4 = useTransform(scrollYProgress, [0.46, 0.49], ["inset(0 100% 0 0)", "inset(0 0% 0 0)"]);
-
-  // Stage 4: Return (60% - 80%)
-  const stage4Opacity = useTransform(scrollYProgress, [0.6, 0.65, 0.75, 0.8], [0, 1, 1, 0]);
-  const stage4Y = useTransform(scrollYProgress, [0.6, 0.65], [50, 0]);
-  const stage4Display = useTransform(scrollYProgress, [0.59, 0.6, 0.8, 0.81], ["none", "flex", "flex", "none"]);
-
-  // Stage 5: Final Buy (80% - 100%) - Stays visible permanently at the end
-  const stage5Opacity = useTransform(scrollYProgress, [0.8, 0.85, 1.0], [0, 1, 1]);
-  const stage5Y = useTransform(scrollYProgress, [0.8, 0.85, 1.0], [50, 0, 0]);
-  const stage5Display = useTransform(scrollYProgress, [0.79, 0.8, 1.0], ["none", "flex", "flex"]);
+  const unlockOpacity = useTransform(scrollYProgress, [0.62, 0.78, 1], [0, 1, 0.75]);
+  const unlockY = useTransform(scrollYProgress, [0.62, 0.84], [28, 0]);
+  const slashScaleX = useTransform(scrollYProgress, [0.72, 0.9], [0, 1.2]);
+  const slashOpacity = useTransform(scrollYProgress, [0.72, 0.82, 1], [0, 1, 0.25]);
 
   return (
-    <div className="absolute top-0 left-0 w-full h-[100dvh] z-30">
-      
-      {/* STAGE 1: Hero */}
-      <motion.div 
-        style={{ opacity: stage1Opacity, y: stage1Y, display: stage1Display }}
-        className="absolute top-0 left-0 w-full h-[100dvh] flex flex-col justify-start pt-24 md:pt-0 md:justify-center px-4 md:px-16"
+    <div className="absolute inset-0 z-30">
+      <motion.div
+        style={{ opacity: heroOpacity, y: heroY }}
+        className="absolute inset-0 flex items-center"
       >
-        <div className="md:w-1/3 lg:w-1/4 flex flex-col items-start gap-4">
-          <span className="text-red-500 font-mono text-xs tracking-[0.3em]">CYBER KATANA // X-01</span>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wider text-white leading-tight">Forged for <br/>silent <span className="text-red-600">impact.</span></h1>
-          
-          <div className="border-l-2 border-red-600 pl-3 inline-block">
-            <motion.p 
-              style={{ clipPath: heroTypewriter }}
-              className="text-neutral-400 font-mono text-sm whitespace-nowrap"
-            >
-              Initializing blade core...
-            </motion.p>
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 md:px-10 lg:px-16">
+          <div className="max-w-2xl">
+            <span className="font-mono text-[11px] uppercase tracking-[0.5em] text-red-500">
+              Cyber Katana / X-01 Collector Concept
+            </span>
+            <h1 className="mt-6 font-display text-5xl uppercase tracking-[0.14em] text-white md:text-7xl lg:text-8xl">
+              Forged for
+              <br />
+              silent impact.
+            </h1>
+            <div className="mt-6 border-l border-red-500/50 pl-4">
+              <motion.p
+                style={{ clipPath: heroClip }}
+                className="font-mono text-sm uppercase tracking-[0.28em] text-white/58"
+              >
+                Initializing blade core and archive path...
+              </motion.p>
+            </div>
+            <p className="mt-8 max-w-xl text-base leading-8 text-white/68 md:text-lg">
+              The opening stays cinematic and self-contained. When it ends, the katana reveals the rest of the site instead of dropping the visitor into a normal layout.
+            </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 mt-8 w-full md:w-auto">
-            <button 
+          <div className="flex flex-col gap-4 sm:flex-row">
+            <button
               onMouseEnter={() => audio.playGlassTap()}
-              onClick={() => { audio.playBeep(); onOpenCheckout(); }}
-              className="px-8 py-4 bg-red-600 hover:bg-red-500 text-white font-bold uppercase tracking-widest text-xs transition-colors shadow-[0_0_15px_rgba(220,38,38,0.5)]"
+              onClick={() => {
+                audio.playBeep();
+                scrollToArchive();
+              }}
+              className="cyber-button px-6 py-4 text-[10px]"
             >
-              Buy Now
+              Enter Archive
             </button>
-            <button 
+            <button
               onMouseEnter={() => audio.playGlassTap()}
-              onClick={() => { audio.playBeep(); onOpenSpecs(); }}
-              className="px-8 py-4 border border-white/20 hover:border-white/50 text-white font-bold uppercase tracking-widest text-xs transition-colors bg-black/40 backdrop-blur-sm"
+              onClick={() => {
+                audio.playBeep();
+                onOpenSpecs();
+              }}
+              className="cyber-button cyber-button--ghost px-6 py-4 text-[10px]"
             >
               View Specs
             </button>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* STAGE 2: Approach */}
-      <motion.div 
-        style={{ opacity: stage2Opacity, x: stage2X, display: stage2Display }}
-        className="absolute top-0 right-0 w-full h-[100dvh] flex flex-col justify-end pb-24 md:pb-0 md:justify-center items-end px-4 md:px-16"
-      >
-        <div className="w-full sm:w-2/3 md:w-1/3 lg:w-1/4 flex flex-col gap-4 md:gap-6 items-end text-right">
-          <div onMouseEnter={() => audio.playGlassTap()} className="w-full cursor-default border-b border-red-500/50 pb-4">
-            <h3 className="text-sm font-bold mb-2 uppercase tracking-widest text-red-500">Grip</h3>
-            <p className="text-white text-lg font-bold uppercase tracking-wide mb-1">Carbon-Forged</p>
-            <p className="text-neutral-400 text-xs tracking-wider">Engineered for absolute control.</p>
-          </div>
-          <div onMouseEnter={() => audio.playGlassTap()} className="w-full cursor-default border-b border-red-500/50 pb-4">
-            <h3 className="text-sm font-bold mb-2 uppercase tracking-widest text-red-500">Sheath</h3>
-            <p className="text-white text-lg font-bold uppercase tracking-wide mb-1">Titanium Cyber</p>
-            <p className="text-neutral-400 text-xs tracking-wider">Magnetic lock with instant release.</p>
-          </div>
-          <div onMouseEnter={() => audio.playGlassTap()} className="w-full cursor-default border-b border-red-500/50 pb-4">
-            <h3 className="text-sm font-bold mb-2 uppercase tracking-widest text-red-500">Balance</h3>
-            <p className="text-white text-lg font-bold uppercase tracking-wide mb-1">Precision Tuned</p>
-            <p className="text-neutral-400 text-xs tracking-wider">Perfect weight distribution.</p>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* STAGE 3: Flash */}
-      <motion.div 
-        style={{ opacity: stage3Opacity, scale: stage3Scale, display: stage3Display }}
-        className="absolute top-0 left-0 w-full h-[100dvh]"
-      >
-        <div className="absolute top-24 left-4 md:top-12 md:left-12 border-l-2 border-t-2 border-red-500/50 p-2 md:p-3 bg-red-900/10 backdrop-blur-sm">
-          <motion.div style={{ clipPath: hudClip1 }} className="whitespace-nowrap">
-            <span className="text-red-500 font-mono text-[10px] md:text-xs tracking-widest uppercase">Plasma edge stabilized</span>
-          </motion.div>
-        </div>
-        <div className="absolute bottom-24 right-4 md:bottom-32 md:right-12 border-r-2 border-b-2 border-red-500/50 p-2 md:p-3 bg-red-900/10 backdrop-blur-sm text-right flex justify-end">
-          <motion.div style={{ clipPath: hudClip2 }} className="whitespace-nowrap">
-            <span className="text-red-500 font-mono text-[10px] md:text-xs tracking-widest uppercase">Motion core active</span>
-          </motion.div>
-        </div>
-        <div className="absolute top-24 right-4 md:top-12 md:right-12 border-r-2 border-t-2 border-red-500/50 p-2 md:p-3 bg-red-900/10 backdrop-blur-sm text-right flex justify-end">
-          <motion.div style={{ clipPath: hudClip3 }} className="whitespace-nowrap">
-            <span className="text-red-500 font-mono text-[10px] md:text-xs tracking-widest uppercase">Target locked</span>
-          </motion.div>
-        </div>
-        <div className="absolute bottom-24 left-4 md:bottom-32 md:left-12 border-l-2 border-b-2 border-red-500/50 p-2 md:p-3 bg-red-900/10 backdrop-blur-sm">
-          <motion.div style={{ clipPath: hudClip4 }} className="whitespace-nowrap">
-            <span className="text-red-500 font-mono text-[10px] md:text-xs tracking-widest uppercase">Silent strike mode</span>
-          </motion.div>
-        </div>
-      </motion.div>
-
-      {/* STAGE 4: Return */}
-      <motion.div 
-        style={{ opacity: stage4Opacity, y: stage4Y, display: stage4Display }}
-        className="absolute top-0 left-0 w-full h-[100dvh] flex flex-col justify-start items-start px-4 md:px-16 pt-16 md:pt-8"
-      >
-        <div className="w-full md:w-1/3 lg:w-1/4 flex flex-col gap-2">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-            <h2 className="text-red-500 font-mono text-xl tracking-[0.2em] font-bold uppercase">SPECS</h2>
-          </div>
-          
-          <div className="flex justify-between border-b border-red-500/50 pb-3">
-            <span className="text-neutral-500 font-mono text-xs tracking-wider">Material</span>
-            <span className="text-white font-mono text-xs uppercase tracking-wider">Titanium alloy</span>
-          </div>
-          <div className="flex justify-between border-b border-red-500/50 pb-3 pt-3">
-            <span className="text-neutral-500 font-mono text-xs tracking-wider">Edge</span>
-            <span className="text-white font-mono text-xs uppercase tracking-wider">Neon plasma finish</span>
-          </div>
-          <div className="flex justify-between border-b border-red-500/50 pb-3 pt-3">
-            <span className="text-neutral-500 font-mono text-xs tracking-wider">Edition</span>
-            <span className="text-white font-mono text-xs uppercase tracking-wider font-bold">Limited cyber series</span>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* STAGE 5: Final Buy */}
-      <motion.div 
-        style={{ opacity: stage5Opacity, y: stage5Y, display: stage5Display }}
-        className="absolute bottom-0 left-0 w-full h-[100dvh] flex flex-col justify-end items-end pb-8 md:pb-12 px-4 md:px-16"
-      >
-        <div className="w-[90vw] md:w-full max-w-sm flex flex-col items-end text-right relative">
-          
-          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white mb-2 leading-none">Cyber Katana<br/><span className="text-red-600">X-01</span></h2>
-          <p className="text-red-500 font-mono text-[10px] md:text-xs tracking-[0.3em] mb-8 border-r-2 border-red-500 pr-3">LIMITED COLLECTOR EDITION</p>
-          
-          <div className="text-5xl md:text-7xl font-bold text-white mb-8 tracking-tighter">$2,499<span className="text-2xl text-red-500">.00</span></div>
-          
-          <div className="w-full flex justify-end gap-4">
-            <button 
+            <button
               onMouseEnter={() => audio.playGlassTap()}
-              onClick={() => audio.playBeep()}
-              className="px-6 py-4 border-r-2 border-white/20 hover:border-white text-neutral-400 hover:text-white font-bold uppercase tracking-widest text-[10px] transition-colors"
+              onClick={() => {
+                audio.playBeep();
+                onOpenCheckout();
+              }}
+              className="cyber-button cyber-button--ghost px-6 py-4 text-[10px]"
             >
-              Contact Studio
-            </button>
-            <button 
-              onMouseEnter={() => audio.playGlassTap()}
-              onClick={() => { audio.playBeep(); onOpenCheckout(); }}
-              style={{ clipPath: 'polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)' }}
-              className="px-10 py-4 bg-red-600 hover:bg-white hover:text-black text-white font-bold uppercase tracking-widest text-xs transition-all duration-300 shadow-[0_0_15px_rgba(220,38,38,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]"
-            >
-              Acquire
+              Acquire Edition
             </button>
           </div>
         </div>
       </motion.div>
 
+      <motion.div
+        style={{ opacity: systemsOpacity, x: systemsX }}
+        className="absolute inset-y-0 right-0 flex items-center justify-end px-6 md:px-10 lg:px-16"
+      >
+        <div className="grid w-full max-w-xl gap-4">
+          <StagePanel
+            icon={Crosshair}
+            label="Grip"
+            title="Carbon-Forged Control"
+            copy="Engineered for calm handling and exact balance."
+          />
+          <StagePanel
+            icon={Shield}
+            label="Sheath"
+            title="Titanium Mag-Lock"
+            copy="Instant-release styling with ceremonial restraint."
+          />
+          <StagePanel
+            icon={Sparkles}
+            label="Edge"
+            title="Plasma Finish"
+            copy="Redline treatment tuned for visual impact."
+          />
+        </div>
+      </motion.div>
+
+      <motion.div
+        style={{ opacity: unlockOpacity, y: unlockY }}
+        className="absolute inset-x-0 bottom-12 px-6 md:bottom-14 md:px-10 lg:px-16"
+      >
+        <div className="mx-auto max-w-7xl">
+          <div className="relative max-w-3xl">
+            <motion.div
+              style={{ scaleX: slashScaleX, opacity: slashOpacity }}
+              className="mb-6 h-px origin-left bg-gradient-to-r from-red-600 via-white to-red-600 shadow-[0_0_24px_rgba(248,113,113,0.8)]"
+            />
+            <div className="flex flex-col gap-4 rounded-[1.75rem] border border-white/10 bg-black/55 px-6 py-6 backdrop-blur-md md:flex-row md:items-center md:justify-between">
+              <div className="flex flex-col gap-2">
+                <span className="font-mono text-[11px] uppercase tracking-[0.44em] text-red-500">
+                  Transition Protocol
+                </span>
+                <h2 className="font-display text-3xl uppercase tracking-[0.12em] text-white md:text-4xl">
+                  The Portfolio World Is About To Open.
+                </h2>
+              </div>
+              <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-white/55">
+                <ScanLine size={16} className="text-red-400" />
+                scroll to continue
+                <ArrowRight size={16} className="text-red-400" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+function StagePanel({ icon: Icon, label, title, copy }) {
+  return (
+    <div
+      onMouseEnter={() => audio.playGlassTap()}
+      className="blade-panel rounded-[1.5rem] bg-black/45 px-5 py-5"
+    >
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <span className="font-mono text-[10px] uppercase tracking-[0.38em] text-red-500">
+          {label}
+        </span>
+        <Icon className="text-white/35" size={16} />
+      </div>
+      <h3 className="font-display text-2xl uppercase tracking-[0.1em] text-white">
+        {title}
+      </h3>
+      <p className="mt-3 max-w-md text-sm leading-7 text-white/60">{copy}</p>
     </div>
   );
 }
