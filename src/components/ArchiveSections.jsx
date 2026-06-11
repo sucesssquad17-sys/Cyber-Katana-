@@ -1,367 +1,202 @@
-import { useRef, useState } from 'react';
-import {
-  AnimatePresence,
-  motion,
-  useMotionValueEvent,
-  useScroll,
-  useTransform,
-} from 'framer-motion';
-import {
-  ArrowRight,
-  ChevronDown,
-  Crosshair,
-  Layers3,
-  Radar,
-  ScanLine,
-  Shield,
-  Sparkles,
-  Waypoints,
-} from 'lucide-react';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowRight, Shield } from 'lucide-react';
 import { audio } from '../utils/AudioEngine';
 
-const blueprintImage = `${import.meta.env.BASE_URL}frames/frame_0180.webp`;
+const asset = (path) => `${import.meta.env.BASE_URL}${path}`;
 
-const collectionItems = [
+const archiveItems = [
   {
-    id: 'x01',
-    name: 'X-01 Crimson Silence',
-    badge: 'Collector Series',
-    line: 'Red plasma edge / first archive issue',
-    image: blueprintImage,
-    panelClass:
-      'bg-[radial-gradient(circle_at_35%_78%,rgba(239,68,68,0.34),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.05),rgba(0,0,0,0.2))]',
-    frameClass:
-      'rotate-[15deg] scale-[1.14] translate-x-4 contrast-125 saturate-[1.55] brightness-110',
+    id: 'X-01',
+    name: 'Azure Wraith',
+    series: 'Signal Series',
+    note: 'Electric blue edge / cold mist chamber',
+    src: asset('katanas/x01-crimson-silence.webp'),
+    accent: '59,130,246',
   },
   {
-    id: 'x02',
-    name: 'X-02 Ghost Alloy',
-    badge: 'Stealth Series',
-    line: 'White-blue blade / cold mist housing',
-    image: blueprintImage,
-    panelClass:
-      'bg-[radial-gradient(circle_at_68%_18%,rgba(255,255,255,0.16),transparent_22%),linear-gradient(180deg,rgba(147,197,253,0.14),rgba(0,0,0,0.28))]',
-    frameClass:
-      'rotate-[9deg] scale-[1.08] -translate-x-2 grayscale brightness-[1.45] contrast-125',
+    id: 'X-02',
+    name: 'Viper Coil',
+    series: 'Venom Series',
+    note: 'Emerald core / toxic glow lattice',
+    src: asset('katanas/x02-ghost-alloy.webp'),
+    accent: '34,197,94',
   },
   {
-    id: 'x03',
-    name: 'X-03 Ronin Blackout',
-    badge: 'Shadow Series',
-    line: 'Matte blackout finish / covert balance',
-    image: blueprintImage,
-    panelClass:
-      'bg-[radial-gradient(circle_at_50%_80%,rgba(220,38,38,0.18),transparent_25%),linear-gradient(180deg,rgba(255,255,255,0.03),rgba(0,0,0,0.4))]',
-    frameClass:
-      'rotate-[20deg] scale-[1.18] contrast-150 brightness-[0.78] saturate-[0.4]',
+    id: 'X-03',
+    name: 'Neon Shogun',
+    series: 'Ceremony Series',
+    note: 'Violet plasma line / ritual-grade finish',
+    src: asset('katanas/x03-ronin-blackout.webp'),
+    accent: '168,85,247',
   },
   {
-    id: 'x04',
-    name: 'X-04 Neon Shogun',
-    badge: 'Elite Series',
-    line: 'Ceremonial cyber build / crimson crest',
-    image: blueprintImage,
-    panelClass:
-      'bg-[radial-gradient(circle_at_72%_72%,rgba(217,70,239,0.28),transparent_22%),linear-gradient(180deg,rgba(244,63,94,0.16),rgba(0,0,0,0.28))]',
-    frameClass:
-      'rotate-[12deg] scale-[1.12] hue-rotate-[318deg] saturate-[1.6] brightness-110',
+    id: 'X-04',
+    name: 'Ghost Alloy',
+    series: 'Null Series',
+    note: 'White alloy edge / frost-signal silence',
+    src: asset('katanas/x04-neon-shogun.webp'),
+    accent: '226,232,240',
   },
   {
-    id: 'x05',
-    name: 'X-05 Blood Circuit',
-    badge: 'Myth Series',
-    line: 'Glowing vein lattice / sealed core protocol',
-    image: blueprintImage,
-    panelClass:
-      'bg-[radial-gradient(circle_at_24%_28%,rgba(248,113,113,0.2),transparent_22%),linear-gradient(180deg,rgba(127,29,29,0.24),rgba(0,0,0,0.3))]',
-    frameClass:
-      'rotate-[18deg] scale-[1.15] brightness-105 contrast-125 saturate-[1.45]',
+    id: 'X-05',
+    name: 'Solar Circuit',
+    series: 'Crown Series',
+    note: 'Amber charge line / royal heat bloom',
+    src: asset('katanas/x05-blood-circuit.webp'),
+    accent: '245,158,11',
   },
 ];
 
-const craftCards = [
+const caseStudyCards = [
   {
     id: '01',
-    title: 'Carbon-Forged Grip',
-    body: 'Weight memory calibrated for control, silence, and clean directional force.',
+    title: 'Visual Direction',
+    body:
+      'Ancient weapon silhouette, future-grade interface language, and a restrained red-on-black palette.',
   },
   {
     id: '02',
-    title: 'Titanium Cyber Sheath',
-    body: 'Mag-lock draw housing shaped to release like ritual, not hardware.',
+    title: 'Motion Language',
+    body:
+      'Scroll movement is treated like a draw sequence: slow tension, sudden flash, then controlled reveal.',
   },
   {
     id: '03',
-    title: 'Plasma Edge Finish',
-    body: 'A redline edge treatment tuned for afterimage, heat bloom, and presence.',
-  },
-  {
-    id: '04',
-    title: 'Silent Strike Core',
-    body: 'The fictional power lattice that turns the X-01 into an archive legend.',
+    title: 'Portfolio Purpose',
+    body:
+      'The page exists to prove cinematic product storytelling, not to imitate a generic ecommerce template.',
   },
 ];
-
-const modes = [
-  {
-    id: 'display',
-    title: 'Display Mode',
-    copy: 'For collectors and visual showcase.',
-    detail:
-      'Ceremonial light, restrained glow, and museum-grade framing push the X-01 toward relic status.',
-    icon: Layers3,
-    accent: 'from-red-600/24 via-red-500/8 to-transparent',
-    stats: [
-      ['Glow Output', '92%'],
-      ['Silhouette Contrast', '88%'],
-      ['Ceremony Loop', '04 / active'],
-    ],
-  },
-  {
-    id: 'combat',
-    title: 'Combat Simulation Mode',
-    copy: 'Fictional HUD / training style.',
-    detail:
-      'Target overlays and kinetic readouts frame the blade like a machine built for precise endings.',
-    icon: Radar,
-    accent: 'from-red-700/30 via-orange-500/8 to-transparent',
-    stats: [
-      ['Target Sync', '97%'],
-      ['Reaction Echo', '11 ms'],
-      ['Threat Lattice', 'stable'],
-    ],
-  },
-  {
-    id: 'archive',
-    title: 'Archive Mode',
-    copy: 'Unlock lore, specs, and edition history.',
-    detail:
-      'Blueprint labels, edition tags, and memory-index fragments turn the page into a sealed file.',
-    icon: ScanLine,
-    accent: 'from-white/14 via-red-500/8 to-transparent',
-    stats: [
-      ['Lore Index', '239 entries'],
-      ['Edition Trace', 'complete'],
-      ['Blueprint Layer', 'unsealed'],
-    ],
-  },
-];
-
-const studioNotes = [
-  {
-    label: 'Visual Direction',
-    text: 'Ancient weapon silhouette. Future-grade interface language.',
-  },
-  {
-    label: 'Motion Design',
-    text: 'Scroll, sound, and glow were tuned to make the blade feel awake.',
-  },
-  {
-    label: 'Product Storytelling',
-    text: 'The world is sold through ritual, scarcity, and classified detail.',
-  },
-  {
-    label: 'Interaction Design',
-    text: 'Every action is sharp, minimal, and deliberate.',
-  },
-];
-
-const faqItems = [
-  {
-    question: 'Is Cyber Katana a real product?',
-    answer:
-      'Cyber Katana is a fictional premium product concept built as a cinematic landing page and portfolio case study.',
-  },
-  {
-    question: 'What was the goal of this project?',
-    answer:
-      'To build a scroll-led product archive that merges futuristic branding, motion storytelling, and collectible presentation.',
-  },
-  {
-    question: 'What technologies were used?',
-    answer:
-      'React, Vite, Tailwind CSS, Framer Motion, custom motion logic, and interactive UI components.',
-  },
-  {
-    question: 'Can this style be used for real brands?',
-    answer:
-      'Yes. The same structure adapts well to product launches, gaming pages, collectibles, fashion drops, and premium tech showcases.',
-  },
-  {
-    question: 'Is it mobile friendly?',
-    answer:
-      'Yes. Mobile keeps the cinematic tone, but uses lighter motion, simpler layouts, and readable full-width cards.',
-  },
-];
-
-function scrollToId(id) {
-  const element = document.getElementById(id);
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-}
 
 function playHover() {
   audio.playGlassTap();
 }
 
-function SectionHeading({ eyebrow, title, copy, align = 'left' }) {
+function playClick() {
+  audio.playBeep();
+}
+
+function KatanaImage({ src, alt, className, priority = false, accent = '220,38,38' }) {
+  const [hasError, setHasError] = useState(false);
+
+  if (hasError) {
+    return (
+      <div
+        style={{
+          backgroundImage: `radial-gradient(circle at center, rgba(${accent}, 0.2), transparent 42%), linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.35))`,
+        }}
+        className={`flex items-center justify-center ${className}`}
+      >
+        <div className="flex flex-col items-center gap-3 text-center">
+          <div
+            style={{ backgroundColor: `rgba(${accent}, 0.9)` }}
+            className="h-24 w-px shadow-[0_0_18px_currentColor]"
+          />
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/40 md:tracking-[0.28em]">
+            visual archive pending
+          </span>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className={`flex flex-col gap-4 ${align === 'center' ? 'items-center text-center' : ''}`}>
-      <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-red-500/90 md:text-[11px] md:tracking-[0.42em]">
-        {eyebrow}
-      </span>
-      <h2 className="font-display text-4xl uppercase tracking-[0.06em] text-white md:text-6xl md:tracking-[0.12em]">
-        {title}
-      </h2>
-      {copy ? (
-        <p className="max-w-2xl text-sm leading-7 text-white/58 md:text-base md:leading-8">
-          {copy}
-        </p>
-      ) : null}
-    </div>
+    <img
+      src={src}
+      alt={alt}
+      loading={priority ? 'eager' : 'lazy'}
+      onError={() => setHasError(true)}
+      className={className}
+    />
   );
 }
 
-function BladeTransition() {
-  const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  });
-
-  const slashX = useTransform(scrollYProgress, [0.1, 0.78], ['-44%', '124%']);
-  const slashOpacity = useTransform(scrollYProgress, [0.06, 0.16, 0.74, 0.94], [0, 1, 1, 0]);
-  const textOpacity = useTransform(scrollYProgress, [0.22, 0.42, 0.82], [0, 1, 0.9]);
-  const smokeOpacity = useTransform(scrollYProgress, [0.18, 0.56, 0.92], [0.12, 0.8, 0.18]);
-  const shakeX = useTransform(scrollYProgress, [0.26, 0.33, 0.4, 0.47, 0.54], [0, -10, 8, -5, 0]);
-
+function ArchiveUnlock() {
   return (
-    <section
-      id="archive-unlock"
-      ref={sectionRef}
-      className="section-shell flex min-h-[78vh] items-center justify-center border-t-0 py-20 md:min-h-screen md:py-28"
-    >
+    <section className="relative flex min-h-[86vh] items-center justify-center overflow-hidden bg-black px-6 py-20 md:min-h-screen md:px-10 lg:px-16">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.12),transparent_30%)]" />
       <motion.div
-        style={{ x: shakeX }}
-        className="relative w-full max-w-6xl overflow-hidden rounded-[2.2rem] border border-white/8 bg-black/72 px-6 py-20 backdrop-blur-xl md:px-12"
+        initial={{ scaleX: 0, opacity: 0 }}
+        whileInView={{ scaleX: 1, opacity: 1 }}
+        viewport={{ once: true, amount: 0.7 }}
+        transition={{ duration: 0.85, ease: [0.2, 1, 0.2, 1] }}
+        className="absolute left-[-10%] top-1/2 h-[2px] w-[120%] origin-center -translate-y-1/2 rotate-[-17deg] bg-gradient-to-r from-transparent via-white to-transparent shadow-[0_0_32px_rgba(248,113,113,0.95)]"
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.18),transparent_54%)]" />
-        <motion.div
-          style={{ opacity: smokeOpacity }}
-          className="absolute inset-0 bg-[radial-gradient(circle_at_32%_36%,rgba(255,255,255,0.1),transparent_20%),radial-gradient(circle_at_76%_68%,rgba(220,38,38,0.14),transparent_24%)] blur-3xl"
-        />
-        <motion.div
-          style={{ x: slashX, opacity: slashOpacity }}
-          className="absolute left-[-55%] top-1/2 h-[3px] w-[210%] -translate-y-1/2 rotate-[-18deg] bg-gradient-to-r from-transparent via-white to-transparent shadow-[0_0_44px_rgba(248,113,113,0.88)]"
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500 to-transparent blur-md" />
-        </motion.div>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500 to-transparent blur-md" />
+      </motion.div>
 
-        <motion.div
-          style={{ opacity: textOpacity }}
-          className="relative z-10 mx-auto flex max-w-4xl flex-col items-center gap-5 text-center"
-        >
-          <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-red-500 md:text-[11px] md:tracking-[0.5em]">
-            Slash Event / Memory Gate
-          </span>
-          <h2 className="font-display text-4xl uppercase tracking-[0.06em] text-white md:text-7xl md:tracking-[0.14em]">
-            The X-01 Archive Unlocked
-          </h2>
-          <p className="text-base text-white/62 md:text-lg">
-            Archive seal broken. X-01 memory layer restored.
-          </p>
-        </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.65 }}
+        transition={{ duration: 0.6, delay: 0.15 }}
+        className="relative z-10 flex flex-col items-center gap-4 text-center"
+      >
+        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-red-500 md:text-[11px] md:tracking-[0.32em]">
+          archive seal broken
+        </span>
+        <h2 className="font-display text-4xl uppercase tracking-[0.06em] text-white md:text-6xl md:tracking-[0.12em]">
+          X-01 Access Granted
+        </h2>
       </motion.div>
     </section>
   );
 }
 
-function LoreSection() {
-  const lines = ['Not forged for war.', 'Forged for silence.'];
-
+function LoreScene() {
   return (
-    <section className="section-shell overflow-visible py-24 md:py-32">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_14%,rgba(255,255,255,0.05),transparent_18%),radial-gradient(circle_at_82%_72%,rgba(220,38,38,0.1),transparent_20%)]" />
+    <section className="relative min-h-screen overflow-hidden bg-black px-6 py-20 md:px-10 md:py-24 lg:px-16">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.05),transparent_18%),radial-gradient(circle_at_82%_74%,rgba(220,38,38,0.1),transparent_20%)]" />
 
-      <div className="relative z-10 grid gap-16 lg:grid-cols-[minmax(0,0.92fr)_minmax(360px,1fr)] lg:items-center">
-        <div className="flex flex-col gap-8 md:gap-10">
-          <SectionHeading
-            eyebrow="Lore / Memory Layer"
-            title="Not Forged For War. Forged For Silence."
-            copy="A relic from a city where silence became the final weapon."
-          />
-
-          <div className="space-y-4">
-            {lines.map((line, index) => (
-              <motion.p
-                key={line}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.55 }}
-                transition={{ duration: 0.7, delay: index * 0.12 }}
-                className="font-display text-3xl uppercase tracking-[0.05em] text-white md:text-4xl md:tracking-[0.1em]"
-              >
-                {line}
-              </motion.p>
-            ))}
+      <div className="relative z-10 mx-auto grid min-h-[calc(100vh-10rem)] max-w-7xl gap-14 lg:grid-cols-[minmax(0,0.95fr)_minmax(380px,1fr)] lg:items-center">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col gap-8"
+        >
+          <div className="flex flex-col gap-4">
+            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-red-500 md:tracking-[0.28em]">
+              memory layer / neo-tokyo
+            </span>
+            <h2 className="font-display text-4xl uppercase tracking-[0.05em] text-white md:text-6xl md:tracking-[0.1em]">
+              Not Forged For War.
+              <br />
+              Forged For Silence.
+            </h2>
           </div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.78, delay: 0.12 }}
-            className="max-w-xl text-base leading-8 text-white/72 md:text-lg"
-          >
-            In the lower cities of Neo-Tokyo, conflict was ended before sound could escape. The X-01 exists between ceremony and machine logic: a collector-grade blade designed to be remembered before it is ever drawn.
-          </motion.p>
-
-          <div className="grid max-w-xl gap-4 sm:grid-cols-3">
-            {[
-              ['Origin', 'Neo-Tokyo lower sectors'],
-              ['Class', 'Collector relic / memory restored'],
-              ['Status', 'Archive access granted'],
-            ].map(([label, value]) => (
-              <div key={label} className="border-t border-white/10 pt-4">
-                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-red-400 md:tracking-[0.3em]">
-                  {label}
-                </div>
-                <div className="mt-2 text-sm text-white/58">{value}</div>
-              </div>
-            ))}
-          </div>
-        </div>
+          <p className="max-w-xl text-base leading-8 text-white/68 md:text-lg">
+            In the lower cities of Neo-Tokyo, conflict ended before sound could escape. X-01 is a fictional relic built between ceremony and machine logic: a blade remembered before it is drawn.
+          </p>
+        </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, x: 40 }}
+          initial={{ opacity: 0, x: 32 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8 }}
-          className="relative overflow-hidden rounded-[2.2rem] border border-white/10 bg-black/72 p-6 md:p-8"
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.7 }}
+          className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-black/55"
         >
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:36px_36px] opacity-25" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.14),transparent_46%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:38px_38px] opacity-18" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_42%,rgba(220,38,38,0.14),transparent_34%)]" />
 
-          <div className="relative flex min-h-[520px] items-center justify-center">
-            <div className="absolute inset-0 rounded-[1.7rem] border border-red-500/12" />
-            <img
-              src={blueprintImage}
-              alt="Cyber Katana blueprint"
-              className="w-[122%] max-w-none rotate-[22deg] pb-8 mix-blend-screen opacity-85 contrast-125 saturate-[0.72] grayscale"
+          <div className="relative min-h-[22rem] p-4 md:min-h-[32rem] md:p-6">
+            <KatanaImage
+              src={asset('katanas/blueprint-x01.webp')}
+              alt="X-01 blueprint"
+              priority
+              accent="220,38,38"
+              className="h-full w-full rounded-[1.4rem] object-cover object-center opacity-90"
             />
 
-            <div className="absolute left-4 top-8 max-w-[180px] border-l border-red-500/55 pl-3 font-mono text-[10px] uppercase tracking-[0.18em] text-red-400/95 md:left-6 md:tracking-[0.28em]">
-              Edge channel / plasma feed stable
+            <div className="absolute left-6 top-6 border-l border-red-500/55 pl-3 font-mono text-[10px] uppercase tracking-[0.15em] text-red-400 md:left-10 md:top-10 md:tracking-[0.24em]">
+              Plasma edge stable
             </div>
-            <div className="absolute right-4 top-24 max-w-[170px] border-r border-white/18 pr-3 text-right font-mono text-[10px] uppercase tracking-[0.16em] text-white/48 md:right-6 md:tracking-[0.24em]">
-              Vector guard / ceremonial balance
-            </div>
-            <div className="absolute bottom-16 left-6 max-w-[180px] border-l border-white/18 pl-3 font-mono text-[10px] uppercase tracking-[0.16em] text-white/48 md:left-10 md:tracking-[0.24em]">
-              Grip memory / zero-slip handling
-            </div>
-            <div className="absolute bottom-8 right-6 max-w-[190px] border-r border-red-500/55 pr-3 text-right font-mono text-[10px] uppercase tracking-[0.18em] text-red-400/95 md:right-8 md:tracking-[0.28em]">
-              Sheath lock / silent release architecture
+            <div className="absolute bottom-6 right-6 border-r border-white/20 pr-3 text-right font-mono text-[10px] uppercase tracking-[0.15em] text-white/45 md:bottom-10 md:right-10 md:tracking-[0.24em]">
+              Mag-lock sheath
             </div>
           </div>
         </motion.div>
@@ -370,417 +205,236 @@ function LoreSection() {
   );
 }
 
-function CraftSection() {
-  const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end end'],
-  });
-
-  const blueprintY = useTransform(scrollYProgress, [0, 1], [40, -32]);
-  const fileOpacity = useTransform(scrollYProgress, [0.05, 0.2], [0.6, 1]);
-
-  return (
-    <section ref={sectionRef} className="section-shell relative py-0 lg:h-[200vh]">
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),transparent_18%),radial-gradient(circle_at_70%_50%,rgba(220,38,38,0.12),transparent_28%)]" />
-
-      <div className="relative z-10 py-24 lg:sticky lg:top-0 lg:flex lg:h-screen lg:items-center">
-        <div className="grid w-full gap-14 lg:grid-cols-[minmax(0,0.84fr)_minmax(0,1fr)] lg:items-center">
-          <div className="flex flex-col gap-8">
-            <SectionHeading
-              eyebrow="Classified Build File"
-              title="Silent System / Four Active Layers"
-              copy="Every part of the X-01 is framed as a sealed build file: grip, edge, sheath, and core working as one quiet system."
-            />
-
-            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-black/72 p-6 md:p-8">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.14),transparent_46%)]" />
-              <motion.img
-                style={{ y: blueprintY }}
-                src={blueprintImage}
-                alt="Craft detail katana"
-                className="mx-auto w-[132%] max-w-none rotate-[92deg] mix-blend-screen opacity-80 contrast-125 saturate-[0.9] grayscale"
-              />
-            </div>
-          </div>
-
-          <motion.div
-            style={{ opacity: fileOpacity }}
-            className="grid gap-5"
-          >
-            {craftCards.map((card, index) => (
-              <motion.article
-                key={card.id}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.45, delay: index * 0.08 }}
-                className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-black/62 px-6 py-6 md:px-7"
-              >
-                <div className="absolute right-4 top-1 font-display text-7xl leading-none text-white/[0.04] md:text-8xl">
-                  {card.id}
-                </div>
-                <div className="relative z-10 flex flex-col gap-3">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-red-500 md:tracking-[0.34em]">
-                    file {card.id}
-                  </span>
-                  <h3 className="font-display text-2xl uppercase tracking-[0.05em] text-white md:text-3xl md:tracking-[0.1em]">
-                    {card.title}
-                  </h3>
-                  <p className="max-w-lg text-sm leading-7 text-white/62 md:text-base">
-                    {card.body}
-                  </p>
-                </div>
-              </motion.article>
-            ))}
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function CollectionCarousel({ onOpenCheckout, onOpenSpecs }) {
-  const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end end'],
-  });
+function BladeArchive({ onOpenCheckout, onOpenSpecs }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const trackX = useTransform(scrollYProgress, [0, 1], ['12%', '-56%']);
-
-  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
-    const nextIndex = Math.round(latest * (collectionItems.length - 1));
-    setActiveIndex(Math.max(0, Math.min(collectionItems.length - 1, nextIndex)));
-  });
+  const activeBlade = archiveItems[activeIndex];
 
   return (
     <section
-      id="collection-archive"
-      ref={sectionRef}
-      className="section-shell relative py-0 lg:h-[220vh]"
+      id="blade-archive"
+      className="relative overflow-hidden bg-black px-6 py-20 md:px-10 md:py-24 lg:px-16"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_36%,rgba(220,38,38,0.16),transparent_28%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_54%_28%,rgba(220,38,38,0.16),transparent_26%)]" />
 
-      <div className="relative z-10 py-24 lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:justify-center">
-        <SectionHeading
-          eyebrow="Archive Variants"
-          title="The Archive Scroll"
-          copy="Five archived variants. One silhouette. Different rituals of light, material, and myth."
-          align="center"
-        />
+      <div className="relative z-10 mx-auto max-w-7xl">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6 }}
+          className="mb-12 flex flex-col gap-4"
+        >
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-red-500 md:tracking-[0.28em]">
+            blade archive / five active variants
+          </span>
+          <h2 className="font-display text-4xl uppercase tracking-[0.05em] text-white md:text-6xl md:tracking-[0.1em]">
+            Blade Archive
+          </h2>
+        </motion.div>
 
-        <div className="mt-5 hidden items-center justify-center font-mono text-[10px] uppercase tracking-[0.2em] text-white/38 md:tracking-[0.3em] lg:flex">
-          center focus / vertical scroll controls horizontal drift
-        </div>
+        <div className="grid gap-8 xl:grid-cols-[minmax(0,1.2fr)_22rem] xl:items-start">
+          <motion.div
+            key={activeBlade.id}
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45 }}
+            className="overflow-hidden rounded-[2rem] border border-white/10 bg-black/58"
+          >
+            <div className="grid gap-0 lg:grid-cols-[minmax(0,0.95fr)_minmax(18rem,0.65fr)]">
+              <div
+                style={{
+                  backgroundImage: `radial-gradient(circle at center, rgba(${activeBlade.accent}, 0.24), transparent 42%)`,
+                }}
+                className="relative min-h-[28rem] overflow-hidden p-6 md:min-h-[42rem] md:p-8"
+              >
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),transparent_30%,rgba(0,0,0,0.35)_100%)]" />
+                <KatanaImage
+                  src={activeBlade.src}
+                  alt={`${activeBlade.id} ${activeBlade.name}`}
+                  priority
+                  accent={activeBlade.accent}
+                  className="relative z-10 h-full w-full object-contain"
+                />
 
-        <div className="mt-12 overflow-hidden">
-          <div className="mx-auto hidden max-w-[1360px] lg:block perspective-1000">
-            <motion.div style={{ x: trackX }} className="flex gap-8 py-6">
-              {collectionItems.map((item, index) => {
-                const isActive = index === activeIndex;
-
-                return (
-                  <motion.article
-                    key={item.id}
-                    whileHover={{ y: -10 }}
-                    onMouseEnter={playHover}
-                    className={`group flex w-[320px] shrink-0 flex-col rounded-[1.85rem] border p-5 transition-all duration-500 ${
-                      isActive
-                        ? 'border-red-500/50 bg-red-950/14 shadow-[0_0_40px_rgba(220,38,38,0.24)]'
-                        : 'border-white/10 bg-black/60 opacity-55'
-                    }`}
-                    style={{
-                      transform: `rotateY(${index < activeIndex ? 12 : index > activeIndex ? -12 : 0}deg) scale(${isActive ? 1.06 : 0.92})`,
-                    }}
-                  >
-                    <div
-                      className={`relative aspect-[9/16] overflow-hidden rounded-[1.45rem] border border-white/10 ${item.panelClass}`}
-                    >
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className={`h-[132%] w-[132%] max-w-none object-cover pb-10 mix-blend-screen transition-all duration-500 ${item.frameClass} ${isActive ? 'opacity-100' : 'opacity-78'}`}
-                      />
-                      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),transparent_30%,rgba(0,0,0,0.36)_100%)]" />
-
-                      <div className="absolute inset-x-4 top-4 flex items-center justify-between">
-                        <span className="rounded-full border border-red-500/40 bg-black/55 px-3 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-red-400 md:tracking-[0.26em]">
-                          {item.badge}
-                        </span>
-                        <Crosshair className="text-white/35" size={16} />
-                      </div>
-
-                      <div className="absolute inset-x-4 bottom-4 flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.14em] text-white/50 md:tracking-[0.24em]">
-                        <span>{item.id}</span>
-                        <span>{isActive ? 'active archive' : 'sealed variant'}</span>
-                      </div>
-                    </div>
-
-                    <div className="mt-5 flex flex-1 flex-col gap-2">
-                      <h3 className="font-display text-[1.65rem] uppercase tracking-[0.05em] text-white md:tracking-[0.08em]">
-                        {item.name}
-                      </h3>
-                      <p className="text-sm text-white/54">{item.line}</p>
-                    </div>
-
-                    <div className="mt-6 flex gap-3">
-                      <button
-                        onMouseEnter={playHover}
-                        onClick={() => {
-                          audio.playBeep();
-                          onOpenSpecs();
-                        }}
-                        className="cyber-button cyber-button--ghost flex-1 px-4 py-3 text-[10px]"
-                      >
-                        View
-                      </button>
-                      <button
-                        onMouseEnter={playHover}
-                        onClick={() => {
-                          audio.playBeep();
-                          onOpenCheckout();
-                        }}
-                        className="cyber-button flex-1 px-4 py-3 text-[10px]"
-                      >
-                        Acquire
-                      </button>
-                    </div>
-                  </motion.article>
-                );
-              })}
-            </motion.div>
-          </div>
-
-          <div className="-mx-6 overflow-x-auto px-6 pb-2 lg:hidden">
-            <div className="flex w-max snap-x snap-mandatory gap-4">
-              {collectionItems.map((item) => (
-                <article
-                  key={item.id}
-                  className="blade-panel w-[82vw] snap-center rounded-[1.5rem] p-4 sm:w-[22rem]"
+                <div
+                  style={{
+                    borderColor: `rgba(${activeBlade.accent}, 0.45)`,
+                    color: `rgb(${activeBlade.accent})`,
+                  }}
+                  className="absolute left-5 top-5 rounded-full border bg-black/55 px-3 py-1 font-mono text-[9px] uppercase tracking-[0.14em] md:tracking-[0.22em]"
                 >
-                  <div
-                    className={`relative aspect-[9/16] overflow-hidden rounded-[1.3rem] border border-white/10 ${item.panelClass}`}
+                  {activeBlade.series}
+                </div>
+              </div>
+
+              <div className="flex flex-col justify-between gap-8 p-6 md:p-8">
+                <div className="flex flex-col gap-4">
+                  <span
+                    style={{ color: `rgb(${activeBlade.accent})` }}
+                    className="font-mono text-[10px] uppercase tracking-[0.18em] md:tracking-[0.28em]"
                   >
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className={`h-[130%] w-[130%] max-w-none object-cover pb-10 mix-blend-screen ${item.frameClass}`}
-                    />
-                    <div className="absolute inset-x-4 top-4 flex items-center justify-between">
-                      <span className="rounded-full border border-red-500/40 bg-black/55 px-3 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-red-400">
-                        {item.badge}
-                      </span>
-                      <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-white/48">
-                        {item.id}
-                      </span>
+                    active blade / {activeBlade.id}
+                  </span>
+                  <h3 className="font-display text-3xl uppercase tracking-[0.05em] text-white md:text-5xl md:tracking-[0.1em]">
+                    {activeBlade.name}
+                  </h3>
+                  <p className="text-base leading-8 text-white/66">{activeBlade.note}</p>
+                </div>
+
+                <div className="grid gap-4 text-sm text-white/48 sm:grid-cols-2 lg:grid-cols-1">
+                  <div className="border-t border-white/10 pt-4">
+                    <div
+                      style={{ color: `rgb(${activeBlade.accent})` }}
+                      className="font-mono text-[10px] uppercase tracking-[0.16em] md:tracking-[0.24em]"
+                    >
+                      Series
                     </div>
+                    <div className="mt-2">{activeBlade.series}</div>
                   </div>
-
-                  <div className="mt-4 flex flex-col gap-2">
-                    <h3 className="font-display text-2xl uppercase tracking-[0.05em] text-white">
-                      {item.name}
-                    </h3>
-                    <p className="text-sm leading-7 text-white/56">{item.line}</p>
-                  </div>
-
-                  <div className="mt-5 flex gap-3">
-                    <button
-                      onMouseEnter={playHover}
-                      onClick={() => {
-                        audio.playBeep();
-                        onOpenSpecs();
-                      }}
-                      className="cyber-button cyber-button--ghost flex-1 px-4 py-3 text-[10px]"
+                  <div className="border-t border-white/10 pt-4">
+                    <div
+                      style={{ color: `rgb(${activeBlade.accent})` }}
+                      className="font-mono text-[10px] uppercase tracking-[0.16em] md:tracking-[0.24em]"
                     >
-                      View
-                    </button>
-                    <button
-                      onMouseEnter={playHover}
-                      onClick={() => {
-                        audio.playBeep();
-                        onOpenCheckout();
-                      }}
-                      className="cyber-button flex-1 px-4 py-3 text-[10px]"
-                    >
-                      Acquire
-                    </button>
+                      Status
+                    </div>
+                    <div className="mt-2">Archive access granted</div>
                   </div>
-                </article>
-              ))}
+                </div>
+
+                <div className="flex flex-col gap-4">
+                  <button
+                    onMouseEnter={playHover}
+                    onClick={() => {
+                      playClick();
+                      onOpenSpecs();
+                    }}
+                    className="inline-flex items-center justify-center gap-2 border border-white/12 bg-white/[0.03] px-6 py-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-red-500/55 hover:bg-red-950/20 md:tracking-[0.28em]"
+                  >
+                    View Details
+                  </button>
+                  <button
+                    onMouseEnter={playHover}
+                    onClick={() => {
+                      playClick();
+                      onOpenCheckout();
+                    }}
+                    style={{
+                      borderColor: `rgba(${activeBlade.accent}, 0.45)`,
+                      backgroundColor: `rgba(${activeBlade.accent}, 0.88)`,
+                    }}
+                    className="inline-flex items-center justify-center gap-2 border px-6 py-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-white/55 hover:bg-white hover:text-black md:tracking-[0.28em]"
+                  >
+                    Acquire Active Blade
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+          </motion.div>
 
-function ModeShowcase() {
-  const [activeMode, setActiveMode] = useState(modes[0]);
-
-  return (
-    <section className="section-shell">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_46%,rgba(220,38,38,0.12),transparent_28%)]" />
-
-      <div className="relative z-10 grid gap-10 xl:grid-cols-[320px_minmax(0,1fr)] xl:items-start">
-        <div className="flex flex-col gap-8">
-          <SectionHeading
-            eyebrow="Mode Select / HUD Layer"
-            title="Choose Your Blade Mode"
-            copy="Three ways to frame the same relic: display, simulation, and archive recall."
-          />
-
-          <div className="grid gap-4">
-            {modes.map((mode) => {
-              const Icon = mode.icon;
-              const isActive = activeMode.id === mode.id;
+          <div className="grid gap-3">
+            {archiveItems.map((item, index) => {
+              const isActive = index === activeIndex;
 
               return (
                 <button
-                  key={mode.id}
+                  key={item.id}
                   onMouseEnter={() => {
                     playHover();
-                    setActiveMode(mode);
+                    setActiveIndex(index);
                   }}
                   onClick={() => {
-                    audio.playBeep();
-                    setActiveMode(mode);
+                    playClick();
+                    setActiveIndex(index);
                   }}
-                  className={`rounded-[1.35rem] border p-5 text-left transition-all duration-300 ${
+                  className={`group overflow-hidden rounded-[1.35rem] border text-left transition-all duration-300 ${
                     isActive
-                      ? 'border-red-500/45 bg-red-950/14'
-                      : 'border-white/10 bg-black/44'
+                      ? 'bg-red-950/14 shadow-[0_0_22px_rgba(220,38,38,0.18)]'
+                      : 'border-white/10 bg-black/52 hover:border-white/18'
                   }`}
+                  style={
+                    isActive
+                      ? {
+                          borderColor: `rgba(${item.accent}, 0.45)`,
+                          boxShadow: `0 0 22px rgba(${item.accent}, 0.16)`,
+                        }
+                      : undefined
+                  }
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex flex-col gap-2">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-red-500 md:tracking-[0.3em]">
-                        mode select
-                      </span>
-                      <h3 className="font-display text-2xl uppercase tracking-[0.05em] text-white md:tracking-[0.08em]">
-                        {mode.title}
-                      </h3>
-                      <p className="text-sm leading-7 text-white/54">{mode.copy}</p>
+                  <div className="grid grid-cols-[5.75rem_minmax(0,1fr)] items-center gap-4 p-3">
+                    <div
+                      style={{
+                        backgroundImage: `radial-gradient(circle at center, rgba(${item.accent}, 0.18), transparent 40%), linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.32))`,
+                      }}
+                      className="relative h-24 overflow-hidden rounded-[1rem]"
+                    >
+                      <KatanaImage
+                        src={item.src}
+                        alt={`${item.id} selector`}
+                        accent={item.accent}
+                        className="h-full w-full object-cover"
+                      />
                     </div>
-                    <Icon className={isActive ? 'text-red-400' : 'text-white/38'} size={20} />
+
+                    <div className="flex min-w-0 flex-col gap-1">
+                      <span
+                        style={{ color: `rgb(${item.accent})` }}
+                        className="font-mono text-[9px] uppercase tracking-[0.14em] md:tracking-[0.22em]"
+                      >
+                        {item.id}
+                      </span>
+                      <span className="font-display text-xl uppercase tracking-[0.04em] text-white">
+                        {item.name}
+                      </span>
+                      <span className="truncate text-sm text-white/46">{item.series}</span>
+                    </div>
                   </div>
                 </button>
               );
             })}
           </div>
         </div>
-
-        <motion.div
-          key={activeMode.id}
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.42 }}
-          className="relative min-h-[560px] overflow-hidden rounded-[2rem] border border-white/10 bg-black/64 p-7 md:p-10"
-        >
-          <div className={`absolute inset-0 bg-gradient-to-br ${activeMode.accent}`} />
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:44px_44px] opacity-20" />
-
-          <div className="relative z-10 flex h-full flex-col justify-between gap-10">
-            <div className="flex flex-col gap-4">
-              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-red-500 md:text-[11px] md:tracking-[0.34em]">
-                Live Preview
-              </span>
-              <h3 className="font-display text-4xl uppercase tracking-[0.06em] text-white md:text-5xl md:tracking-[0.12em]">
-                {activeMode.title}
-              </h3>
-              <p className="max-w-2xl text-base leading-8 text-white/70">
-                {activeMode.detail}
-              </p>
-            </div>
-
-            <div className="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_250px] lg:items-end">
-              <div className="relative flex min-h-[290px] items-center justify-center rounded-[1.5rem] border border-white/10 bg-black/55">
-                <div className="absolute inset-0 rounded-[1.5rem] bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.2),transparent_45%)]" />
-                <img
-                  src={blueprintImage}
-                  alt={activeMode.title}
-                  className={`w-[145%] max-w-none rotate-[16deg] pb-10 mix-blend-screen ${
-                    activeMode.id === 'display'
-                      ? 'contrast-125 saturate-[1.35]'
-                      : activeMode.id === 'combat'
-                        ? 'contrast-150 saturate-[1.5] brightness-110'
-                        : 'grayscale brightness-[1.18] contrast-125'
-                  }`}
-                />
-
-                <div className="absolute left-5 top-5 rounded-full border border-red-500/35 bg-black/50 px-3 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-red-400 md:tracking-[0.24em]">
-                  {activeMode.id.toUpperCase()}
-                </div>
-                <div className="absolute bottom-5 right-5 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.16em] text-white/55 md:tracking-[0.24em]">
-                  <Waypoints size={14} />
-                  profile synced
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-4">
-                {activeMode.stats.map(([label, value], index) => (
-                  <motion.div
-                    key={label}
-                    initial={{ opacity: 0, x: 18 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.34, delay: index * 0.08 }}
-                    className="rounded-[1.25rem] border border-white/10 bg-black/45 p-4"
-                  >
-                    <div className="flex items-center justify-between gap-4">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/44 md:tracking-[0.26em]">
-                        {label}
-                      </span>
-                      <span className="font-display text-xl uppercase tracking-[0.04em] text-white md:tracking-[0.08em]">
-                        {value}
-                      </span>
-                    </div>
-                    <div className="mt-3 h-px w-full bg-white/10">
-                      <motion.div
-                        initial={{ scaleX: 0 }}
-                        animate={{ scaleX: 1 }}
-                        transition={{ duration: 0.5, delay: index * 0.08 }}
-                        className="h-px origin-left bg-gradient-to-r from-red-500 to-white"
-                      />
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
 }
 
-function StudioNotes() {
+function CaseStudy() {
   return (
-    <section id="studio-notes" className="section-shell border-t border-white/6 bg-[linear-gradient(180deg,rgba(255,255,255,0.015),transparent_22%)] py-20">
-      <div className="relative z-10 grid gap-10 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)] xl:items-start">
-        <SectionHeading
-          eyebrow="Studio Notes"
-          title="Case Study Fragments"
-          copy="A short breakdown of the visual, motion, and interaction decisions behind the X-01 experience."
-        />
+    <section className="relative bg-black px-6 py-20 md:px-10 md:py-24 lg:px-16">
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.015),transparent_24%)]" />
 
-        <div className="grid gap-4">
-          {studioNotes.map((note, index) => (
+      <div className="relative z-10 mx-auto max-w-7xl">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.55 }}
+          className="mb-10 flex flex-col gap-4"
+        >
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-red-500 md:tracking-[0.28em]">
+            case study / three core notes
+          </span>
+          <h2 className="font-display text-4xl uppercase tracking-[0.05em] text-white md:text-5xl md:tracking-[0.1em]">
+            Case Study
+          </h2>
+        </motion.div>
+
+        <div className="grid gap-4 lg:grid-cols-3">
+          {caseStudyCards.map((card, index) => (
             <motion.article
-              key={note.label}
+              key={card.id}
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.25 }}
               transition={{ duration: 0.45, delay: index * 0.08 }}
-              className="rounded-[1.35rem] border border-white/8 bg-black/32 px-5 py-5"
+              className="rounded-[1.5rem] border border-white/10 bg-black/55 p-6"
             >
-              <div className="mb-3 flex items-center justify-between gap-4">
-                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-red-500 md:tracking-[0.3em]">
-                  {note.label}
-                </span>
-                <Sparkles className="text-white/24" size={15} />
-              </div>
-              <p className="text-base leading-8 text-white/72">{note.text}</p>
+              <div className="mb-6 font-display text-5xl text-white/14">{card.id}</div>
+              <h3 className="font-display text-2xl uppercase tracking-[0.04em] text-white">
+                {card.title}
+              </h3>
+              <p className="mt-4 text-base leading-8 text-white/64">{card.body}</p>
             </motion.article>
           ))}
         </div>
@@ -789,146 +443,78 @@ function StudioNotes() {
   );
 }
 
-function FAQSection() {
-  const [openIndex, setOpenIndex] = useState(0);
-
+function FinalCTA({ onOpenCheckout }) {
   return (
-    <section id="faq" className="section-shell py-16 md:py-20">
-      <div className="relative z-10 mx-auto grid max-w-6xl gap-8 xl:grid-cols-[320px_minmax(0,1fr)]">
-        <SectionHeading
-          eyebrow="Project Intel"
-          title="FAQ"
-          copy="Compact answers for the parts of the project that need plain language."
-        />
+    <section className="relative flex min-h-screen items-center overflow-hidden bg-black px-6 py-20 md:px-10 md:py-24 lg:px-16">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.16),transparent_32%),linear-gradient(180deg,#000_10%,rgba(0,0,0,0.94)_100%)]" />
 
-        <div className="flex flex-col gap-3">
-          {faqItems.map((item, index) => {
-            const isOpen = openIndex === index;
-
-            return (
-              <div key={item.question} className="overflow-hidden rounded-[1.25rem] border border-white/10 bg-black/50">
-                <button
-                  onClick={() => {
-                    audio.playBeep();
-                    setOpenIndex(isOpen ? -1 : index);
-                  }}
-                  onMouseEnter={playHover}
-                  className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
-                >
-                  <span className="font-display text-xl uppercase tracking-[0.04em] text-white md:text-2xl md:tracking-[0.08em]">
-                    {item.question}
-                  </span>
-                  <ChevronDown
-                    size={18}
-                    className={`shrink-0 text-red-400 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
-                  />
-                </button>
-
-                <AnimatePresence initial={false}>
-                  {isOpen ? (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.26 }}
-                      className="overflow-hidden"
-                    >
-                      <p className="px-5 pb-5 text-base leading-8 text-white/68">
-                        {item.answer}
-                      </p>
-                    </motion.div>
-                  ) : null}
-                </AnimatePresence>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function FinalCTA({ onOpenSpecs }) {
-  return (
-    <section className="section-shell flex min-h-screen items-center">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.16),transparent_34%),linear-gradient(180deg,#000_10%,rgba(0,0,0,0.94)_100%)]" />
-      <div className="hud-grid absolute inset-0 opacity-18" />
-      <div className="noise-overlay absolute inset-0 opacity-60" />
-
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(360px,0.92fr)] lg:items-center">
-        <div className="flex flex-col gap-7">
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-red-500 md:text-[11px] md:tracking-[0.44em]">
-            Final Transmission
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(22rem,1fr)] lg:items-center">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col gap-7"
+        >
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-red-500 md:text-[11px] md:tracking-[0.28em]">
+            final transmission
           </span>
-          <h2 className="font-display text-5xl uppercase tracking-[0.06em] text-white md:text-7xl md:tracking-[0.14em]">
+          <h2 className="font-display text-5xl uppercase tracking-[0.05em] text-white md:text-7xl md:tracking-[0.1em]">
             Build Worlds People Remember.
           </h2>
           <p className="max-w-2xl text-base leading-8 text-white/68 md:text-lg">
-            Cyber Katana X-01 is a fictional product landing page built to showcase cinematic web design, motion language, storytelling, and premium product presentation.
+            Cyber Katana X-01 is a fictional product experience built to showcase cinematic web design, motion language, and premium product storytelling.
           </p>
 
           <div className="flex flex-col gap-4 sm:flex-row">
             <button
               onMouseEnter={playHover}
               onClick={() => {
-                audio.playBeep();
-                onOpenSpecs();
+                playClick();
+                onOpenCheckout();
               }}
-              className="cyber-button px-6 py-4 text-[10px]"
+              className="inline-flex items-center justify-center gap-2 border border-red-500/45 bg-red-600/85 px-6 py-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-white/55 hover:bg-white hover:text-black md:tracking-[0.28em]"
             >
-              View Project
+              Start Project
             </button>
             <button
               onMouseEnter={playHover}
               onClick={() => {
-                audio.playBeep();
+                playClick();
                 window.location.href = 'mailto:your@email.com';
               }}
-              className="cyber-button cyber-button--ghost px-6 py-4 text-[10px]"
+              className="inline-flex items-center justify-center gap-2 border border-white/12 bg-white/[0.03] px-6 py-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-red-500/55 hover:bg-red-950/20 md:tracking-[0.28em]"
             >
               Contact Studio
             </button>
-            <button
-              onMouseEnter={playHover}
-              onClick={() => {
-                audio.playBeep();
-                scrollToId('collection-archive');
-              }}
-              className="cyber-button cyber-button--ghost px-6 py-4 text-[10px]"
-            >
-              Explore Archive
-            </button>
           </div>
-        </div>
+        </motion.div>
 
-        <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-black/60 p-6 md:p-8">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.18),transparent_42%)]" />
-          <div className="absolute inset-0 animate-[spin_38s_linear_infinite] rounded-[2rem] border border-red-500/10" />
-
-          <div className="relative flex min-h-[520px] items-center justify-center">
-            <img
-              src={blueprintImage}
-              alt="Cyber Katana final silhouette"
-              className="w-[158%] max-w-none rotate-[14deg] pb-10 mix-blend-screen opacity-95 contrast-125 saturate-[1.35]"
+        <motion.div
+          initial={{ opacity: 0, x: 32 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.7 }}
+          className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-black/55"
+        >
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.18),transparent_40%)]" />
+          <div className="relative min-h-[30rem] p-6 md:min-h-[42rem] md:p-8">
+            <KatanaImage
+              src={asset('katanas/final-silhouette.webp')}
+              alt="Final X-01 silhouette"
+              className="h-full w-full object-contain"
             />
 
-            <div className="absolute inset-x-8 top-8 flex items-center justify-between gap-4 font-mono text-[9px] uppercase tracking-[0.14em] text-red-400 md:text-[10px] md:tracking-[0.26em]">
-              <span>Project type / cinematic case study</span>
-              <span className="text-white/40">status / unlocked</span>
+            <div className="absolute left-5 top-5 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.14em] text-red-400 md:tracking-[0.24em]">
+              <Shield size={14} />
+              portfolio ready
             </div>
-
-            <div className="absolute inset-x-8 bottom-8 flex items-center justify-between gap-4 font-mono text-[9px] uppercase tracking-[0.14em] text-white/45 md:text-[10px] md:tracking-[0.24em]">
-              <span className="flex items-center gap-2">
-                <Shield size={14} className="text-red-400" />
-                portfolio ready
-              </span>
-              <span className="flex items-center gap-2">
-                <ArrowRight size={14} className="text-red-400" />
-                archive sequence complete
-              </span>
+            <div className="absolute bottom-5 right-5 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.14em] text-white/48 md:tracking-[0.24em]">
+              <ArrowRight size={14} className="text-red-400" />
+              archive sequence complete
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -937,17 +523,14 @@ function FinalCTA({ onOpenSpecs }) {
 export default function ArchiveSections({ onOpenCheckout, onOpenSpecs }) {
   return (
     <>
-      <BladeTransition />
-      <LoreSection />
-      <CraftSection />
-      <CollectionCarousel
+      <ArchiveUnlock />
+      <LoreScene />
+      <BladeArchive
         onOpenCheckout={onOpenCheckout}
         onOpenSpecs={onOpenSpecs}
       />
-      <ModeShowcase />
-      <StudioNotes />
-      <FAQSection />
-      <FinalCTA onOpenSpecs={onOpenSpecs} />
+      <CaseStudy />
+      <FinalCTA onOpenCheckout={onOpenCheckout} />
     </>
   );
 }
