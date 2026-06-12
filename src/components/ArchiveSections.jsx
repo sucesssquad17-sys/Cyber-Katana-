@@ -327,10 +327,13 @@ function LoreScene() {
 
           {/* Stat chips */}
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial="hidden"
+            whileInView="show"
             viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.4, delay: 0.4 }}
+            variants={{
+              hidden: {},
+              show: { transition: { staggerChildren: 0.08, delayChildren: 0.4 } }
+            }}
             className="mt-1 grid grid-cols-2 gap-1.5 sm:grid-cols-3"
           >
             {[
@@ -341,13 +344,17 @@ function LoreScene() {
               { label: 'AVAILABILITY', value: 'LIMITED' },
               { label: 'GLOW COLOR', value: 'REDLINE' },
             ].map((stat) => (
-              <div
+              <motion.div
                 key={stat.label}
+                variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  show: { opacity: 1, y: 0, transition: { duration: 0.4 } }
+                }}
                 className="flex flex-col border-l-2 border-white/10 bg-white/[0.02] px-2 py-1.5"
               >
                 <span className="font-mono text-[8px] uppercase tracking-widest text-red-500/80">{stat.label}</span>
                 <span className="font-mono text-[10px] font-medium uppercase tracking-wider text-white/90">{stat.value}</span>
-              </div>
+              </motion.div>
             ))}
           </motion.div>
         </div>
@@ -355,9 +362,10 @@ function LoreScene() {
         <motion.div
           initial={{ opacity: 0, x: 32 }}
           whileInView={{ opacity: 1, x: 0 }}
+          whileHover={{ scale: 1.02, borderColor: 'rgba(255,255,255,0.15)', boxShadow: '0 0 30px rgba(220,38,38,0.15)' }}
           viewport={{ once: true, amount: 0.25 }}
-          transition={{ duration: 0.7 }}
-          className="relative w-full overflow-hidden border border-white/5 bg-[#0a0a0a]"
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="relative w-full overflow-hidden border border-white/5 bg-[#0a0a0a] cursor-crosshair"
         >
           <motion.div
             style={{ scale: glowScale }}
@@ -509,35 +517,34 @@ function BladeArchive({ onOpenCheckout }) {
 
                   <motion.div
                     key={`${activeBlade.id}-meta`}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35 }}
+                    initial="hidden"
+                    animate="show"
+                    variants={{
+                      hidden: {},
+                      show: { transition: { staggerChildren: 0.05, delayChildren: 0.1 } }
+                    }}
                     className="grid gap-3 text-sm text-white/48 sm:grid-cols-2 lg:grid-cols-2"
                   >
-                    <div className="border-t border-white/10 pt-3">
-                      <div style={{ color: `rgb(${activeBlade.accent})` }} className="font-mono text-[9px] uppercase tracking-[0.16em]">Blade Material</div>
-                      <div className="mt-1 font-mono text-xs text-white/80">{activeBlade.specs.material}</div>
-                    </div>
-                    <div className="border-t border-white/10 pt-3">
-                      <div style={{ color: `rgb(${activeBlade.accent})` }} className="font-mono text-[9px] uppercase tracking-[0.16em]">Plasma Edge</div>
-                      <div className="mt-1 font-mono text-xs text-white/80">{activeBlade.specs.edge}</div>
-                    </div>
-                    <div className="border-t border-white/10 pt-3">
-                      <div style={{ color: `rgb(${activeBlade.accent})` }} className="font-mono text-[9px] uppercase tracking-[0.16em]">Grip System</div>
-                      <div className="mt-1 font-mono text-xs text-white/80">{activeBlade.specs.grip}</div>
-                    </div>
-                    <div className="border-t border-white/10 pt-3">
-                      <div style={{ color: `rgb(${activeBlade.accent})` }} className="font-mono text-[9px] uppercase tracking-[0.16em]">Sheath Tech</div>
-                      <div className="mt-1 font-mono text-xs text-white/80">{activeBlade.specs.sheath}</div>
-                    </div>
-                    <div className="border-t border-white/10 pt-3">
-                      <div style={{ color: `rgb(${activeBlade.accent})` }} className="font-mono text-[9px] uppercase tracking-[0.16em]">Dimensions</div>
-                      <div className="mt-1 font-mono text-xs text-white/80">{activeBlade.specs.length}</div>
-                    </div>
-                    <div className="border-t border-white/10 pt-3">
-                      <div style={{ color: `rgb(${activeBlade.accent})` }} className="font-mono text-[9px] uppercase tracking-[0.16em]">Status</div>
-                      <div className="mt-1 font-mono text-xs text-white/80">Available</div>
-                    </div>
+                    {[
+                      { label: 'Blade Material', value: activeBlade.specs.material },
+                      { label: 'Plasma Edge', value: activeBlade.specs.edge },
+                      { label: 'Grip System', value: activeBlade.specs.grip },
+                      { label: 'Sheath Tech', value: activeBlade.specs.sheath },
+                      { label: 'Dimensions', value: activeBlade.specs.length },
+                      { label: 'Status', value: 'Available' },
+                    ].map((spec) => (
+                      <motion.div
+                        key={spec.label}
+                        variants={{
+                          hidden: { opacity: 0, y: 8 },
+                          show: { opacity: 1, y: 0, transition: { duration: 0.3 } }
+                        }}
+                        className="border-t border-white/10 pt-3"
+                      >
+                        <div style={{ color: `rgb(${activeBlade.accent})` }} className="font-mono text-[9px] uppercase tracking-[0.16em]">{spec.label}</div>
+                        <div className="mt-1 font-mono text-xs text-white/80">{spec.value}</div>
+                      </motion.div>
+                    ))}
                   </motion.div>
 
                   <div className="flex flex-col gap-4 mt-2">
@@ -566,18 +573,19 @@ function BladeArchive({ onOpenCheckout }) {
               const isActive = index === activeIndex;
 
               return (
-                <button
+                <motion.button
                   key={item.id}
+                  whileHover={!isActive ? { y: -3, backgroundColor: 'rgba(255,255,255,0.03)', borderColor: `rgba(${item.accent}, 0.2)` } : {}}
+                  whileTap={{ scale: 0.98 }}
                   onMouseEnter={() => {
                     playHover();
-                    setActiveIndex(index);
                   }}
                   onClick={() => {
                     playClick();
                     setActiveIndex(index);
                   }}
                   className={`group relative overflow-hidden rounded-[1rem] border border-white/10 bg-black/52 text-left transition-all duration-300 ${
-                    isActive ? 'bg-white/[0.04]' : 'hover:border-white/18'
+                    isActive ? 'bg-white/[0.04]' : ''
                   }`}
                   style={
                     isActive
@@ -630,7 +638,7 @@ function BladeArchive({ onOpenCheckout }) {
                       </span>
                     </div>
                   </div>
-                </button>
+                </motion.button>
               );
             })}
           </div>
@@ -671,9 +679,10 @@ function BuildFile() {
               key={card.id}
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ scale: 1.02, borderColor: 'rgba(239,68,68,0.4)', backgroundColor: 'rgba(15,15,15,0.9)', boxShadow: '0 8px 32px -12px rgba(220,38,38,0.2)' }}
               viewport={{ once: true, amount: 0.25 }}
               transition={{ duration: 0.45, delay: index * 0.08 }}
-              className="relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-black/55 p-6"
+              className="relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-black/55 p-6 transition-colors"
             >
               <motion.div
                 initial={{ scaleX: 0 }}
@@ -700,10 +709,13 @@ function BuildFile() {
 
         {/* Archive stats row */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial="hidden"
+          whileInView="show"
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.55, delay: 0.25 }}
+          variants={{
+            hidden: {},
+            show: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } }
+          }}
           className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] sm:grid-cols-4"
         >
           {[
@@ -712,11 +724,18 @@ function BuildFile() {
             { label: 'SOUNDS', value: '04', sub: 'sound effects' },
             { label: 'STATUS', value: 'ONLINE', sub: 'ready to buy' },
           ].map((item) => (
-            <div key={item.label} className="flex flex-col gap-2 bg-black/60 px-5 py-5">
+            <motion.div 
+              key={item.label}
+              variants={{
+                hidden: { opacity: 0, y: 12 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.4 } }
+              }}
+              className="flex flex-col gap-2 bg-black/60 px-5 py-5"
+            >
               <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-red-500">{item.label}</span>
               <span className="font-display text-3xl text-white">{item.value}</span>
               <span className="font-mono text-[8px] uppercase tracking-[0.14em] text-white/35">{item.sub}</span>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
       </div>

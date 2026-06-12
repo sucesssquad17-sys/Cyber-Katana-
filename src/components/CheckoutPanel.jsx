@@ -58,13 +58,14 @@ export default function CheckoutPanel({ isOpen, onClose }) {
               <p className="text-white/40 text-[10px] font-mono tracking-[0.2em] uppercase">Secure Payment</p>
             </div>
 
-            <button 
+            <motion.button 
+              whileTap={{ scale: 0.95 }}
               onClick={handleClose}
               onMouseEnter={playHover}
               className="group flex items-center gap-2 px-4 py-2 border border-white/10 hover:border-white/30 transition-colors bg-white/5"
             >
               <span className="text-white text-[10px] font-mono tracking-widest uppercase transition-colors">Close</span>
-            </button>
+            </motion.button>
           </div>
 
           {/* Main Content */}
@@ -79,7 +80,9 @@ export default function CheckoutPanel({ isOpen, onClose }) {
               className="flex-1 w-full flex items-center justify-center relative min-h-[30vh] lg:min-h-[60vh]"
             >
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03),transparent_60%)] pointer-events-none" />
-              <img 
+              <motion.img 
+                animate={{ y: [0, -12, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 src={`${import.meta.env.BASE_URL}${activeVariant.src}`}
                 alt={activeVariant.name} 
                 className="w-full max-w-[240px] md:max-w-[320px] lg:max-w-[480px] max-h-[35vh] md:max-h-[50vh] lg:max-h-[70vh] object-contain relative z-10 mix-blend-screen opacity-90 drop-shadow-2xl" 
@@ -88,15 +91,18 @@ export default function CheckoutPanel({ isOpen, onClose }) {
 
             {/* Right: Checkout Details */}
             <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
+              initial="hidden"
+              animate="show"
+              variants={{
+                hidden: {},
+                show: { transition: { staggerChildren: 0.08, delayChildren: 0.2 } }
+              }}
               className="flex-1 w-full max-w-md flex flex-col gap-4"
             >
               {!isSuccess ? (
                 <>
                   {/* Header / Price */}
-                  <div className="flex flex-col gap-0.5 pb-3 border-b border-white/10">
+                  <motion.div variants={{ hidden: { opacity: 0, x: 20 }, show: { opacity: 1, x: 0, transition: { duration: 0.4 } } }} className="flex flex-col gap-0.5 pb-3 border-b border-white/10">
                     <span className={`${activeVariant.color} font-mono text-[9px] tracking-[0.3em] uppercase`}>
                       {activeVariant.desc}
                     </span>
@@ -109,17 +115,18 @@ export default function CheckoutPanel({ isOpen, onClose }) {
                       <span className="text-lg font-light text-white tracking-widest">{activeVariant.price}</span>
                       <span className="text-white/40 font-mono text-[9px] tracking-widest uppercase mt-0.5">USD</span>
                     </div>
-                  </div>
+                  </motion.div>
 
                   {/* Variant Selection List */}
-                  <div className="flex flex-col gap-1.5">
+                  <motion.div variants={{ hidden: { opacity: 0, x: 20 }, show: { opacity: 1, x: 0, transition: { duration: 0.4 } } }} className="flex flex-col gap-1.5">
                     <span className="text-white/40 font-mono text-[8px] tracking-[0.2em] uppercase mb-0.5">Select Edition</span>
                     <div className="flex flex-col gap-1">
                       {VARIANTS.map((variant, index) => {
                         const isActive = index === activeIndex;
                         return (
-                          <button
+                          <motion.button
                             key={variant.id}
+                            whileTap={{ scale: 0.98 }}
                             onClick={() => {
                               playHover();
                               setActiveIndex(index);
@@ -139,20 +146,21 @@ export default function CheckoutPanel({ isOpen, onClose }) {
                             {!variant.available && (
                               <span className="font-mono text-[8px] tracking-widest text-neutral-500 uppercase">Out of Stock</span>
                             )}
-                          </button>
+                          </motion.button>
                         );
                       })}
                     </div>
-                  </div>
+                  </motion.div>
 
                   {/* Action Area */}
-                  <div className="flex flex-col gap-2 mt-1">
+                  <motion.div variants={{ hidden: { opacity: 0, x: 20 }, show: { opacity: 1, x: 0, transition: { duration: 0.4 } } }} className="flex flex-col gap-2 mt-1">
                     <input 
                       type="text" 
                       placeholder="PROMO CODE"
                       className="w-full bg-white/5 border border-white/10 text-white font-mono text-[10px] px-3 py-2 outline-none focus:border-white/40 transition-colors uppercase tracking-widest placeholder-white/30"
                     />
-                    <button 
+                    <motion.button 
+                      whileTap={isProcessing || !activeVariant.available ? {} : { scale: 0.98 }}
                       onClick={handleAuthorize}
                       onMouseEnter={playHover}
                       disabled={isProcessing || !activeVariant.available}
@@ -175,13 +183,13 @@ export default function CheckoutPanel({ isOpen, onClose }) {
                       ) : (
                         'Complete Purchase'
                       )}
-                    </button>
-                  </div>
+                    </motion.button>
+                  </motion.div>
 
-                  <div className="flex items-center gap-2 mt-1">
+                  <motion.div variants={{ hidden: { opacity: 0, x: 20 }, show: { opacity: 1, x: 0, transition: { duration: 0.4 } } }} className="flex items-center gap-2 mt-1">
                     <ShieldCheck className="text-white/30" size={12} />
                     <span className="text-white/30 font-mono text-[8px] tracking-widest uppercase">Secure Transaction</span>
-                  </div>
+                  </motion.div>
                 </>
               ) : (
                 <motion.div 
