@@ -921,7 +921,6 @@ export default function ArchiveSections({ onOpenCheckout, onOpenSpecs }) {
         onOpenCheckout={onOpenCheckout}
         onOpenSpecs={onOpenSpecs}
       />
-      <TransitionWipe variant="blackout" />
       <BuildFile />
       <TransitionWipe variant="bloom" />
       <FinalCTA
