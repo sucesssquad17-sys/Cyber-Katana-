@@ -257,95 +257,79 @@ function LoreScene() {
     offset: ['start end', 'end start'],
   });
 
-  const imageY = useTransform(scrollYProgress, [0, 1], [30, -20]);
-  const imageScale = useTransform(scrollYProgress, [0.1, 0.5], [1.04, 1]);
-  const glowScale = useTransform(scrollYProgress, [0.1, 0.6], [0.85, 1.12]);
-  const scanY = useTransform(scrollYProgress, [0.2, 0.8], ['-10%', '115%']);
+  const imageY = useTransform(scrollYProgress, [0, 1], [40, -20]);
+  const imageScale = useTransform(scrollYProgress, [0.1, 0.5], [1.05, 1]);
+  const glowScale = useTransform(scrollYProgress, [0.1, 0.6], [0.8, 1.15]);
+  const scanY = useTransform(scrollYProgress, [0.2, 0.75], ['-10%', '110%']);
 
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden bg-black px-6 py-16 md:px-10 md:py-20 lg:px-16 lg:py-24"
+      className="relative min-h-screen overflow-hidden bg-black px-6 py-20 md:px-10 md:py-24 lg:px-16"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_34%,rgba(255,255,255,0.03),transparent_20%),radial-gradient(circle_at_76%_58%,rgba(220,38,38,0.07),transparent_28%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_34%,rgba(255,255,255,0.04),transparent_16%),radial-gradient(circle_at_76%_58%,rgba(220,38,38,0.08),transparent_24%)]" />
 
-      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] lg:gap-16">
-
-        {/* LEFT: Text */}
-        <div className="flex flex-col gap-7">
-          <motion.span
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.5 }}
-            className="font-mono text-[10px] uppercase tracking-[0.28em] text-red-500 md:text-[11px]"
-          >
-            MEMORY LAYER / NEO-TOKYO
-          </motion.span>
-
-          <div className="flex flex-col gap-1">
-            <motion.h2
-              initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
-              whileInView={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.65 }}
-              className="font-display text-5xl uppercase leading-[1.04] tracking-[0.04em] text-white md:text-6xl lg:text-7xl"
-            >
-              NOT FORGED
-            </motion.h2>
-            <motion.h2
-              initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
-              whileInView={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.65, delay: 0.1 }}
-              className="font-display text-5xl uppercase leading-[1.04] tracking-[0.04em] text-white/60 md:text-6xl lg:text-7xl"
-            >
-              FOR WAR.
-            </motion.h2>
-            <motion.h2
-              initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
-              whileInView={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.65, delay: 0.2 }}
-              className="font-display text-5xl uppercase leading-[1.04] tracking-[0.04em] text-white md:text-6xl lg:text-7xl"
-            >
-              FORGED FOR SILENCE.
-            </motion.h2>
+      <div className="relative z-10 mx-auto grid min-h-[calc(100vh-10rem)] max-w-7xl gap-14 lg:grid-cols-[minmax(0,0.95fr)_minmax(380px,1fr)] lg:items-center">
+        <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-4">
+            <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-red-500 md:tracking-[0.28em]">
+              MEMORY LAYER / NEO-TOKYO
+            </span>
+            <div className="space-y-2">
+              <motion.h2
+                initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
+                whileInView={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.6 }}
+                className="font-display text-4xl uppercase tracking-[0.05em] text-white md:text-6xl md:tracking-[0.1em]"
+              >
+                NOT FORGED FOR WAR.
+              </motion.h2>
+              <motion.h2
+                initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
+                whileInView={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.6, delay: 0.12 }}
+                className="font-display text-4xl uppercase tracking-[0.05em] text-white md:text-6xl md:tracking-[0.1em]"
+              >
+                FORGED FOR SILENCE.
+              </motion.h2>
+            </div>
           </div>
 
           <motion.p
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.55, delay: 0.2 }}
-            className="max-w-lg text-base leading-8 text-white/55 md:text-[1.05rem]"
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{ duration: 0.6, delay: 0.22 }}
+            className="max-w-xl text-base leading-8 text-white/68 md:text-lg"
           >
             In the lower cities of Neo-Tokyo, conflict ended before sound could escape. X-01 is a fictional relic built between ceremony and machine logic — a blade remembered before it is drawn.
           </motion.p>
 
-          {/* Quote */}
+          {/* Quote block */}
           <motion.blockquote
-            initial={{ opacity: 0, x: -16 }}
+            initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.5, delay: 0.28 }}
-            className="border-l-2 border-red-500/50 pl-5"
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{ duration: 0.55, delay: 0.32 }}
+            className="border-l-2 border-red-500/60 pl-5"
           >
-            <p className="font-mono text-sm italic leading-7 text-white/45 md:text-[0.9rem]">
+            <p className="font-mono text-sm italic leading-7 text-white/50 md:text-base">
               &ldquo;The weapon that carries no fear is the one the enemy never sees coming.&rdquo;
             </p>
-            <span className="mt-2 block font-mono text-[8px] uppercase tracking-[0.22em] text-red-500/70">
+            <span className="mt-2 block font-mono text-[9px] uppercase tracking-[0.22em] text-red-500/80">
               — NEO-TOKYO RELIC CODEX, ENTRY 001
             </span>
           </motion.blockquote>
 
-          {/* Stats — 2 col on mobile, 3 col on md+ */}
+          {/* Stat chips */}
           <motion.div
-            initial={{ opacity: 0, y: 14 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, delay: 0.35 }}
-            className="grid grid-cols-2 gap-2 md:grid-cols-3"
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="grid grid-cols-3 gap-3"
           >
             {[
               { label: 'BLADE LENGTH', value: '73cm' },
@@ -357,72 +341,60 @@ function LoreScene() {
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="flex flex-col gap-1.5 rounded-[0.75rem] border border-white/8 bg-white/[0.022] px-3.5 py-3"
+                className="flex flex-col gap-1 rounded-[0.8rem] border border-white/8 bg-white/[0.025] px-3 py-3"
               >
-                <span className="font-mono text-[7.5px] uppercase tracking-[0.16em] text-red-500/75">{stat.label}</span>
-                <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em] text-white/88">{stat.value}</span>
+                <span className="font-mono text-[8px] uppercase tracking-[0.14em] text-red-500/80">{stat.label}</span>
+                <span className="font-mono text-xs font-semibold uppercase tracking-wide text-white/85">{stat.value}</span>
               </div>
             ))}
           </motion.div>
         </div>
 
-        {/* RIGHT: Image panel */}
         <motion.div
-          initial={{ opacity: 0, x: 28 }}
+          initial={{ opacity: 0, x: 32 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.7, delay: 0.05 }}
-          className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-black/60 shadow-[0_0_60px_rgba(220,38,38,0.08)]"
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.7 }}
+          className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-black/70 shadow-[0_0_80px_rgba(220,38,38,0.08)]"
         >
           <motion.div
             style={{ scale: glowScale }}
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_55%_45%,rgba(220,38,38,0.16),transparent_40%)]"
+            className="absolute inset-0 bg-[radial-gradient(circle_at_70%_42%,rgba(220,38,38,0.18),transparent_36%)]"
           />
 
-          {/* Top label */}
-          <div className="flex items-center justify-between border-b border-white/8 px-5 py-3">
-            <span className="font-mono text-[8px] uppercase tracking-[0.22em] text-red-400">X-01 BLUEPRINT</span>
-            <span className="font-mono text-[7px] uppercase tracking-[0.16em] text-white/25">ARCHIVE REF</span>
-          </div>
-
-          {/* Image — fixed aspect ratio, no overflow */}
-          <div className="relative aspect-[2/3] overflow-hidden">
-            <motion.div style={{ y: imageY, scale: imageScale }} className="h-full w-full">
+          <div className="relative min-h-[22rem] p-3 md:min-h-[34rem] md:p-4">
+            <motion.div
+              style={{ y: imageY, scale: imageScale }}
+              className="h-full w-full"
+            >
               <KatanaImage
                 src={asset('katanas/blueprint-x01.webp')}
                 alt="X-01 blueprint"
                 priority
                 accent="220,38,38"
-                className="h-full w-full object-cover object-center opacity-95"
+                className="h-full w-full rounded-[1.5rem] object-cover object-center opacity-95"
               />
             </motion.div>
 
-            {/* Scan line */}
             <motion.div
               style={{ y: scanY }}
-              className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-transparent via-white/10 to-transparent"
+              className="pointer-events-none absolute inset-x-6 top-0 h-20 bg-gradient-to-b from-transparent via-white/12 to-transparent md:inset-x-8"
             >
-              <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-red-500/80 to-transparent" />
+              <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-red-500 to-transparent" />
             </motion.div>
 
-            {/* Corner labels */}
-            <div className="absolute left-4 top-4 border-l border-red-500/45 pl-3 font-mono text-[8px] uppercase tracking-[0.18em] text-red-400">
+            <div className="absolute left-6 top-6 border-l border-red-500/55 pl-3 font-mono text-[10px] uppercase tracking-[0.15em] text-red-400 md:left-10 md:top-10 md:tracking-[0.24em]">
               PLASMA EDGE STABLE
             </div>
-            <div className="absolute bottom-4 right-4 border-r border-white/18 pr-3 text-right font-mono text-[8px] uppercase tracking-[0.18em] text-white/38">
+            <div className="absolute bottom-6 right-6 border-r border-white/20 pr-3 text-right font-mono text-[10px] uppercase tracking-[0.15em] text-white/45 md:bottom-10 md:right-10 md:tracking-[0.24em]">
               MAG-LOCK SHEATH
             </div>
-
-            {/* Bottom fade */}
-            <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/70 to-transparent" />
           </div>
         </motion.div>
-
       </div>
     </section>
   );
 }
-
 
 function BladeArchive({ onOpenCheckout, onOpenSpecs }) {
   const [activeIndex, setActiveIndex] = useState(0);
