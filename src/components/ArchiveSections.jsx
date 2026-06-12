@@ -258,18 +258,25 @@ function ArchiveUnlock() {
 
   const flashOpacity = useTransform(scrollYProgress, [0.1, 0.18, 0.28], [0, 0.9, 0]);
   const slashScale = useTransform(scrollYProgress, [0.08, 0.24], [0, 1]);
-  const textOpacity = useTransform(scrollYProgress, [0.22, 0.42], [0, 1]);
+  const textOpacity = useTransform(scrollYProgress, [0.2, 0.38], [0, 1]);
   const shakeX = useTransform(scrollYProgress, [0.12, 0.16, 0.2, 0.24, 0.3], [0, -10, 8, -6, 0]);
   const headingClip = useTransform(
     scrollYProgress,
-    [0.24, 0.44],
+    [0.22, 0.4],
     ['inset(0 100% 0 0)', 'inset(0 0% 0 0)'],
   );
+
+  const stats = [
+    { label: 'VARIANTS', value: '07' },
+    { label: 'MATERIAL GRADE', value: 'S-CLASS' },
+    { label: 'ARCHIVE STATUS', value: 'LIVE' },
+    { label: 'EDITION', value: 'COLLECTOR' },
+  ];
 
   return (
     <section
       ref={ref}
-      className="relative flex min-h-[86vh] items-center justify-center overflow-hidden bg-black px-6 py-20 md:min-h-screen md:px-10 lg:px-16"
+      className="relative flex min-h-[90vh] flex-col items-center justify-center overflow-hidden bg-black px-6 py-20 md:min-h-screen md:px-10 lg:px-16"
     >
       <motion.div
         style={{ x: shakeX }}
@@ -292,32 +299,38 @@ function ArchiveUnlock() {
         </motion.div>
       </motion.div>
 
+      {/* Center text block */}
       <motion.div
         style={{ opacity: textOpacity }}
-        className="relative z-10 flex flex-col items-center gap-6 text-center"
+        className="relative z-10 flex flex-col items-center gap-5 text-center"
       >
-        <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-red-500 md:text-[11px] md:tracking-[0.28em]">
+        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-red-500 md:text-[11px] md:tracking-[0.32em]">
           ARCHIVE SEAL BROKEN
         </span>
         <motion.h2
           style={{ clipPath: headingClip }}
-          className="font-display text-4xl uppercase tracking-[0.05em] text-white md:text-6xl md:tracking-[0.1em]"
+          className="font-display text-5xl uppercase tracking-[0.05em] text-white md:text-7xl md:tracking-[0.12em]"
         >
           X-01 ACCESS GRANTED
         </motion.h2>
-        <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
-          {[
-            { label: 'VARIANTS', value: '07' },
-            { label: 'MATERIAL GRADE', value: 'S-CLASS' },
-            { label: 'ARCHIVE STATUS', value: 'LIVE' },
-            { label: 'EDITION', value: 'COLLECTOR' },
-          ].map((chip) => (
-            <div
-              key={chip.label}
-              className="flex flex-col items-center gap-1 rounded-[0.75rem] border border-white/12 bg-black/55 px-5 py-3 backdrop-blur-sm"
-            >
-              <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-red-500">{chip.label}</span>
-              <span className="font-display text-lg text-white">{chip.value}</span>
+        <p className="max-w-md font-mono text-[11px] leading-7 text-white/42 md:text-xs">
+          The Crimson Series archive is now unsealed. Seven relics indexed, each carrying a unique signal signature.
+        </p>
+      </motion.div>
+
+      {/* Bottom stat bar — always visible, animates in separately */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, delay: 0.35 }}
+        className="absolute bottom-10 left-0 right-0 z-10 flex justify-center"
+      >
+        <div className="flex divide-x divide-white/10 overflow-hidden rounded-[1rem] border border-white/10 bg-black/70 backdrop-blur-md">
+          {stats.map((s) => (
+            <div key={s.label} className="flex flex-col items-center gap-1 px-6 py-4">
+              <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-red-500">{s.label}</span>
+              <span className="font-display text-lg text-white">{s.value}</span>
             </div>
           ))}
         </div>
@@ -774,26 +787,26 @@ function BuildFile() {
           ))}
         </div>
 
-        {/* Material grid image */}
+        {/* Archive stats row */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-8 overflow-hidden rounded-[1.5rem] border border-white/10"
+          transition={{ duration: 0.55, delay: 0.25 }}
+          className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] sm:grid-cols-4"
         >
-          <div className="relative">
-            <img
-              src={asset('katana-material-grid.png')}
-              alt="Blade material grades: Carbon Fiber, Titanium Alloy, Ghost White"
-              className="w-full object-cover"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            <div className="absolute bottom-4 left-6 font-mono text-[9px] uppercase tracking-[0.22em] text-red-400">
-              MATERIAL GRADE INDEX / X-01 THROUGH X-07
+          {[
+            { label: 'TOTAL VARIANTS', value: '07', sub: 'sealed archive' },
+            { label: 'SCROLL STAGES', value: '12', sub: 'motion sequences' },
+            { label: 'SIGNAL LAYERS', value: '04', sub: 'audio + visual' },
+            { label: 'ARCHIVE STATUS', value: 'LIVE', sub: 'transmission open' },
+          ].map((item) => (
+            <div key={item.label} className="flex flex-col gap-2 bg-black/60 px-5 py-5">
+              <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-red-500">{item.label}</span>
+              <span className="font-display text-3xl text-white">{item.value}</span>
+              <span className="font-mono text-[8px] uppercase tracking-[0.14em] text-white/35">{item.sub}</span>
             </div>
-          </div>
+          ))}
         </motion.div>
       </div>
     </section>
@@ -832,7 +845,7 @@ function FinalCTA({ onOpenCheckout, onOpenSpecs }) {
         />
       </motion.div>
 
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center">
+      <div className="relative z-10 mx-auto w-full max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -840,7 +853,7 @@ function FinalCTA({ onOpenCheckout, onOpenSpecs }) {
           transition={{ duration: 0.6 }}
           className="flex flex-col gap-7"
         >
-          <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-red-500 md:text-[11px] md:tracking-[0.28em]">
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-red-500 md:text-[11px] md:tracking-[0.32em]">
             FINAL TRANSMISSION
           </span>
           <motion.h2
@@ -848,16 +861,16 @@ function FinalCTA({ onOpenCheckout, onOpenSpecs }) {
             whileInView={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
             viewport={{ once: true, amount: 0.45 }}
             transition={{ duration: 0.7 }}
-            className="font-display text-5xl uppercase tracking-[0.05em] text-white md:text-7xl md:tracking-[0.1em]"
+            className="font-display text-5xl uppercase tracking-[0.05em] text-white md:text-7xl md:tracking-[0.1em] lg:text-8xl"
           >
-            BUILD A WORLD THEY REMEMBER.
+            BUILD A WORLD<br />THEY REMEMBER.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.55, delay: 0.15 }}
-            className="max-w-2xl text-base leading-8 text-white/68 md:text-lg"
+            className="max-w-lg text-base leading-8 text-white/60 md:text-lg"
           >
             Cyber Katana X-01 is a fictional product experience built to showcase cinematic web design, motion language, and premium product storytelling.
           </motion.p>
@@ -867,7 +880,7 @@ function FinalCTA({ onOpenCheckout, onOpenSpecs }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.25 }}
             transition={{ duration: 0.55, delay: 0.25 }}
-            className="flex flex-col gap-4 sm:flex-row sm:flex-wrap"
+            className="flex flex-wrap gap-3"
           >
             <button
               onMouseEnter={playHover}
@@ -875,7 +888,7 @@ function FinalCTA({ onOpenCheckout, onOpenSpecs }) {
                 playClick();
                 onOpenCheckout();
               }}
-              className="inline-flex items-center justify-center gap-2 border border-red-500/45 bg-red-600/85 px-6 py-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-white/55 hover:bg-white hover:text-black md:tracking-[0.28em]"
+              className="inline-flex items-center gap-2 border border-red-500/55 bg-red-600 px-7 py-4 font-mono text-[10px] uppercase tracking-[0.22em] text-white transition-all duration-300 hover:bg-white hover:text-black md:tracking-[0.28em]"
             >
               Commission This Style
             </button>
@@ -885,7 +898,7 @@ function FinalCTA({ onOpenCheckout, onOpenSpecs }) {
                 playClick();
                 window.location.href = 'mailto:your@email.com';
               }}
-              className="inline-flex items-center justify-center gap-2 border border-white/12 bg-white/[0.03] px-6 py-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-red-500/55 hover:bg-red-950/20 md:tracking-[0.28em]"
+              className="inline-flex items-center gap-2 border border-white/15 bg-white/[0.04] px-7 py-4 font-mono text-[10px] uppercase tracking-[0.22em] text-white transition-all duration-300 hover:border-red-500/55 hover:bg-red-950/25 md:tracking-[0.28em]"
             >
               Send Transmission
             </button>
@@ -895,75 +908,45 @@ function FinalCTA({ onOpenCheckout, onOpenSpecs }) {
                 playClick();
                 scrollToId('blade-archive');
               }}
-              className="inline-flex items-center justify-center gap-2 border border-white/12 bg-white/[0.03] px-6 py-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-red-500/55 hover:bg-red-950/20 md:tracking-[0.28em]"
+              className="inline-flex items-center gap-2 border border-white/15 bg-white/[0.04] px-7 py-4 font-mono text-[10px] uppercase tracking-[0.22em] text-white transition-all duration-300 hover:border-red-500/55 hover:bg-red-950/25 md:tracking-[0.28em]"
             >
               Inspect Archive
             </button>
+          </motion.div>
+
+          {/* Subtle divider */}
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            whileInView={{ scaleX: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="h-px w-full origin-left bg-gradient-to-r from-red-500/40 via-white/10 to-transparent"
+          />
+
+          {/* Bottom meta row */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="flex flex-wrap items-center gap-6"
+          >
+            <div className="flex items-center gap-2">
+              <ArrowRight size={11} className="text-red-400" />
+              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/35">X-01 Crimson Archive</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Shield size={11} className="text-red-400" />
+              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/35">S-Class Relic / Ltd. Collector</span>
+            </div>
             <button
               onMouseEnter={playHover}
-              onClick={() => {
-                playClick();
-                onOpenSpecs();
-              }}
-              className="inline-flex items-center justify-center gap-2 px-1 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-white/56 transition-colors duration-300 hover:text-white md:tracking-[0.24em]"
+              onClick={() => { playClick(); onOpenSpecs(); }}
+              className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/35 underline-offset-4 transition-colors hover:text-red-400"
             >
-              Open Build File
+              Open Build File →
             </button>
           </motion.div>
-        </motion.div>
-
-        {/* Right panel: specs HUD grid */}
-        <motion.div
-          initial={{ opacity: 0, x: 32 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.65, delay: 0.1 }}
-          className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-black/60 backdrop-blur-md"
-        >
-          {/* Top label bar */}
-          <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
-            <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.22em] text-red-400">
-              <Shield size={12} />
-              SYSTEM READOUT / X-01
-            </div>
-            <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/30">ARCHIVE VERIFIED</span>
-          </div>
-
-          {/* Specs blueprint image */}
-          <div className="relative overflow-hidden">
-            <img
-              src={asset('katana-specs-panel.png')}
-              alt="X-01 technical schematic"
-              className="w-full object-cover opacity-90"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80" />
-          </div>
-
-          {/* Stats grid */}
-          <div className="grid grid-cols-2 gap-px border-t border-white/10 bg-white/[0.04]">
-            {[
-              { label: 'BLADE CLASS', value: 'X-01 CRIMSON' },
-              { label: 'EDGE TYPE', value: 'PLASMA REDLINE' },
-              { label: 'HANDLE', value: 'CARBON-FORGED' },
-              { label: 'SHEATH', value: 'TITANIUM MAG-LOCK' },
-              { label: 'WEIGHT', value: '0.82 KG' },
-              { label: 'SIGNAL', value: 'REDLINE / ACTIVE' },
-              { label: 'PRODUCTION', value: 'LTD. COLLECTOR' },
-              { label: 'ARCHIVE TIER', value: 'S-CLASS RELIC' },
-            ].map((spec) => (
-              <div key={spec.label} className="bg-black/55 px-4 py-4">
-                <div className="font-mono text-[8px] uppercase tracking-[0.16em] text-red-500/80">{spec.label}</div>
-                <div className="mt-1 font-mono text-xs font-semibold uppercase tracking-wide text-white/90">{spec.value}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Bottom bar */}
-          <div className="flex items-center gap-2 border-t border-white/10 px-6 py-4">
-            <ArrowRight size={12} className="text-red-400" />
-            <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-white/35">final transmission ready</span>
-          </div>
         </motion.div>
       </div>
     </section>
