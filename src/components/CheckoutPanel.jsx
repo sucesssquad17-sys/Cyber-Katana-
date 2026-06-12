@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { audio } from '../utils/AudioEngine';
-import { Fingerprint, ShieldCheck } from 'lucide-react';
+import { ShieldCheck, CheckCircle2 } from 'lucide-react';
 
 const VARIANTS = [
-  { id: 'X-01', name: 'Crimson Red', desc: 'Base Edition', color: 'text-red-500', borderActive: 'border-red-500', price: '$2,499', src: 'katanas/x01-crimson-red.webp', available: true },
-  { id: 'X-02', name: 'Electric Blue', desc: 'Select Edition', color: 'text-blue-500', borderActive: 'border-blue-500', price: '$2,699', src: 'katanas/x02-electric-blue.webp', available: true },
-  { id: 'X-03', name: 'Emerald Green', desc: 'Select Edition', color: 'text-emerald-500', borderActive: 'border-emerald-500', price: '$2,699', src: 'katanas/x03-emerald-green.webp', available: true },
-  { id: 'X-04', name: 'Royal Purple', desc: 'Limited Edition', color: 'text-purple-500', borderActive: 'border-purple-500', price: '$3,199', src: 'katanas/x04-royal-purple.webp', available: false },
-  { id: 'X-05', name: 'Ghost White', desc: 'Limited Edition', color: 'text-neutral-300', borderActive: 'border-neutral-400', price: '$2,499', src: 'katanas/x05-ghost-white.webp', available: false }
+  { id: 'X-01', name: 'Crimson Red', desc: 'Base Edition', price: '$2,499', src: 'katanas/x01-crimson-red.webp', available: true },
+  { id: 'X-02', name: 'Electric Blue', desc: 'Select Edition', price: '$2,699', src: 'katanas/x02-electric-blue.webp', available: true },
+  { id: 'X-03', name: 'Emerald Green', desc: 'Select Edition', price: '$2,699', src: 'katanas/x03-emerald-green.webp', available: true },
+  { id: 'X-04', name: 'Royal Purple', desc: 'Limited Edition', price: '$3,199', src: 'katanas/x04-royal-purple.webp', available: false },
+  { id: 'X-05', name: 'Ghost White', desc: 'Limited Edition', price: '$2,499', src: 'katanas/x05-ghost-white.webp', available: false }
 ];
 
 export default function CheckoutPanel({ isOpen, onClose }) {
@@ -28,14 +28,11 @@ export default function CheckoutPanel({ isOpen, onClose }) {
     }, 500);
   };
 
-  const playHover = () => audio.playGlassTap();
-
-  const handleAuthorize = () => {
+  const handleCheckout = () => {
     if (!activeVariant.available) return;
     audio.playBeep();
     setIsProcessing(true);
     setTimeout(() => {
-      audio.playImpact();
       setIsProcessing(false);
       setIsSuccess(true);
     }, 2000);
@@ -45,171 +42,154 @@ export default function CheckoutPanel({ isOpen, onClose }) {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.4 }}
-          className="fixed inset-0 z-[100] flex flex-col bg-[#050505] overflow-y-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="fixed inset-0 z-[100] flex flex-col bg-neutral-950 overflow-y-auto overflow-x-hidden font-sans"
         >
-          {/* Top Navbar */}
-          <div className="flex justify-between items-start p-4 md:p-6 relative z-20">
-            <div className="flex flex-col gap-1">
-              <h2 className="text-white font-display text-xl tracking-widest uppercase">Checkout</h2>
-              <p className="text-white/40 text-[10px] font-mono tracking-[0.2em] uppercase">Secure Payment</p>
-            </div>
+          {/* Subtle Background */}
+          <div className="fixed inset-0 pointer-events-none z-0 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.03)_0%,transparent_80%)]" />
 
-            <motion.button 
-              whileTap={{ scale: 0.95 }}
-              onClick={handleClose}
-              onMouseEnter={playHover}
-              className="group flex items-center gap-2 px-4 py-2 border border-white/10 hover:border-white/30 transition-colors bg-white/5"
-            >
-              <span className="text-white text-[10px] font-mono tracking-widest uppercase transition-colors">Close</span>
-            </motion.button>
-          </div>
-
-          {/* Main Content */}
-          <div className="flex-1 w-full max-w-6xl mx-auto px-4 pb-4 lg:pb-6 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16 relative z-10">
+          <div className="relative z-10 w-full max-w-[1200px] mx-auto min-h-screen flex flex-col p-6 md:p-12">
             
-            {/* Left: Image */}
-            <motion.div 
-              key={activeVariant.id}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="flex-1 w-full flex items-center justify-center relative min-h-[30vh] lg:min-h-[60vh]"
-            >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03),transparent_60%)] pointer-events-none" />
-              <motion.img 
-                animate={{ y: [0, -12, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                src={`${import.meta.env.BASE_URL}${activeVariant.src}`}
-                alt={activeVariant.name} 
-                className="w-full max-w-[240px] md:max-w-[320px] lg:max-w-[480px] max-h-[35vh] md:max-h-[50vh] lg:max-h-[70vh] object-contain relative z-10 mix-blend-screen opacity-90 drop-shadow-2xl" 
-              />
-            </motion.div>
+            {/* Header */}
+            <header className="flex justify-between items-center shrink-0 mb-12">
+              <div className="flex items-center gap-3">
+                <ShieldCheck className="text-neutral-400" size={24} />
+                <h2 className="text-white font-medium text-lg tracking-wide">Secure Checkout</h2>
+              </div>
+              <button 
+                onClick={handleClose}
+                className="text-neutral-400 hover:text-white text-sm tracking-wider uppercase transition-colors"
+              >
+                Close
+              </button>
+            </header>
 
-            {/* Right: Checkout Details */}
-            <motion.div 
-              initial="hidden"
-              animate="show"
-              variants={{
-                hidden: {},
-                show: { transition: { staggerChildren: 0.08, delayChildren: 0.2 } }
-              }}
-              className="flex-1 w-full max-w-md flex flex-col gap-4"
-            >
-              {!isSuccess ? (
-                <>
-                  {/* Header / Price */}
-                  <motion.div variants={{ hidden: { opacity: 0, x: 20 }, show: { opacity: 1, x: 0, transition: { duration: 0.4 } } }} className="flex flex-col gap-0.5 pb-3 border-b border-white/10">
-                    <span className={`${activeVariant.color} font-mono text-[9px] tracking-[0.3em] uppercase`}>
-                      {activeVariant.desc}
-                    </span>
-                    <div className="flex justify-between items-end">
-                      <h1 className="text-2xl md:text-3xl font-display text-white tracking-widest uppercase">
-                        {activeVariant.name}
-                      </h1>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg font-light text-white tracking-widest">{activeVariant.price}</span>
-                      <span className="text-white/40 font-mono text-[9px] tracking-widest uppercase mt-0.5">USD</span>
-                    </div>
-                  </motion.div>
-
-                  {/* Variant Selection List */}
-                  <motion.div variants={{ hidden: { opacity: 0, x: 20 }, show: { opacity: 1, x: 0, transition: { duration: 0.4 } } }} className="flex flex-col gap-1.5">
-                    <span className="text-white/40 font-mono text-[8px] tracking-[0.2em] uppercase mb-0.5">Select Edition</span>
-                    <div className="flex flex-col gap-1">
-                      {VARIANTS.map((variant, index) => {
-                        const isActive = index === activeIndex;
-                        return (
-                          <motion.button
-                            key={variant.id}
-                            whileTap={{ scale: 0.98 }}
-                            onClick={() => {
-                              playHover();
-                              setActiveIndex(index);
-                            }}
-                            className={`flex justify-between items-center px-3 py-1.5 border transition-all duration-300 ${
-                              isActive ? `bg-white/5 ${variant.borderActive}` : 'border-white/10 hover:border-white/30 bg-transparent'
-                            }`}
-                          >
-                            <div className="flex items-center gap-3">
-                              <span className={`font-mono text-[9px] tracking-widest uppercase ${isActive ? variant.color : 'text-white/40'}`}>
-                                {variant.id}
-                              </span>
-                              <span className={`font-mono text-[10px] tracking-widest uppercase ${isActive ? 'text-white' : 'text-white/60'}`}>
-                                {variant.name}
-                              </span>
-                            </div>
-                            {!variant.available && (
-                              <span className="font-mono text-[8px] tracking-widest text-neutral-500 uppercase">Out of Stock</span>
-                            )}
-                          </motion.button>
-                        );
-                      })}
-                    </div>
-                  </motion.div>
-
-                  {/* Action Area */}
-                  <motion.div variants={{ hidden: { opacity: 0, x: 20 }, show: { opacity: 1, x: 0, transition: { duration: 0.4 } } }} className="flex flex-col gap-2 mt-1">
-                    <input 
-                      type="text" 
-                      placeholder="PROMO CODE"
-                      className="w-full bg-white/5 border border-white/10 text-white font-mono text-[10px] px-3 py-2 outline-none focus:border-white/40 transition-colors uppercase tracking-widest placeholder-white/30"
-                    />
-                    <motion.button 
-                      whileTap={isProcessing || !activeVariant.available ? {} : { scale: 0.98 }}
-                      onClick={handleAuthorize}
-                      onMouseEnter={playHover}
-                      disabled={isProcessing || !activeVariant.available}
-                      className={`w-full py-2.5 font-mono uppercase tracking-widest text-[10px] transition-all relative overflow-hidden group ${
-                        !activeVariant.available 
-                          ? 'bg-neutral-900 border border-neutral-800 text-neutral-600 cursor-not-allowed'
-                          : isProcessing 
-                            ? 'bg-white/10 border border-white/20 text-white/50 cursor-wait' 
-                            : 'bg-white text-black hover:bg-neutral-200'
-                      }`}
-                    >
-                      {isProcessing ? (
-                        <span className="flex items-center justify-center gap-3">
-                          <div className="w-1.5 h-1.5 bg-white/50 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                          <div className="w-1.5 h-1.5 bg-white/50 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                          <div className="w-1.5 h-1.5 bg-white/50 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                        </span>
-                      ) : !activeVariant.available ? (
-                        'Out of Stock'
-                      ) : (
-                        'Complete Purchase'
-                      )}
-                    </motion.button>
-                  </motion.div>
-
-                  <motion.div variants={{ hidden: { opacity: 0, x: 20 }, show: { opacity: 1, x: 0, transition: { duration: 0.4 } } }} className="flex items-center gap-2 mt-1">
-                    <ShieldCheck className="text-white/30" size={12} />
-                    <span className="text-white/30 font-mono text-[8px] tracking-widest uppercase">Secure Transaction</span>
-                  </motion.div>
-                </>
-              ) : (
+            {/* Content Grid */}
+            <div className="flex-1 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center lg:items-start pb-12 lg:pb-0">
+              
+              {/* Left: Product Image */}
+              <div className="relative w-full flex items-center justify-center lg:justify-end">
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="flex-1 flex flex-col items-center justify-center text-center gap-8 py-12 border border-white/10 bg-white/5"
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                  className="w-full max-w-[500px] aspect-[4/5] relative flex items-center justify-center bg-neutral-900/50 rounded-2xl border border-white/5 overflow-hidden"
                 >
-                  <div className="w-20 h-20 border border-white/20 rounded-full flex items-center justify-center relative">
-                    <div className="absolute inset-0 bg-white/5 rounded-full animate-ping" />
-                    <Fingerprint className="text-white/80" size={32} />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <h2 className="text-white text-xl font-display uppercase tracking-widest">Order Confirmed</h2>
-                    <p className="text-white/50 font-mono text-[10px] leading-relaxed max-w-[280px] mx-auto uppercase tracking-widest">
-                      Your order for {activeVariant.name} has been successfully placed. You will receive an email confirmation shortly.
-                    </p>
-                  </div>
+                  <AnimatePresence mode="wait">
+                    <motion.img 
+                      key={activeVariant.id}
+                      initial={{ opacity: 0, filter: 'blur(10px)' }}
+                      animate={{ opacity: 1, filter: 'blur(0px)' }}
+                      exit={{ opacity: 0, filter: 'blur(10px)' }}
+                      transition={{ duration: 0.4 }}
+                      src={`${import.meta.env.BASE_URL}${activeVariant.src}`}
+                      alt={activeVariant.name} 
+                      className="absolute inset-0 w-full h-full object-cover" 
+                    />
+                  </AnimatePresence>
                 </motion.div>
-              )}
-            </motion.div>
+              </div>
+
+              {/* Right: Checkout Details */}
+              <div className="w-full max-w-[440px] flex flex-col justify-center gap-8 mx-auto lg:mx-0">
+                {!isSuccess ? (
+                  <>
+                    <div className="flex flex-col gap-2 border-b border-white/10 pb-6">
+                      <span className="text-neutral-400 text-xs tracking-widest uppercase">{activeVariant.desc}</span>
+                      <h1 className="text-3xl font-light text-white tracking-wide">{activeVariant.name}</h1>
+                      <div className="text-2xl font-medium text-white mt-2">{activeVariant.price}</div>
+                    </div>
+
+                    <div className="flex flex-col gap-4">
+                      <span className="text-neutral-400 text-xs tracking-widest uppercase">Select Edition</span>
+                      <div className="grid grid-cols-1 gap-3">
+                        {VARIANTS.map((variant, index) => {
+                          const isActive = index === activeIndex;
+                          const isOOS = !variant.available;
+                          
+                          return (
+                            <button
+                              key={variant.id}
+                              onClick={() => {
+                                if (!isOOS) setActiveIndex(index);
+                              }}
+                              className={`flex justify-between items-center p-4 rounded-xl border transition-all ${
+                                isActive 
+                                  ? 'border-white bg-white/5' 
+                                  : isOOS 
+                                    ? 'border-white/5 opacity-40 cursor-not-allowed'
+                                    : 'border-white/10 hover:border-white/30'
+                              }`}
+                            >
+                              <div className="flex items-center gap-3">
+                                <span className={`w-3 h-3 rounded-full ${isActive ? 'bg-white' : 'bg-transparent border border-white/30'}`} />
+                                <span className={`text-sm ${isActive ? 'text-white' : 'text-neutral-400'}`}>{variant.name}</span>
+                              </div>
+                              <span className={`text-xs ${isOOS ? 'text-neutral-500' : 'text-neutral-400'}`}>
+                                {isOOS ? 'Sold Out' : variant.price}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-3">
+                      <span className="text-neutral-400 text-xs tracking-widest uppercase">Promo Code</span>
+                      <input 
+                        type="text" 
+                        placeholder="Enter code"
+                        className="w-full bg-transparent border border-white/10 rounded-xl px-4 py-3 text-white focus:border-white/50 outline-none transition-colors placeholder:text-neutral-600"
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-4 mt-4">
+                      <button 
+                        onClick={handleCheckout}
+                        disabled={isProcessing || !activeVariant.available}
+                        className={`w-full py-4 rounded-xl font-medium tracking-wide transition-all ${
+                          !activeVariant.available 
+                            ? 'bg-neutral-800 text-neutral-500 cursor-not-allowed'
+                            : isProcessing 
+                              ? 'bg-neutral-800 text-neutral-400 cursor-wait' 
+                              : 'bg-white text-black hover:bg-neutral-200 hover:scale-[0.98]'
+                        }`}
+                      >
+                        {isProcessing ? 'Processing...' : !activeVariant.available ? 'Out of Stock' : 'Complete Purchase'}
+                      </button>
+
+                      <div className="flex justify-center items-center gap-2 text-neutral-500 text-xs">
+                        <ShieldCheck size={14} />
+                        <span>Concept only. No actual payment processing.</span>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="flex flex-col items-center justify-center text-center gap-6 py-12 px-6 rounded-2xl border border-white/10 bg-white/5"
+                  >
+                    <CheckCircle2 className="text-white" size={48} />
+                    <div className="flex flex-col gap-2">
+                      <h2 className="text-white text-xl font-medium tracking-wide">Order Confirmed</h2>
+                      <p className="text-neutral-400 text-sm leading-relaxed max-w-xs mx-auto">
+                        Your order for the {activeVariant.name} has been placed successfully. A confirmation email will be sent shortly.
+                      </p>
+                    </div>
+                    <button 
+                      onClick={handleClose}
+                      className="mt-4 px-8 py-3 rounded-xl bg-white text-black font-medium hover:bg-neutral-200 transition-colors"
+                    >
+                      Return to Store
+                    </button>
+                  </motion.div>
+                )}
+              </div>
+            </div>
           </div>
         </motion.div>
       )}

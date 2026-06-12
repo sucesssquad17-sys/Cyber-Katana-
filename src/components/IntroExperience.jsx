@@ -1,10 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import KatanaCanvas from './KatanaCanvas';
 import ScrollStages from './ScrollStages';
 import { audio } from '../utils/AudioEngine';
 
-export default function IntroExperience({ onOpenCheckout }) {
+const IntroExperience = memo(function IntroExperience({ onOpenCheckout }) {
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -50,4 +50,6 @@ export default function IntroExperience({ onOpenCheckout }) {
       </div>
     </section>
   );
-}
+});
+
+export default IntroExperience;

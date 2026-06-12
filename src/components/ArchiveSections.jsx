@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, memo } from 'react';
 import {
   AnimatePresence,
   motion,
@@ -401,7 +401,7 @@ function LoreScene() {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden bg-black px-6 py-12 md:px-10 md:py-16 lg:px-16"
+      className="relative overflow-hidden bg-black px-6 pt-12 pb-8 md:px-10 md:pt-16 md:pb-12 lg:px-16"
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_34%,rgba(255,255,255,0.03),transparent_16%),radial-gradient(circle_at_76%_58%,rgba(220,38,38,0.06),transparent_24%)]" />
 
@@ -429,7 +429,7 @@ function LoreScene() {
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.35 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
             className="max-w-sm text-sm leading-snug text-white/60"
           >
             This is a fictional 3D katana concept created to showcase modern web design and animation techniques.
@@ -440,7 +440,7 @@ function LoreScene() {
             initial={{ opacity: 0, x: -10 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.35 }}
-            transition={{ duration: 0.4, delay: 0.3 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
             className="my-1 border-l-2 border-red-500/40 py-1 pl-3"
           >
             <p className="font-mono text-xs italic leading-snug text-white/40">
@@ -458,7 +458,7 @@ function LoreScene() {
             viewport={{ once: true, amount: 0.25 }}
             variants={{
               hidden: {},
-              show: { transition: { staggerChildren: 0.08, delayChildren: 0.4 } }
+              show: { transition: { staggerChildren: 0.15, delayChildren: 0.5 } }
             }}
             className="mt-1 grid grid-cols-2 gap-1.5 sm:grid-cols-3"
           >
@@ -474,7 +474,7 @@ function LoreScene() {
                 key={stat.label}
                 variants={{
                   hidden: { opacity: 0, y: 10 },
-                  show: { opacity: 1, y: 0, transition: { duration: 0.4 } }
+                  show: { opacity: 1, y: 0, transition: { duration: 0.8 } }
                 }}
                 className="flex flex-col border-l-2 border-white/10 bg-white/[0.02] px-2 py-1.5"
               >
@@ -490,7 +490,7 @@ function LoreScene() {
           whileInView={{ opacity: 1, x: 0 }}
           whileHover={{ scale: 1.02, borderColor: 'rgba(255,255,255,0.15)', boxShadow: '0 0 30px rgba(220,38,38,0.15)' }}
           viewport={{ once: true, amount: 0.25 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
           className="relative w-full overflow-hidden border border-white/5 bg-[#0a0a0a] cursor-crosshair"
         >
           <motion.div
@@ -541,7 +541,7 @@ function BladeArchive({ onOpenCheckout }) {
   return (
     <section
       id="blade-archive"
-      className="relative overflow-x-clip bg-black px-6 py-12 md:px-10 md:py-16 lg:px-16"
+      className="relative overflow-x-clip bg-black px-6 pt-8 pb-12 md:px-10 md:pt-12 md:pb-16 lg:px-16"
     >
       <AmbientField className="opacity-60" />
       <div
@@ -556,7 +556,7 @@ function BladeArchive({ onOpenCheckout }) {
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 1.0 }}
           className="mb-12 flex flex-col gap-4"
         >
           <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-red-500 md:tracking-[0.28em]">
@@ -787,7 +787,7 @@ function BuildFile() {
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.55 }}
+          transition={{ duration: 0.9 }}
           className="mb-12 flex flex-col gap-4"
         >
           <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-red-500 md:tracking-[0.28em]">
@@ -811,14 +811,14 @@ function BuildFile() {
                 whileInView={{ opacity: 1, y: 0 }}
                 whileHover={{ scale: 1.02, borderColor: 'rgba(239,68,68,0.4)', backgroundColor: 'rgba(15,15,15,0.9)', boxShadow: '0 8px 32px -12px rgba(220,38,38,0.2)' }}
                 viewport={{ once: true, amount: 0.25 }}
-                transition={{ duration: 0.45, delay: index * 0.08 }}
+                transition={{ duration: 0.8, delay: index * 0.15 }}
                 className="relative overflow-hidden h-full rounded-[1.5rem] border border-white/10 bg-black/55 p-6 transition-colors"
               >
                 <motion.div
                   initial={{ scaleX: 0 }}
                   whileInView={{ scaleX: 1 }}
                   viewport={{ once: true, amount: 0.7 }}
-                  transition={{ duration: 0.5, delay: 0.1 + index * 0.08 }}
+                  transition={{ duration: 0.8, delay: 0.2 + index * 0.15 }}
                   className="absolute inset-x-0 top-0 h-px origin-left bg-gradient-to-r from-red-500 via-white/80 to-transparent"
                 />
                 <div className="mb-5 flex flex-col gap-3">
@@ -845,7 +845,7 @@ function BuildFile() {
           viewport={{ once: true, amount: 0.2 }}
           variants={{
             hidden: {},
-            show: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } }
+            show: { transition: { staggerChildren: 0.2, delayChildren: 0.3 } }
           }}
           className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] sm:grid-cols-4"
         >
@@ -859,7 +859,7 @@ function BuildFile() {
               key={item.label}
               variants={{
                 hidden: { opacity: 0, y: 12 },
-                show: { opacity: 1, y: 0, transition: { duration: 0.4 } }
+                show: { opacity: 1, y: 0, transition: { duration: 0.8 } }
               }}
               className="flex flex-col gap-2 bg-black/60 px-5 py-5"
             >
@@ -923,7 +923,7 @@ function FinalCTA({ onOpenCheckout }) {
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 1.0 }}
           className="mb-6 font-mono text-[10px] uppercase tracking-[0.3em] text-red-500 md:text-[11px]"
         >
           CONCLUSION
@@ -933,7 +933,7 @@ function FinalCTA({ onOpenCheckout }) {
           initial={{ opacity: 0, filter: 'blur(10px)', y: 20 }}
           whileInView={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.9, delay: 0.1 }}
+          transition={{ duration: 1.2, delay: 0.2 }}
           className="font-display text-5xl uppercase leading-[1.05] tracking-[0.05em] text-white sm:text-6xl md:text-7xl lg:text-8xl"
         >
           CREATE<br />MEMORABLE<br />EXPERIENCES.
@@ -943,7 +943,7 @@ function FinalCTA({ onOpenCheckout }) {
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          transition={{ duration: 0.9, delay: 0.4 }}
           className="mx-auto mt-8 max-w-xl text-base leading-relaxed text-white/50 md:text-lg"
         >
           Cyber Katana X-01 is a fictional product experience built to showcase cinematic web design, motion language, and premium product storytelling.
@@ -954,7 +954,7 @@ function FinalCTA({ onOpenCheckout }) {
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.5, delay: 0.45 }}
+          transition={{ duration: 0.8, delay: 0.55 }}
           className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5"
         >
           <MagneticButton
@@ -990,7 +990,7 @@ function FinalCTA({ onOpenCheckout }) {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.7 }}
+          transition={{ duration: 1.2, delay: 0.8 }}
           className="mt-16 flex items-center justify-center gap-6 font-mono text-[8px] uppercase tracking-[0.2em] text-white/30"
         >
           <div className="flex items-center gap-2">
@@ -1011,11 +1011,10 @@ function FinalCTA({ onOpenCheckout }) {
   );
 }
 
-export default function ArchiveSections({ onOpenCheckout }) {
+const ArchiveSections = memo(function ArchiveSections({ onOpenCheckout }) {
   return (
     <>
       <LoreScene />
-      <TransitionWipe variant="scan" />
       <BladeArchive
         onOpenCheckout={onOpenCheckout}
       />
@@ -1025,4 +1024,6 @@ export default function ArchiveSections({ onOpenCheckout }) {
       />
     </>
   );
-}
+});
+
+export default ArchiveSections;

@@ -1,12 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense, useCallback } from 'react';
 import IntroExperience from './components/IntroExperience';
-import ArchiveSections from './components/ArchiveSections';
-import CheckoutPanel from './components/CheckoutPanel';
 import { audio } from './utils/AudioEngine';
+
+// Lazy load components that are not immediately visible
+const ArchiveSections = lazy(() => import('./components/ArchiveSections'));
+const CheckoutPanel = lazy(() => import('./components/CheckoutPanel'));
 
 function App() {
   const [audioInitialized, setAudioInitialized] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+
+  const handleOpenCheckout = useCallback(() => {
+    setIsCheckoutOpen(true);
+  }, []);
+
+  const handleCloseCheckout = useCallback(() => {
+    setIsCheckoutOpen(false);
+  }, []);
 
   const handleInitialize = async () => {
     try {
@@ -67,15 +77,19 @@ function App() {
       )}
 
 
-      <CheckoutPanel isOpen={isCheckoutOpen} onClose={() => setIsCheckoutOpen(false)} />
+      <Suspense fallback={null}>
+        <CheckoutPanel isOpen={isCheckoutOpen} onClose={handleCloseCheckout} />
+      </Suspense>
 
       <main className="relative">
         <IntroExperience
-          onOpenCheckout={() => setIsCheckoutOpen(true)}
+          onOpenCheckout={handleOpenCheckout}
         />
-        <ArchiveSections
-          onOpenCheckout={() => setIsCheckoutOpen(true)}
-        />
+        <Suspense fallback={null}>
+          <ArchiveSections
+            onOpenCheckout={handleOpenCheckout}
+          />
+        </Suspense>
       </main>
     </div>
   );
