@@ -4,6 +4,9 @@ import {
   motion,
   useScroll,
   useTransform,
+  useMotionValue,
+  useSpring,
+  useMotionTemplate,
 } from 'framer-motion';
 import { ArrowRight, Shield } from 'lucide-react';
 import { audio } from '../utils/AudioEngine';
@@ -138,6 +141,137 @@ function AmbientField({ className = '' }) {
         className="absolute inset-0 bg-[radial-gradient(circle_at_10%_40%,rgba(255,255,255,0.12)_1px,transparent_1px),radial-gradient(circle_at_70%_65%,rgba(255,255,255,0.08)_1px,transparent_1px),radial-gradient(circle_at_42%_78%,rgba(220,38,38,0.18)_1px,transparent_1px)] bg-[length:180px_180px]"
       />
     </div>
+  );
+}
+
+function TiltCard({ children, className = '' }) {
+  const ref = useRef(null);
+
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
+  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['7deg', '-7deg']);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-7deg', '7deg']);
+
+  const handleMouseMove = (e) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        rotateY,
+        rotateX,
+        transformStyle: 'preserve-3d',
+      }}
+      className={`relative ${className}`}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function MagneticButton({ children, className = '', onClick, style, onMouseEnter }) {
+  const ref = useRef(null);
+  const position = { x: useMotionValue(0), y: useMotionValue(0) };
+
+  const handleMouse = (e) => {
+    const { clientX, clientY } = e;
+    const { height, width, left, top } = ref.current.getBoundingClientRect();
+    const middleX = clientX - (left + width / 2);
+    const middleY = clientY - (top + height / 2);
+    position.x.set(middleX * 0.1);
+    position.y.set(middleY * 0.1);
+  };
+
+  const reset = () => {
+    position.x.set(0);
+    position.y.set(0);
+  };
+
+  const { x, y } = position;
+
+  return (
+    <motion.button
+      ref={ref}
+      onClick={onClick}
+      onMouseMove={handleMouse}
+      onMouseLeave={reset}
+      onMouseEnter={onMouseEnter}
+      style={style}
+      animate={{ x, y }}
+      transition={{ type: 'spring', stiffness: 350, damping: 5, mass: 0.5 }}
+      whileTap={{ scale: 0.95 }}
+      className={className}
+    >
+      {children}
+    </motion.button>
+  );
+}
+
+function RevealText({ text, className = '', delayOffset = 0 }) {
+  const words = text.split(' ');
+
+  const container = {
+    hidden: { opacity: 0 },
+    visible: (i = 1) => ({
+      opacity: 1,
+      transition: { staggerChildren: 0.05, delayChildren: delayOffset * i },
+    }),
+  };
+
+  const child = {
+    visible: {
+      opacity: 1,
+      y: 0,
+      filter: 'blur(0px)',
+      transition: {
+        type: 'spring',
+        damping: 12,
+        stiffness: 100,
+      },
+    },
+    hidden: {
+      opacity: 0,
+      y: 10,
+      filter: 'blur(4px)',
+    },
+  };
+
+  return (
+    <motion.div
+      className={`flex flex-wrap ${className}`}
+      variants={container}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-50px' }}
+    >
+      {words.map((word, index) => (
+        <motion.span variants={child} style={{ marginRight: '0.25em' }} key={index}>
+          {word}
+        </motion.span>
+      ))}
+    </motion.div>
   );
 }
 
@@ -278,24 +412,16 @@ function LoreScene() {
               BACKGROUND STORY
             </span>
             <div className="space-y-0.5">
-              <motion.h2
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
+              <RevealText
+                text="BUILT FOR DISPLAY."
                 className="font-display text-2xl uppercase leading-[1.1] tracking-normal text-white sm:text-3xl md:text-4xl"
-              >
-                BUILT FOR DISPLAY.
-              </motion.h2>
-              <motion.h2
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+                delayOffset={0}
+              />
+              <RevealText
+                text="MADE WITH PRECISION."
                 className="font-display text-2xl uppercase leading-[1.1] tracking-normal text-white/50 sm:text-3xl md:text-4xl"
-              >
-                MADE WITH PRECISION.
-              </motion.h2>
+                delayOffset={0.2}
+              />
             </div>
           </div>
 
@@ -436,9 +562,11 @@ function BladeArchive({ onOpenCheckout }) {
           <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-red-500 md:tracking-[0.28em]">
             PRODUCT CATALOG
           </span>
-          <h2 className="font-display text-4xl uppercase tracking-[0.05em] text-white md:text-6xl md:tracking-[0.1em]">
-            CHOOSE YOUR BLADE
-          </h2>
+          <RevealText
+            text="CHOOSE YOUR BLADE"
+            className="font-display text-4xl uppercase tracking-[0.05em] text-white md:text-6xl md:tracking-[0.1em]"
+            delayOffset={0.1}
+          />
           <p className="max-w-2xl text-base leading-8 text-white/58 md:text-lg">
             Multiple color variants available. Choose the one that fits your style.
           </p>
@@ -548,7 +676,7 @@ function BladeArchive({ onOpenCheckout }) {
                   </motion.div>
 
                   <div className="flex flex-col gap-4 mt-2">
-                    <button
+                    <MagneticButton
                       onMouseEnter={playHover}
                       onClick={() => {
                         playClick();
@@ -561,7 +689,7 @@ function BladeArchive({ onOpenCheckout }) {
                       className="inline-flex items-center justify-center gap-2 border px-6 py-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-white/55 hover:bg-white hover:text-black md:tracking-[0.28em]"
                     >
                       Buy Now
-                    </button>
+                    </MagneticButton>
                   </div>
                 </div>
               </div>
@@ -665,9 +793,11 @@ function BuildFile() {
           <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-red-500 md:tracking-[0.28em]">
             DESIGN & DEVELOPMENT
           </span>
-          <h2 className="font-display text-4xl uppercase tracking-[0.05em] text-white md:text-5xl md:tracking-[0.1em]">
-            HOW WE BUILT IT
-          </h2>
+          <RevealText
+            text="HOW WE BUILT IT"
+            className="font-display text-4xl uppercase tracking-[0.05em] text-white md:text-5xl md:tracking-[0.1em]"
+            delayOffset={0.1}
+          />
           <p className="max-w-2xl text-base leading-8 text-white/55">
             A breakdown of the design decisions, motion principles, and product storytelling that power this experience.
           </p>
@@ -675,35 +805,36 @@ function BuildFile() {
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {buildNotes.map((card, index) => (
-            <motion.article
-              key={card.id}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              whileHover={{ scale: 1.02, borderColor: 'rgba(239,68,68,0.4)', backgroundColor: 'rgba(15,15,15,0.9)', boxShadow: '0 8px 32px -12px rgba(220,38,38,0.2)' }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.45, delay: index * 0.08 }}
-              className="relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-black/55 p-6 transition-colors"
-            >
-              <motion.div
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                viewport={{ once: true, amount: 0.7 }}
-                transition={{ duration: 0.5, delay: 0.1 + index * 0.08 }}
-                className="absolute inset-x-0 top-0 h-px origin-left bg-gradient-to-r from-red-500 via-white/80 to-transparent"
-              />
-              <div className="mb-5 flex flex-col gap-3">
-                <div className="flex items-end justify-between gap-3">
-                  <span className="font-display text-5xl text-white/14">{card.id}</span>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-red-500 md:tracking-[0.22em]">
-                    NOTE
-                  </span>
+            <TiltCard key={card.id}>
+              <motion.article
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.02, borderColor: 'rgba(239,68,68,0.4)', backgroundColor: 'rgba(15,15,15,0.9)', boxShadow: '0 8px 32px -12px rgba(220,38,38,0.2)' }}
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ duration: 0.45, delay: index * 0.08 }}
+                className="relative overflow-hidden h-full rounded-[1.5rem] border border-white/10 bg-black/55 p-6 transition-colors"
+              >
+                <motion.div
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true, amount: 0.7 }}
+                  transition={{ duration: 0.5, delay: 0.1 + index * 0.08 }}
+                  className="absolute inset-x-0 top-0 h-px origin-left bg-gradient-to-r from-red-500 via-white/80 to-transparent"
+                />
+                <div className="mb-5 flex flex-col gap-3">
+                  <div className="flex items-end justify-between gap-3">
+                    <span className="font-display text-5xl text-white/14">{card.id}</span>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-red-500 md:tracking-[0.22em]">
+                      NOTE
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <h3 className="font-display text-2xl uppercase tracking-[0.04em] text-white">
-                {card.title}
-              </h3>
-              <p className="mt-4 text-base leading-8 text-white/64">{card.body}</p>
-            </motion.article>
+                <h3 className="font-display text-2xl uppercase tracking-[0.04em] text-white">
+                  {card.title}
+                </h3>
+                <p className="mt-4 text-base leading-8 text-white/64">{card.body}</p>
+              </motion.article>
+            </TiltCard>
           ))}
         </div>
 
@@ -766,13 +897,19 @@ function FinalCTA({ onOpenCheckout }) {
           className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.15),transparent_60%)]"
         />
         <motion.div style={{ y: imageY, scale: scaleImage }} className="absolute inset-0 opacity-40">
-          <KatanaImage
-            src={asset('katanas/final-silhouette.webp')}
-            alt="X-01 final silhouette"
-            priority
-            accent="220,38,38"
-            className="h-full w-full object-cover object-center"
-          />
+          <motion.div
+            animate={{ y: [0, -15, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+            className="h-full w-full"
+          >
+            <KatanaImage
+              src={asset('katanas/final-silhouette.webp')}
+              alt="X-01 final silhouette"
+              priority
+              accent="220,38,38"
+              className="h-full w-full object-cover object-center"
+            />
+          </motion.div>
           {/* Heavy vignette to push focus to center text */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_10%,rgba(0,0,0,0.95)_70%)]" />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
@@ -799,7 +936,7 @@ function FinalCTA({ onOpenCheckout }) {
           transition={{ duration: 0.9, delay: 0.1 }}
           className="font-display text-5xl uppercase leading-[1.05] tracking-[0.05em] text-white sm:text-6xl md:text-7xl lg:text-8xl"
         >
-          CREATE MEMORABLE<br />EXPERIENCES.
+          CREATE<br />MEMORABLE<br />EXPERIENCES.
         </motion.h2>
 
         <motion.p
@@ -820,7 +957,7 @@ function FinalCTA({ onOpenCheckout }) {
           transition={{ duration: 0.5, delay: 0.45 }}
           className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5"
         >
-          <button
+          <MagneticButton
             onMouseEnter={playHover}
             onClick={() => { playClick(); onOpenCheckout(); }}
             className="group relative overflow-hidden border border-red-500/50 bg-red-600/10 px-8 py-4 font-mono text-[10px] uppercase tracking-[0.25em] text-white transition-all duration-500 hover:border-red-500 hover:bg-red-600 hover:shadow-[0_0_40px_rgba(220,38,38,0.4)]"
@@ -829,23 +966,23 @@ function FinalCTA({ onOpenCheckout }) {
             <span className="relative z-10 flex items-center gap-3">
               Buy Now <ArrowRight size={12} />
             </span>
-          </button>
+          </MagneticButton>
           
-          <button
+          <MagneticButton
             onMouseEnter={playHover}
             onClick={() => { playClick(); window.location.href = 'mailto:your@email.com'; }}
             className="group relative border border-white/10 bg-white/[0.02] px-8 py-4 font-mono text-[10px] uppercase tracking-[0.25em] text-white transition-all duration-300 hover:border-white/30 hover:bg-white/[0.05]"
           >
             Contact Us
-          </button>
+          </MagneticButton>
           
-          <button
+          <MagneticButton
             onMouseEnter={playHover}
             onClick={() => { playClick(); scrollToId('blade-archive'); }}
             className="group relative border border-white/10 bg-white/[0.02] px-8 py-4 font-mono text-[10px] uppercase tracking-[0.25em] text-white transition-all duration-300 hover:border-white/30 hover:bg-white/[0.05]"
           >
             View Catalog
-          </button>
+          </MagneticButton>
         </motion.div>
 
         {/* Bottom Meta */}
