@@ -13,64 +13,92 @@ const asset = (path) => `${import.meta.env.BASE_URL}${path}`;
 const archiveItems = [
   {
     id: 'X-01',
-    name: 'Azure Wraith',
-    series: 'Signal Series',
-    note: 'Electric blue edge / cold mist chamber',
-    src: asset('katanas/x01-crimson-silence.svg'),
-    accent: '59,130,246',
+    name: 'Crimson Silence',
+    series: 'Crimson Series',
+    note: 'Crimson plasma edge / first archive issue',
+    src: asset('katanas/x01-crimson-red.webp'),
+    accent: '239,68,68',
   },
   {
     id: 'X-02',
-    name: 'Viper Coil',
-    series: 'Venom Series',
-    note: 'Emerald core / toxic glow lattice',
-    src: asset('katanas/x02-ghost-alloy.svg'),
-    accent: '34,197,94',
+    name: 'Azure Wraith',
+    series: 'Signal Series',
+    note: 'Electric blue edge / cold mist chamber',
+    src: asset('katanas/x02-electric-blue.webp'),
+    accent: '59,130,246',
   },
   {
     id: 'X-03',
-    name: 'Neon Shogun',
-    series: 'Ceremony Series',
-    note: 'Violet plasma line / ritual-grade finish',
-    src: asset('katanas/x03-ronin-blackout.svg'),
-    accent: '168,85,247',
+    name: 'Viper Coil',
+    series: 'Venom Series',
+    note: 'Emerald core / toxic glow lattice',
+    src: asset('katanas/x03-emerald-green.webp'),
+    accent: '34,197,94',
   },
   {
     id: 'X-04',
-    name: 'Ghost Alloy',
-    series: 'Null Series',
-    note: 'White alloy edge / frost-signal silence',
-    src: asset('katanas/x04-neon-shogun.svg'),
-    accent: '226,232,240',
+    name: 'Neon Shogun',
+    series: 'Ceremony Series',
+    note: 'Violet plasma line / ritual-grade finish',
+    src: asset('katanas/x04-royal-purple.webp'),
+    accent: '168,85,247',
   },
   {
     id: 'X-05',
+    name: 'Ghost Alloy',
+    series: 'Null Series',
+    note: 'White alloy edge / frost-signal silence',
+    src: asset('katanas/x05-ghost-white.webp'),
+    accent: '226,232,240',
+  },
+  {
+    id: 'X-06',
     name: 'Solar Circuit',
     series: 'Crown Series',
     note: 'Amber charge line / royal heat bloom',
-    src: asset('katanas/x05-blood-circuit.svg'),
+    src: asset('katanas/x06-molten-gold.webp'),
     accent: '245,158,11',
+  },
+  {
+    id: 'X-07',
+    name: 'Cyan Rift',
+    series: 'Rift Series',
+    note: 'Cyan-teal current / deep signal split',
+    src: asset('katanas/x07-neon-cyan.webp'),
+    accent: '20,184,166',
   },
 ];
 
 const buildNotes = [
   {
     id: '01',
-    title: 'Visual Direction',
+    title: 'Visual System',
     body:
-      'Ancient weapon silhouette, future-grade interface language, and a restrained red-on-black palette.',
+      'Ancient weapon silhouette, future-grade interface language, and a restrained red-on-black command layer that speaks before the product is described.',
   },
   {
     id: '02',
-    title: 'Motion Language',
+    title: 'Motion Sequence',
     body:
-      'Scroll movement is treated like a draw sequence: slow tension, sudden flash, then controlled reveal.',
+      'The scroll is treated like a draw ritual: pressure builds, the blade flashes, then the archive opens — revealing the world inside.',
   },
   {
     id: '03',
-    title: 'Portfolio Purpose',
+    title: 'Product Myth',
     body:
-      'The page exists to prove cinematic product storytelling, not to imitate a generic ecommerce template.',
+      'Cyber Katana is not presented like a store item. It is framed like a relic with memory, scarcity, and atmosphere earned over time.',
+  },
+  {
+    id: '04',
+    title: 'Sound Design',
+    body:
+      'Each scroll threshold triggers a distinct blade audio cue — whoosh, impact, plasma hum. The site has a voice, not just visuals.',
+  },
+  {
+    id: '05',
+    title: 'Archive Logic',
+    body:
+      'Seven variants, each with its own signal color, material language, and access tier. The archive reads like a classified relic index.',
   },
 ];
 
@@ -80,6 +108,13 @@ function playHover() {
 
 function playClick() {
   audio.playBeep();
+}
+
+function scrollToId(id) {
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
 function AmbientField({ className = '' }) {
@@ -126,7 +161,7 @@ function TransitionWipe({ variant }) {
   return (
     <section
       ref={ref}
-      className="relative h-[24vh] min-h-28 overflow-hidden bg-black md:h-[40vh] md:min-h-52"
+      className="relative h-[18vh] min-h-20 overflow-hidden bg-black md:h-[26vh] md:min-h-36"
     >
       <AmbientField className="opacity-55" />
 
@@ -173,7 +208,7 @@ function TransitionWipe({ variant }) {
         style={{ opacity: glowOpacity }}
         className="absolute inset-0 flex items-center justify-center"
       >
-        <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-white/40 md:text-[10px] md:tracking-[0.28em]">
+        <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/24 md:text-[9px] md:tracking-[0.22em]">
           {config[variant]}
         </span>
       </motion.div>
@@ -188,18 +223,16 @@ function KatanaImage({ src, alt, className, priority = false, accent = '220,38,3
     return (
       <div
         style={{
-          backgroundImage: `radial-gradient(circle at center, rgba(${accent}, 0.2), transparent 42%), linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.35))`,
+          backgroundImage: `radial-gradient(circle at center, rgba(${accent}, 0.12), transparent 42%), linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.42))`,
         }}
         className={`flex items-center justify-center ${className}`}
       >
-        <div className="flex flex-col items-center gap-3 text-center">
+        <div className="flex flex-col items-center gap-2 text-center">
           <div
-            style={{ backgroundColor: `rgba(${accent}, 0.9)` }}
-            className="h-24 w-px shadow-[0_0_18px_currentColor]"
+            style={{ backgroundColor: `rgba(${accent}, 0.5)` }}
+            className="h-16 w-px shadow-[0_0_14px_currentColor]"
           />
-          <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/40 md:tracking-[0.24em]">
-            visual archive pending
-          </span>
+          <span className="sr-only">Image unavailable</span>
         </div>
       </div>
     );
@@ -242,22 +275,26 @@ function ArchiveUnlock() {
         style={{ x: shakeX }}
         className="absolute inset-0"
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.12),transparent_32%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.18),transparent_30%)]" />
         <motion.div
           style={{ opacity: flashOpacity }}
           className="absolute inset-0 bg-white"
         />
         <motion.div
+          style={{ opacity: flashOpacity }}
+          className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.26),transparent_36%)]"
+        />
+        <motion.div
           style={{ scaleX: slashScale }}
-          className="absolute left-[-10%] top-1/2 h-[2px] w-[120%] origin-center -translate-y-1/2 rotate-[-17deg] bg-gradient-to-r from-transparent via-white to-transparent shadow-[0_0_32px_rgba(248,113,113,0.95)]"
+          className="absolute left-[-10%] top-1/2 h-[3px] w-[120%] origin-center -translate-y-1/2 rotate-[-17deg] bg-gradient-to-r from-transparent via-white to-transparent shadow-[0_0_40px_rgba(248,113,113,1)]"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500 to-transparent blur-md" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500 to-transparent blur-lg" />
         </motion.div>
       </motion.div>
 
       <motion.div
         style={{ opacity: textOpacity }}
-        className="relative z-10 flex flex-col items-center gap-4 text-center"
+        className="relative z-10 flex flex-col items-center gap-6 text-center"
       >
         <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-red-500 md:text-[11px] md:tracking-[0.28em]">
           ARCHIVE SEAL BROKEN
@@ -268,6 +305,22 @@ function ArchiveUnlock() {
         >
           X-01 ACCESS GRANTED
         </motion.h2>
+        <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
+          {[
+            { label: 'VARIANTS', value: '07' },
+            { label: 'MATERIAL GRADE', value: 'S-CLASS' },
+            { label: 'ARCHIVE STATUS', value: 'LIVE' },
+            { label: 'EDITION', value: 'COLLECTOR' },
+          ].map((chip) => (
+            <div
+              key={chip.label}
+              className="flex flex-col items-center gap-1 rounded-[0.75rem] border border-white/12 bg-black/55 px-5 py-3 backdrop-blur-sm"
+            >
+              <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-red-500">{chip.label}</span>
+              <span className="font-display text-lg text-white">{chip.value}</span>
+            </div>
+          ))}
+        </div>
       </motion.div>
     </section>
   );
@@ -290,7 +343,7 @@ function LoreScene() {
       ref={ref}
       className="relative min-h-screen overflow-hidden bg-black px-6 py-20 md:px-10 md:py-24 lg:px-16"
     >
-      <AmbientField className="opacity-70" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_34%,rgba(255,255,255,0.04),transparent_16%),radial-gradient(circle_at_76%_58%,rgba(220,38,38,0.08),transparent_24%)]" />
 
       <div className="relative z-10 mx-auto grid min-h-[calc(100vh-10rem)] max-w-7xl gap-14 lg:grid-cols-[minmax(0,0.95fr)_minmax(380px,1fr)] lg:items-center">
         <div className="flex flex-col gap-8">
@@ -327,8 +380,50 @@ function LoreScene() {
             transition={{ duration: 0.6, delay: 0.22 }}
             className="max-w-xl text-base leading-8 text-white/68 md:text-lg"
           >
-            In the lower cities of Neo-Tokyo, conflict ended before sound could escape. X-01 is a fictional relic built between ceremony and machine logic - a blade remembered before it is drawn.
+            In the lower cities of Neo-Tokyo, conflict ended before sound could escape. X-01 is a fictional relic built between ceremony and machine logic — a blade remembered before it is drawn.
           </motion.p>
+
+          {/* Quote block */}
+          <motion.blockquote
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{ duration: 0.55, delay: 0.32 }}
+            className="border-l-2 border-red-500/60 pl-5"
+          >
+            <p className="font-mono text-sm italic leading-7 text-white/50 md:text-base">
+              &ldquo;The weapon that carries no fear is the one the enemy never sees coming.&rdquo;
+            </p>
+            <span className="mt-2 block font-mono text-[9px] uppercase tracking-[0.22em] text-red-500/80">
+              — NEO-TOKYO RELIC CODEX, ENTRY 001
+            </span>
+          </motion.blockquote>
+
+          {/* Stat chips */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="grid grid-cols-3 gap-3"
+          >
+            {[
+              { label: 'BLADE LENGTH', value: '73cm' },
+              { label: 'EDGE MATERIAL', value: 'PLASMA ALLOY' },
+              { label: 'WEIGHT CLASS', value: 'ULTRA-LIGHT' },
+              { label: 'SERIES', value: 'CRIMSON' },
+              { label: 'PRODUCTION', value: 'LIMITED' },
+              { label: 'SIGNAL TYPE', value: 'REDLINE' },
+            ].map((stat) => (
+              <div
+                key={stat.label}
+                className="flex flex-col gap-1 rounded-[0.8rem] border border-white/8 bg-white/[0.025] px-3 py-3"
+              >
+                <span className="font-mono text-[8px] uppercase tracking-[0.14em] text-red-500/80">{stat.label}</span>
+                <span className="font-mono text-xs font-semibold uppercase tracking-wide text-white/85">{stat.value}</span>
+              </div>
+            ))}
+          </motion.div>
         </div>
 
         <motion.div
@@ -336,25 +431,24 @@ function LoreScene() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.7 }}
-          className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-black/55"
+          className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-black/70 shadow-[0_0_80px_rgba(220,38,38,0.08)]"
         >
-          <AmbientField className="opacity-45" />
           <motion.div
             style={{ scale: glowScale }}
-            className="absolute inset-0 bg-[radial-gradient(circle_at_70%_42%,rgba(220,38,38,0.16),transparent_34%)]"
+            className="absolute inset-0 bg-[radial-gradient(circle_at_70%_42%,rgba(220,38,38,0.18),transparent_36%)]"
           />
 
-          <div className="relative min-h-[22rem] p-4 md:min-h-[32rem] md:p-6">
+          <div className="relative min-h-[22rem] p-3 md:min-h-[34rem] md:p-4">
             <motion.div
               style={{ y: imageY, scale: imageScale }}
               className="h-full w-full"
             >
               <KatanaImage
-                src={asset('katanas/blueprint-x01.svg')}
+                src={asset('katanas/blueprint-x01.webp')}
                 alt="X-01 blueprint"
                 priority
                 accent="220,38,38"
-                className="h-full w-full rounded-[1.4rem] object-cover object-center opacity-90"
+                className="h-full w-full rounded-[1.5rem] object-cover object-center opacity-95"
               />
             </motion.div>
 
@@ -385,10 +479,15 @@ function BladeArchive({ onOpenCheckout, onOpenSpecs }) {
   return (
     <section
       id="blade-archive"
-      className="relative overflow-hidden bg-black px-6 py-20 md:px-10 md:py-24 lg:px-16"
+      className="relative overflow-x-clip bg-black px-6 py-20 md:px-10 md:py-24 lg:px-16"
     >
       <AmbientField className="opacity-60" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_54%_28%,rgba(220,38,38,0.12),transparent_26%)]" />
+      <div
+        style={{
+          backgroundImage: `radial-gradient(circle at 42% 30%, rgba(${activeBlade.accent}, 0.18), transparent 24%)`,
+        }}
+        className="absolute inset-0"
+      />
 
       <div className="relative z-10 mx-auto max-w-7xl">
         <motion.div
@@ -405,35 +504,43 @@ function BladeArchive({ onOpenCheckout, onOpenSpecs }) {
             CHOOSE YOUR RELIC
           </h2>
           <p className="max-w-2xl text-base leading-8 text-white/58 md:text-lg">
-            Five sealed variants. One myth. Each blade carries a different signal, material language, and combat ritual.
+            Seven sealed variants. One myth. Each blade carries a different signal, material language, and combat ritual.
           </p>
         </motion.div>
 
-        <div className="grid gap-8 xl:grid-cols-[minmax(0,1.2fr)_22rem] xl:items-start">
+        <div className="grid gap-8 xl:grid-cols-[minmax(0,1.35fr)_22rem] xl:items-center">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeBlade.id}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.35 }}
-              className="overflow-hidden rounded-[2rem] border border-white/10 bg-black/58"
+              initial={{ opacity: 0, scale: 0.985 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.01 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+              className="relative overflow-hidden rounded-[2.2rem] border border-white/10 bg-black/45"
             >
-              <div className="grid gap-0 lg:grid-cols-[minmax(0,0.95fr)_minmax(18rem,0.65fr)]">
+              <div className="grid gap-0 lg:grid-cols-[minmax(0,1.08fr)_minmax(18rem,0.72fr)]">
                 <div
                   style={{
-                    backgroundImage: `radial-gradient(circle at center, rgba(${activeBlade.accent}, 0.24), transparent 42%)`,
+                    backgroundImage: `radial-gradient(circle at 52% 48%, rgba(${activeBlade.accent}, 0.3), transparent 36%)`,
                   }}
-                  className="relative min-h-[28rem] overflow-hidden p-6 md:min-h-[42rem] md:p-8"
+                  className="relative min-h-[32rem] overflow-hidden p-4 md:min-h-[46rem] md:p-8"
                 >
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),transparent_30%,rgba(0,0,0,0.35)_100%)]" />
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(255,255,255,0.08)_1px,transparent_1px),radial-gradient(circle_at_80%_25%,rgba(255,255,255,0.06)_1px,transparent_1px),radial-gradient(circle_at_60%_55%,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:180px_180px] opacity-30" />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),transparent_22%,rgba(0,0,0,0.42)_100%)]" />
+                  <motion.div
+                    animate={{ opacity: [0.16, 0.28, 0.18] }}
+                    transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+                    style={{
+                      backgroundImage: `radial-gradient(circle at 58% 52%, rgba(${activeBlade.accent}, 0.26), transparent 28%)`,
+                    }}
+                    className="absolute inset-0 blur-3xl"
+                  />
                   <motion.div
                     initial={{ x: '-120%' }}
                     animate={{ x: '120%' }}
-                    transition={{ duration: 0.8, ease: 'easeInOut' }}
-                    className="pointer-events-none absolute inset-y-0 w-24 bg-gradient-to-r from-transparent via-white/18 to-transparent blur-md"
+                    transition={{ duration: 1.1, ease: 'easeInOut' }}
+                    className="pointer-events-none absolute inset-y-0 w-28 bg-gradient-to-r from-transparent via-white/18 to-transparent blur-md"
                   />
+                  <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/18 to-transparent" />
                   <KatanaImage
                     src={activeBlade.src}
                     alt={`${activeBlade.id} ${activeBlade.name}`}
@@ -453,7 +560,7 @@ function BladeArchive({ onOpenCheckout, onOpenSpecs }) {
                   </div>
                 </div>
 
-                <div className="flex flex-col justify-between gap-8 p-6 md:p-8">
+                <div className="flex flex-col justify-between gap-8 border-t border-white/10 p-6 md:p-8 lg:border-l lg:border-t-0">
                   <motion.div
                     initial={{ opacity: 0.45 }}
                     animate={{ opacity: 1 }}
@@ -508,7 +615,7 @@ function BladeArchive({ onOpenCheckout, onOpenSpecs }) {
                       }}
                       className="inline-flex items-center justify-center gap-2 border border-white/12 bg-white/[0.03] px-6 py-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-red-500/55 hover:bg-red-950/20 md:tracking-[0.28em]"
                     >
-                      View Details
+                      Open Build File
                     </button>
                     <button
                       onMouseEnter={playHover}
@@ -522,7 +629,7 @@ function BladeArchive({ onOpenCheckout, onOpenSpecs }) {
                       }}
                       className="inline-flex items-center justify-center gap-2 border px-6 py-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-white/55 hover:bg-white hover:text-black md:tracking-[0.28em]"
                     >
-                      Acquire Active Blade
+                      Acquire Variant
                     </button>
                   </div>
                 </div>
@@ -530,7 +637,7 @@ function BladeArchive({ onOpenCheckout, onOpenSpecs }) {
             </motion.div>
           </AnimatePresence>
 
-          <div className="grid gap-3">
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
             {archiveItems.map((item, index) => {
               const isActive = index === activeIndex;
 
@@ -545,7 +652,7 @@ function BladeArchive({ onOpenCheckout, onOpenSpecs }) {
                     playClick();
                     setActiveIndex(index);
                   }}
-                  className={`group relative overflow-hidden rounded-[1.2rem] border border-white/10 bg-black/52 text-left transition-all duration-300 ${
+                  className={`group relative overflow-hidden rounded-[1rem] border border-white/10 bg-black/52 text-left transition-all duration-300 ${
                     isActive ? 'bg-white/[0.04]' : 'hover:border-white/18'
                   }`}
                   style={
@@ -561,12 +668,12 @@ function BladeArchive({ onOpenCheckout, onOpenSpecs }) {
                     style={{ backgroundColor: `rgba(${item.accent}, ${isActive ? 0.85 : 0.45})` }}
                     className="absolute inset-y-0 left-0 w-px"
                   />
-                  <div className="grid grid-cols-[4.75rem_minmax(0,1fr)] items-center gap-3 p-3">
+                  <div className="grid grid-cols-[4.2rem_minmax(0,1fr)] items-center gap-3 p-3">
                     <div
                       style={{
                         backgroundImage: `radial-gradient(circle at center, rgba(${item.accent}, 0.18), transparent 40%), linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.32))`,
                       }}
-                      className="relative h-20 overflow-hidden rounded-[0.9rem]"
+                      className="relative h-16 overflow-hidden rounded-[0.8rem]"
                     >
                       <KatanaImage
                         src={item.src}
@@ -613,6 +720,7 @@ function BuildFile() {
   return (
     <section className="relative bg-black px-6 py-20 md:px-10 md:py-24 lg:px-16">
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.015),transparent_24%)]" />
+      <AmbientField className="opacity-40" />
 
       <div className="relative z-10 mx-auto max-w-7xl">
         <motion.div
@@ -620,38 +728,41 @@ function BuildFile() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.55 }}
-          className="mb-10 flex flex-col gap-4"
+          className="mb-12 flex flex-col gap-4"
         >
           <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-red-500 md:tracking-[0.28em]">
-            CASE STUDY / ARCHIVE NOTE
+            STUDIO TRANSMISSION / BUILD FILE
           </span>
           <h2 className="font-display text-4xl uppercase tracking-[0.05em] text-white md:text-5xl md:tracking-[0.1em]">
-            WHY THE EXPERIENCE HOLDS
+            THE SYSTEM BEHIND THE BLADE
           </h2>
+          <p className="max-w-2xl text-base leading-8 text-white/55">
+            A breakdown of the design decisions, motion principles, and product mythology that power this experience.
+          </p>
         </motion.div>
 
-        <div className="grid gap-4 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {buildNotes.map((card, index) => (
             <motion.article
               key={card.id}
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.45, delay: index * 0.09 }}
+              transition={{ duration: 0.45, delay: index * 0.08 }}
               className="relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-black/55 p-6"
             >
               <motion.div
                 initial={{ scaleX: 0 }}
                 whileInView={{ scaleX: 1 }}
                 viewport={{ once: true, amount: 0.7 }}
-                transition={{ duration: 0.5, delay: 0.1 + index * 0.09 }}
+                transition={{ duration: 0.5, delay: 0.1 + index * 0.08 }}
                 className="absolute inset-x-0 top-0 h-px origin-left bg-gradient-to-r from-red-500 via-white/80 to-transparent"
               />
               <div className="mb-5 flex flex-col gap-3">
                 <div className="flex items-end justify-between gap-3">
                   <span className="font-display text-5xl text-white/14">{card.id}</span>
                   <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-red-500 md:tracking-[0.22em]">
-                    CASE FILE
+                    SYSTEM NOTE
                   </span>
                 </div>
               </div>
@@ -662,12 +773,34 @@ function BuildFile() {
             </motion.article>
           ))}
         </div>
+
+        {/* Material grid image */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mt-8 overflow-hidden rounded-[1.5rem] border border-white/10"
+        >
+          <div className="relative">
+            <img
+              src={asset('katana-material-grid.png')}
+              alt="Blade material grades: Carbon Fiber, Titanium Alloy, Ghost White"
+              className="w-full object-cover"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            <div className="absolute bottom-4 left-6 font-mono text-[9px] uppercase tracking-[0.22em] text-red-400">
+              MATERIAL GRADE INDEX / X-01 THROUGH X-07
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
 }
 
-function FinalCTA({ onOpenCheckout }) {
+function FinalCTA({ onOpenCheckout, onOpenSpecs }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -682,13 +815,24 @@ function FinalCTA({ onOpenCheckout }) {
       ref={ref}
       className="relative flex min-h-screen items-center overflow-hidden bg-black px-6 py-20 md:px-10 md:py-24 lg:px-16"
     >
-      <AmbientField className="opacity-60" />
       <motion.div
         style={{ scale: bloomScale }}
-        className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(220,38,38,0.18),transparent_28%),linear-gradient(180deg,#000_10%,rgba(0,0,0,0.94)_100%)]"
+        className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(220,38,38,0.22),transparent_28%),linear-gradient(180deg,#000_10%,rgba(0,0,0,0.94)_100%)]"
       />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,#000_0%,rgba(0,0,0,0.82)_46%,rgba(0,0,0,0.25)_100%)]" />
+      <motion.div
+        style={{ y: imageY }}
+        className="absolute inset-y-0 right-0 w-full lg:w-[62%]"
+      >
+        <KatanaImage
+          src={asset('katanas/final-silhouette.webp')}
+          alt="Final X-01 silhouette"
+          accent="220,38,38"
+          className="h-full w-full object-cover object-right"
+        />
+      </motion.div>
 
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(22rem,1fr)] lg:items-center">
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -706,7 +850,7 @@ function FinalCTA({ onOpenCheckout }) {
             transition={{ duration: 0.7 }}
             className="font-display text-5xl uppercase tracking-[0.05em] text-white md:text-7xl md:tracking-[0.1em]"
           >
-            BUILD WORLDS PEOPLE REMEMBER.
+            BUILD A WORLD THEY REMEMBER.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -733,7 +877,7 @@ function FinalCTA({ onOpenCheckout }) {
               }}
               className="inline-flex items-center justify-center gap-2 border border-red-500/45 bg-red-600/85 px-6 py-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-white/55 hover:bg-white hover:text-black md:tracking-[0.28em]"
             >
-              Start Project
+              Commission This Style
             </button>
             <button
               onMouseEnter={playHover}
@@ -743,33 +887,84 @@ function FinalCTA({ onOpenCheckout }) {
               }}
               className="inline-flex items-center justify-center gap-2 border border-white/12 bg-white/[0.03] px-6 py-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-red-500/55 hover:bg-red-950/20 md:tracking-[0.28em]"
             >
-              Contact Studio
+              Send Transmission
+            </button>
+            <button
+              onMouseEnter={playHover}
+              onClick={() => {
+                playClick();
+                scrollToId('blade-archive');
+              }}
+              className="inline-flex items-center justify-center gap-2 border border-white/12 bg-white/[0.03] px-6 py-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-red-500/55 hover:bg-red-950/20 md:tracking-[0.28em]"
+            >
+              Inspect Archive
+            </button>
+            <button
+              onMouseEnter={playHover}
+              onClick={() => {
+                playClick();
+                onOpenSpecs();
+              }}
+              className="inline-flex items-center justify-center gap-2 px-1 py-2 font-mono text-[10px] uppercase tracking-[0.16em] text-white/56 transition-colors duration-300 hover:text-white md:tracking-[0.24em]"
+            >
+              Open Build File
             </button>
           </motion.div>
         </motion.div>
 
-        <div className="relative min-h-[30rem] md:min-h-[42rem]">
-          <motion.div
-            style={{ y: imageY }}
-            className="absolute inset-0"
-          >
-            <KatanaImage
-              src={asset('katanas/final-silhouette.svg')}
-              alt="Final X-01 silhouette"
-              accent="220,38,38"
-              className="h-full w-full object-contain object-right"
-            />
-          </motion.div>
+        {/* Right panel: specs HUD grid */}
+        <motion.div
+          initial={{ opacity: 0, x: 32 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.65, delay: 0.1 }}
+          className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-black/60 backdrop-blur-md"
+        >
+          {/* Top label bar */}
+          <div className="flex items-center justify-between border-b border-white/10 px-6 py-4">
+            <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.22em] text-red-400">
+              <Shield size={12} />
+              SYSTEM READOUT / X-01
+            </div>
+            <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-white/30">ARCHIVE VERIFIED</span>
+          </div>
 
-          <div className="absolute left-5 top-5 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.14em] text-red-400 md:tracking-[0.24em]">
-            <Shield size={14} />
-            portfolio ready
+          {/* Specs blueprint image */}
+          <div className="relative overflow-hidden">
+            <img
+              src={asset('katana-specs-panel.png')}
+              alt="X-01 technical schematic"
+              className="w-full object-cover opacity-90"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80" />
           </div>
-          <div className="absolute bottom-5 right-5 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.14em] text-white/48 md:tracking-[0.24em]">
-            <ArrowRight size={14} className="text-red-400" />
-            final transmission ready
+
+          {/* Stats grid */}
+          <div className="grid grid-cols-2 gap-px border-t border-white/10 bg-white/[0.04]">
+            {[
+              { label: 'BLADE CLASS', value: 'X-01 CRIMSON' },
+              { label: 'EDGE TYPE', value: 'PLASMA REDLINE' },
+              { label: 'HANDLE', value: 'CARBON-FORGED' },
+              { label: 'SHEATH', value: 'TITANIUM MAG-LOCK' },
+              { label: 'WEIGHT', value: '0.82 KG' },
+              { label: 'SIGNAL', value: 'REDLINE / ACTIVE' },
+              { label: 'PRODUCTION', value: 'LTD. COLLECTOR' },
+              { label: 'ARCHIVE TIER', value: 'S-CLASS RELIC' },
+            ].map((spec) => (
+              <div key={spec.label} className="bg-black/55 px-4 py-4">
+                <div className="font-mono text-[8px] uppercase tracking-[0.16em] text-red-500/80">{spec.label}</div>
+                <div className="mt-1 font-mono text-xs font-semibold uppercase tracking-wide text-white/90">{spec.value}</div>
+              </div>
+            ))}
           </div>
-        </div>
+
+          {/* Bottom bar */}
+          <div className="flex items-center gap-2 border-t border-white/10 px-6 py-4">
+            <ArrowRight size={12} className="text-red-400" />
+            <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-white/35">final transmission ready</span>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -791,6 +986,7 @@ export default function ArchiveSections({ onOpenCheckout, onOpenSpecs }) {
       <TransitionWipe variant="bloom" />
       <FinalCTA
         onOpenCheckout={onOpenCheckout}
+        onOpenSpecs={onOpenSpecs}
       />
     </>
   );

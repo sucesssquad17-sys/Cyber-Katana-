@@ -63,7 +63,7 @@ export default function ScrollStages({ scrollYProgress, onOpenSpecs, onOpenCheck
               </motion.p>
             </div>
             <p className="mt-8 max-w-xl text-base leading-8 text-white/68 md:text-lg">
-              The opening stays cinematic and self-contained. When it ends, the katana reveals the rest of the site instead of dropping the visitor into a normal layout.
+              Seven sealed variants. One myth. Born in the lower cities of Neo-Tokyo — where ceremony outlived war and the blade became the only language left.
             </p>
           </div>
 
