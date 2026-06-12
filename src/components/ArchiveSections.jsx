@@ -258,13 +258,7 @@ function ArchiveUnlock() {
 
   const flashOpacity = useTransform(scrollYProgress, [0.1, 0.18, 0.28], [0, 0.9, 0]);
   const slashScale = useTransform(scrollYProgress, [0.08, 0.24], [0, 1]);
-  const textOpacity = useTransform(scrollYProgress, [0.2, 0.38], [0, 1]);
   const shakeX = useTransform(scrollYProgress, [0.12, 0.16, 0.2, 0.24, 0.3], [0, -10, 8, -6, 0]);
-  const headingClip = useTransform(
-    scrollYProgress,
-    [0.22, 0.4],
-    ['inset(0 100% 0 0)', 'inset(0 0% 0 0)'],
-  );
 
   const stats = [
     { label: 'VARIANTS', value: '07' },
@@ -276,20 +270,30 @@ function ArchiveUnlock() {
   return (
     <section
       ref={ref}
-      className="relative flex min-h-[90vh] flex-col items-center justify-center overflow-hidden bg-black px-6 py-20 md:min-h-screen md:px-10 lg:px-16"
+      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-black px-6 py-24 md:px-10 lg:px-16"
     >
-      <motion.div
-        style={{ x: shakeX }}
-        className="absolute inset-0"
-      >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.18),transparent_30%)]" />
-        <motion.div
-          style={{ opacity: flashOpacity }}
-          className="absolute inset-0 bg-white"
+      {/* Background: blueprint katana image */}
+      <div className="absolute inset-0">
+        <img
+          src={asset('katanas/blueprint-x01.webp')}
+          alt=""
+          aria-hidden="true"
+          className="h-full w-full object-cover opacity-[0.12]"
         />
+        {/* Deep vignette so edges stay dark */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.92)_80%)]" />
+        {/* Red center bloom */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_46%,rgba(220,38,38,0.14),transparent_38%)]" />
+        {/* Scan lines texture */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:100%_3px] opacity-40" />
+      </div>
+
+      {/* Flash + slash overlay (scroll-driven) */}
+      <motion.div style={{ x: shakeX }} className="absolute inset-0 z-10 pointer-events-none">
+        <motion.div style={{ opacity: flashOpacity }} className="absolute inset-0 bg-white" />
         <motion.div
           style={{ opacity: flashOpacity }}
-          className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.26),transparent_36%)]"
+          className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.32),transparent_40%)]"
         />
         <motion.div
           style={{ scaleX: slashScale }}
@@ -299,42 +303,63 @@ function ArchiveUnlock() {
         </motion.div>
       </motion.div>
 
-      {/* Center text block */}
-      <motion.div
-        style={{ opacity: textOpacity }}
-        className="relative z-10 flex flex-col items-center gap-5 text-center"
-      >
-        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-red-500 md:text-[11px] md:tracking-[0.32em]">
+      {/* Main content — whileInView, always becomes visible */}
+      <div className="relative z-20 flex flex-col items-center gap-6 text-center">
+        <motion.span
+          initial={{ opacity: 0, letterSpacing: '0.08em' }}
+          whileInView={{ opacity: 1, letterSpacing: '0.32em' }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.7 }}
+          className="font-mono text-[10px] uppercase text-red-500 md:text-[11px]"
+        >
           ARCHIVE SEAL BROKEN
-        </span>
+        </motion.span>
+
         <motion.h2
-          style={{ clipPath: headingClip }}
-          className="font-display text-5xl uppercase tracking-[0.05em] text-white md:text-7xl md:tracking-[0.12em]"
+          initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
+          whileInView={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.75, delay: 0.1 }}
+          className="font-display text-5xl uppercase tracking-[0.08em] text-white md:text-7xl lg:text-8xl"
         >
           X-01 ACCESS GRANTED
         </motion.h2>
-        <p className="max-w-md font-mono text-[11px] leading-7 text-white/42 md:text-xs">
-          The Crimson Series archive is now unsealed. Seven relics indexed, each carrying a unique signal signature.
-        </p>
-      </motion.div>
 
-      {/* Bottom stat bar — always visible, animates in separately */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.6, delay: 0.35 }}
-        className="absolute bottom-10 left-0 right-0 z-10 flex justify-center"
-      >
-        <div className="flex divide-x divide-white/10 overflow-hidden rounded-[1rem] border border-white/10 bg-black/70 backdrop-blur-md">
+        <motion.p
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.55, delay: 0.22 }}
+          className="max-w-sm font-mono text-[11px] leading-7 text-white/40 md:max-w-md md:text-xs"
+        >
+          The Crimson Series archive is now unsealed. Seven relics indexed, each carrying a unique signal signature.
+        </motion.p>
+
+        {/* Stat bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.6, delay: 0.35 }}
+          className="mt-4 flex divide-x divide-white/10 overflow-hidden rounded-[1rem] border border-white/12 bg-black/65 backdrop-blur-md"
+        >
           {stats.map((s) => (
-            <div key={s.label} className="flex flex-col items-center gap-1 px-6 py-4">
-              <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-red-500">{s.label}</span>
-              <span className="font-display text-lg text-white">{s.value}</span>
+            <div key={s.label} className="flex flex-col items-center gap-1 px-6 py-4 sm:px-8">
+              <span className="font-mono text-[8px] uppercase tracking-[0.22em] text-red-500">{s.label}</span>
+              <span className="font-display text-xl text-white">{s.value}</span>
             </div>
           ))}
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
+
+      {/* Corner HUD decorations */}
+      <div className="pointer-events-none absolute left-6 top-6 z-20 flex flex-col gap-1 font-mono text-[8px] uppercase tracking-[0.18em] text-white/20 md:left-10 md:top-10">
+        <span>SYS / ARCHIVE-X</span>
+        <span className="text-red-500/50">● SIGNAL ACTIVE</span>
+      </div>
+      <div className="pointer-events-none absolute bottom-6 right-6 z-20 text-right font-mono text-[8px] uppercase tracking-[0.18em] text-white/20 md:bottom-10 md:right-10">
+        <span>RELIC INDEX / 001</span>
+      </div>
     </section>
   );
 }
