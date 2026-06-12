@@ -4,7 +4,7 @@ import { ArrowRight, Crosshair, ScanLine, Shield, Sparkles } from 'lucide-react'
 import { audio } from '../utils/AudioEngine';
 
 function scrollToArchive() {
-  const element = document.getElementById('archive-unlock');
+  const element = document.getElementById('blade-archive');
   if (element) {
     element.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -39,31 +39,31 @@ export default function ScrollStages({ scrollYProgress, onOpenSpecs, onOpenCheck
   const slashOpacity = useTransform(scrollYProgress, [0.72, 0.82, 1], [0, 1, 0.25]);
 
   return (
-    <div className="absolute inset-0 z-30">
+    <div className="absolute inset-0 z-30 pointer-events-none">
       <motion.div
         style={{ opacity: heroOpacity, y: heroY }}
         className="absolute inset-0 flex items-center"
       >
-        <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 md:px-10 lg:px-16">
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 md:px-10 lg:px-16 pointer-events-auto">
           <div className="max-w-2xl">
             <span className="font-mono text-[11px] uppercase tracking-[0.5em] text-red-500">
-              Cyber Katana / X-01 Collector Concept
+              Cyber Katana / X-01 Concept
             </span>
             <h1 className="mt-6 font-display text-5xl uppercase tracking-[0.14em] text-white md:text-7xl lg:text-8xl">
-              Forged for
+              A premium
               <br />
-              silent impact.
+              design concept.
             </h1>
             <div className="mt-6 border-l border-red-500/50 pl-4">
               <motion.p
                 style={{ clipPath: heroClip }}
                 className="font-mono text-sm uppercase tracking-[0.28em] text-white/58"
               >
-                Initializing blade core and archive path...
+                Loading assets and animations...
               </motion.p>
             </div>
             <p className="mt-8 max-w-xl text-base leading-8 text-white/68 md:text-lg">
-              Seven sealed variants. One myth. Born in the lower cities of Neo-Tokyo — where ceremony outlived war and the blade became the only language left.
+              Multiple color variants available. Explore this cinematic landing page concept featuring interactive 3D elements and scroll animations.
             </p>
           </div>
 
@@ -76,17 +76,7 @@ export default function ScrollStages({ scrollYProgress, onOpenSpecs, onOpenCheck
               }}
               className="cyber-button px-6 py-4 text-[10px]"
             >
-              Enter Archive
-            </button>
-            <button
-              onMouseEnter={() => audio.playGlassTap()}
-              onClick={() => {
-                audio.playBeep();
-                onOpenSpecs();
-              }}
-              className="cyber-button cyber-button--ghost px-6 py-4 text-[10px]"
-            >
-              View Specs
+              View Catalog
             </button>
             <button
               onMouseEnter={() => audio.playGlassTap()}
@@ -96,7 +86,7 @@ export default function ScrollStages({ scrollYProgress, onOpenSpecs, onOpenCheck
               }}
               className="cyber-button cyber-button--ghost px-6 py-4 text-[10px]"
             >
-              Acquire Edition
+              Buy Now
             </button>
           </div>
         </div>
@@ -106,7 +96,7 @@ export default function ScrollStages({ scrollYProgress, onOpenSpecs, onOpenCheck
         style={{ opacity: systemsOpacity, x: systemsX }}
         className="absolute inset-y-0 right-0 flex items-center justify-end px-6 md:px-10 lg:px-16"
       >
-        <div className="grid w-full max-w-xl gap-4">
+        <div className="grid w-full max-w-xl gap-4 pointer-events-auto">
           <StagePanel
             icon={Crosshair}
             label="Grip"
@@ -141,13 +131,13 @@ export default function ScrollStages({ scrollYProgress, onOpenSpecs, onOpenCheck
             <div className="flex flex-col gap-4 rounded-[1.75rem] border border-white/10 bg-black/55 px-6 py-6 backdrop-blur-md md:flex-row md:items-center md:justify-between">
               <div className="flex flex-col gap-2">
                 <span className="font-mono text-[11px] uppercase tracking-[0.44em] text-red-500">
-                  Archive Handshake
+                  System Check
                 </span>
                 <h2 className="font-display text-3xl uppercase tracking-[0.12em] text-white md:text-4xl">
-                  Archive Seal Broken.
+                  Loading Complete.
                 </h2>
                 <p className="text-sm text-white/55 md:text-base">
-                  X-01 memory layer restored.
+                  Welcome to the showcase.
                 </p>
               </div>
               <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-white/55">

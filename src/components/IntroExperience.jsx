@@ -4,7 +4,7 @@ import KatanaCanvas from './KatanaCanvas';
 import ScrollStages from './ScrollStages';
 import { audio } from '../utils/AudioEngine';
 
-export default function IntroExperience({ onOpenSpecs, onOpenCheckout }) {
+export default function IntroExperience({ onOpenCheckout }) {
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -38,7 +38,6 @@ export default function IntroExperience({ onOpenSpecs, onOpenCheckout }) {
 
         <ScrollStages
           scrollYProgress={smoothProgress}
-          onOpenSpecs={onOpenSpecs}
           onOpenCheckout={onOpenCheckout}
         />
 

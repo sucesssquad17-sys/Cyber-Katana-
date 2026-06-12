@@ -18,6 +18,7 @@ const archiveItems = [
     note: 'Crimson plasma edge / first archive issue',
     src: asset('katanas/x01-crimson-red.webp'),
     accent: '239,68,68',
+    specs: { material: 'Plasma Alloy', edge: 'Redline Conduit', grip: 'Silent Neuro-Wrap', sheath: 'Mag-Lock Zero Draw', length: '73cm' }
   },
   {
     id: 'X-02',
@@ -26,6 +27,7 @@ const archiveItems = [
     note: 'Electric blue edge / cold mist chamber',
     src: asset('katanas/x02-electric-blue.webp'),
     accent: '59,130,246',
+    specs: { material: 'Titanium-Cobalt', edge: 'Ionized Core', grip: 'Cryo-Cooling Wrap', sheath: 'Quick-Release Mag', length: '71cm' }
   },
   {
     id: 'X-03',
@@ -34,6 +36,7 @@ const archiveItems = [
     note: 'Emerald core / toxic glow lattice',
     src: asset('katanas/x03-emerald-green.webp'),
     accent: '34,197,94',
+    specs: { material: 'Carbon Fiber Weave', edge: 'Acidic Glow Lattice', grip: 'Bio-Synthetic Leather', sheath: 'Sealed Containment', length: '75cm' }
   },
   {
     id: 'X-04',
@@ -42,6 +45,7 @@ const archiveItems = [
     note: 'Violet plasma line / ritual-grade finish',
     src: asset('katanas/x04-royal-purple.webp'),
     accent: '168,85,247',
+    specs: { material: 'Damascus Steel Fold', edge: 'Ultraviolet Plasma', grip: 'Silk-Woven Neuro-Cord', sheath: 'Ceremonial Mag-Lock', length: '78cm' }
   },
   {
     id: 'X-05',
@@ -50,6 +54,7 @@ const archiveItems = [
     note: 'White alloy edge / frost-signal silence',
     src: asset('katanas/x05-ghost-white.webp'),
     accent: '226,232,240',
+    specs: { material: 'Ghost Alloy', edge: 'Absolute Zero Line', grip: 'Aero-Gel Padding', sheath: 'Stealth Suppressor', length: '70cm' }
   },
   {
     id: 'X-06',
@@ -58,6 +63,7 @@ const archiveItems = [
     note: 'Amber charge line / royal heat bloom',
     src: asset('katanas/x06-molten-gold.webp'),
     accent: '245,158,11',
+    specs: { material: 'Tungsten Core', edge: 'Thermal Bloom Line', grip: 'Heat-Resistant Polymer', sheath: 'Thermal Diffuser', length: '74cm' }
   },
   {
     id: 'X-07',
@@ -66,39 +72,35 @@ const archiveItems = [
     note: 'Cyan-teal current / deep signal split',
     src: asset('katanas/x07-neon-cyan.webp'),
     accent: '20,184,166',
+    specs: { material: 'Quantum Glass', edge: 'Tachyon Current', grip: 'Phase-Shifting Wrap', sheath: 'Dimensional Lock', length: '72cm' }
   },
 ];
 
 const buildNotes = [
   {
     id: '01',
-    title: 'Visual System',
-    body:
-      'Ancient weapon silhouette, future-grade interface language, and a restrained red-on-black command layer that speaks before the product is described.',
+    title: 'Design',
+    body: 'Clean, modern aesthetic with a dark theme that puts the product front and center before reading any text.',
   },
   {
     id: '02',
-    title: 'Motion Sequence',
-    body:
-      'The scroll is treated like a draw ritual: pressure builds, the blade flashes, then the archive opens — revealing the world inside.',
+    title: 'Animations',
+    body: 'Smooth scrolling animations that reveal content as you move down the page, creating an engaging experience.',
   },
   {
     id: '03',
-    title: 'Product Myth',
-    body:
-      'Cyber Katana is not presented like a store item. It is framed like a relic with memory, scarcity, and atmosphere earned over time.',
+    title: 'Storytelling',
+    body: 'The product is presented with an engaging background story to capture attention rather than a standard store layout.',
   },
   {
     id: '04',
-    title: 'Sound Design',
-    body:
-      'Each scroll threshold triggers a distinct blade audio cue — whoosh, impact, plasma hum. The site has a voice, not just visuals.',
+    title: 'Sound Effects',
+    body: 'Interactive sound effects play as you scroll and interact with the page, making the site feel alive.',
   },
   {
     id: '05',
-    title: 'Archive Logic',
-    body:
-      'Seven variants, each with its own signal color, material language, and access tier. The archive reads like a classified relic index.',
+    title: 'Product Variants',
+    body: 'Multiple product options, each with unique colors and details for users to explore and choose from.',
   },
 ];
 
@@ -152,16 +154,16 @@ function TransitionWipe({ variant }) {
   const bloomScale = useTransform(scrollYProgress, [0.15, 0.9], [0.7, 1.2]);
 
   const config = {
-    smoke: 'MEMORY LAYER OPENING',
-    scan: 'ARCHIVE INDEXING',
-    blackout: 'SIGNAL LOST / RESTORED',
-    bloom: 'FINAL TRANSMISSION READY',
+    smoke: 'LOADING BACKGROUND',
+    scan: 'SCANNING PRODUCTS',
+    blackout: 'TRANSITIONING',
+    bloom: 'REACHING THE END',
   };
 
   return (
     <section
       ref={ref}
-      className="relative h-[18vh] min-h-20 overflow-hidden bg-black md:h-[26vh] md:min-h-36"
+      className="relative h-[10vh] min-h-16 overflow-hidden bg-black md:h-[14vh] md:min-h-24"
     >
       <AmbientField className="opacity-55" />
 
@@ -265,86 +267,86 @@ function LoreScene() {
   return (
     <section
       ref={ref}
-      className="relative min-h-screen overflow-hidden bg-black px-6 py-20 md:px-10 md:py-24 lg:px-16"
+      className="relative overflow-hidden bg-black px-6 py-12 md:px-10 md:py-16 lg:px-16"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_34%,rgba(255,255,255,0.04),transparent_16%),radial-gradient(circle_at_76%_58%,rgba(220,38,38,0.08),transparent_24%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_34%,rgba(255,255,255,0.03),transparent_16%),radial-gradient(circle_at_76%_58%,rgba(220,38,38,0.06),transparent_24%)]" />
 
-      <div className="relative z-10 mx-auto grid min-h-[calc(100vh-10rem)] max-w-7xl gap-14 lg:grid-cols-[minmax(0,0.95fr)_minmax(380px,1fr)] lg:items-center">
-        <div className="flex flex-col gap-8">
-          <div className="flex flex-col gap-4">
-            <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-red-500 md:tracking-[0.28em]">
-              MEMORY LAYER / NEO-TOKYO
+      <div className="relative z-10 mx-auto grid max-w-7xl gap-10 md:grid-cols-[1fr_1.2fr] md:items-center md:gap-16 lg:gap-24">
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-1">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-red-500">
+              BACKGROUND STORY
             </span>
-            <div className="space-y-2">
+            <div className="space-y-0.5">
               <motion.h2
-                initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
-                whileInView={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.6 }}
-                className="font-display text-4xl uppercase tracking-[0.05em] text-white md:text-6xl md:tracking-[0.1em]"
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="font-display text-2xl uppercase leading-[1.1] tracking-normal text-white sm:text-3xl md:text-4xl"
               >
-                NOT FORGED FOR WAR.
+                BUILT FOR DISPLAY.
               </motion.h2>
               <motion.h2
-                initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
-                whileInView={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.6, delay: 0.12 }}
-                className="font-display text-4xl uppercase tracking-[0.05em] text-white md:text-6xl md:tracking-[0.1em]"
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+                className="font-display text-2xl uppercase leading-[1.1] tracking-normal text-white/50 sm:text-3xl md:text-4xl"
               >
-                FORGED FOR SILENCE.
+                MADE WITH PRECISION.
               </motion.h2>
             </div>
           </div>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.35 }}
-            transition={{ duration: 0.6, delay: 0.22 }}
-            className="max-w-xl text-base leading-8 text-white/68 md:text-lg"
+            transition={{ duration: 0.4, delay: 0.2 }}
+            className="max-w-sm text-sm leading-snug text-white/60"
           >
-            In the lower cities of Neo-Tokyo, conflict ended before sound could escape. X-01 is a fictional relic built between ceremony and machine logic — a blade remembered before it is drawn.
+            This is a fictional 3D katana concept created to showcase modern web design and animation techniques.
           </motion.p>
 
           {/* Quote block */}
           <motion.blockquote
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -10 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.35 }}
-            transition={{ duration: 0.55, delay: 0.32 }}
-            className="border-l-2 border-red-500/60 pl-5"
+            transition={{ duration: 0.4, delay: 0.3 }}
+            className="my-1 border-l-2 border-red-500/40 py-1 pl-3"
           >
-            <p className="font-mono text-sm italic leading-7 text-white/50 md:text-base">
-              &ldquo;The weapon that carries no fear is the one the enemy never sees coming.&rdquo;
+            <p className="font-mono text-xs italic leading-snug text-white/40">
+              &ldquo;A perfect blend of traditional design and modern technology.&rdquo;
             </p>
-            <span className="mt-2 block font-mono text-[9px] uppercase tracking-[0.22em] text-red-500/80">
-              — NEO-TOKYO RELIC CODEX, ENTRY 001
+            <span className="mt-1 block font-mono text-[9px] uppercase tracking-widest text-red-500/70">
+              — DESIGN INSPIRATION
             </span>
           </motion.blockquote>
 
           {/* Stat chips */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="grid grid-cols-3 gap-3"
+            transition={{ duration: 0.4, delay: 0.4 }}
+            className="mt-1 grid grid-cols-2 gap-1.5 sm:grid-cols-3"
           >
             {[
-              { label: 'BLADE LENGTH', value: '73cm' },
-              { label: 'EDGE MATERIAL', value: 'PLASMA ALLOY' },
-              { label: 'WEIGHT CLASS', value: 'ULTRA-LIGHT' },
-              { label: 'SERIES', value: 'CRIMSON' },
-              { label: 'PRODUCTION', value: 'LIMITED' },
-              { label: 'SIGNAL TYPE', value: 'REDLINE' },
+              { label: 'LENGTH', value: '73cm' },
+              { label: 'MATERIAL', value: 'PLASMA ALLOY' },
+              { label: 'WEIGHT', value: 'ULTRA-LIGHT' },
+              { label: 'CATEGORY', value: 'CRIMSON' },
+              { label: 'AVAILABILITY', value: 'LIMITED' },
+              { label: 'GLOW COLOR', value: 'REDLINE' },
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="flex flex-col gap-1 rounded-[0.8rem] border border-white/8 bg-white/[0.025] px-3 py-3"
+                className="flex flex-col border-l-2 border-white/10 bg-white/[0.02] px-2 py-1.5"
               >
-                <span className="font-mono text-[8px] uppercase tracking-[0.14em] text-red-500/80">{stat.label}</span>
-                <span className="font-mono text-xs font-semibold uppercase tracking-wide text-white/85">{stat.value}</span>
+                <span className="font-mono text-[8px] uppercase tracking-widest text-red-500/80">{stat.label}</span>
+                <span className="font-mono text-[10px] font-medium uppercase tracking-wider text-white/90">{stat.value}</span>
               </div>
             ))}
           </motion.div>
@@ -355,14 +357,14 @@ function LoreScene() {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.7 }}
-          className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-black/70 shadow-[0_0_80px_rgba(220,38,38,0.08)]"
+          className="relative w-full overflow-hidden border border-white/5 bg-[#0a0a0a]"
         >
           <motion.div
             style={{ scale: glowScale }}
-            className="absolute inset-0 bg-[radial-gradient(circle_at_70%_42%,rgba(220,38,38,0.18),transparent_36%)]"
+            className="absolute inset-0 bg-[radial-gradient(circle_at_70%_42%,rgba(220,38,38,0.12),transparent_40%)]"
           />
 
-          <div className="relative min-h-[22rem] p-3 md:min-h-[34rem] md:p-4">
+          <div className="relative min-h-[16rem] p-4 md:min-h-[22rem] lg:min-h-[26rem]">
             <motion.div
               style={{ y: imageY, scale: imageScale }}
               className="h-full w-full"
@@ -372,22 +374,24 @@ function LoreScene() {
                 alt="X-01 blueprint"
                 priority
                 accent="220,38,38"
-                className="h-full w-full rounded-[1.5rem] object-cover object-center opacity-95"
+                className="h-full w-full object-cover object-center opacity-90 mix-blend-screen"
               />
             </motion.div>
 
             <motion.div
               style={{ y: scanY }}
-              className="pointer-events-none absolute inset-x-6 top-0 h-20 bg-gradient-to-b from-transparent via-white/12 to-transparent md:inset-x-8"
+              className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-transparent via-red-500/10 to-transparent"
             >
-              <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-red-500 to-transparent" />
+              <div className="absolute inset-x-0 top-1/2 h-[2px] -translate-y-1/2 bg-gradient-to-r from-transparent via-red-500/50 to-transparent" />
             </motion.div>
 
-            <div className="absolute left-6 top-6 border-l border-red-500/55 pl-3 font-mono text-[10px] uppercase tracking-[0.15em] text-red-400 md:left-10 md:top-10 md:tracking-[0.24em]">
-              PLASMA EDGE STABLE
+            <div className="absolute left-4 top-4 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-red-400/80 md:left-6 md:top-6">
+              <div className="h-px w-4 bg-red-500/50" />
+              GLOWING BLADE
             </div>
-            <div className="absolute bottom-6 right-6 border-r border-white/20 pr-3 text-right font-mono text-[10px] uppercase tracking-[0.15em] text-white/45 md:bottom-10 md:right-10 md:tracking-[0.24em]">
-              MAG-LOCK SHEATH
+            <div className="absolute bottom-4 right-4 flex items-center gap-2 text-right font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 md:bottom-6 md:right-6">
+              MAGNETIC SHEATH
+              <div className="h-px w-4 bg-white/20" />
             </div>
           </div>
         </motion.div>
@@ -396,14 +400,14 @@ function LoreScene() {
   );
 }
 
-function BladeArchive({ onOpenCheckout, onOpenSpecs }) {
+function BladeArchive({ onOpenCheckout }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeBlade = archiveItems[activeIndex];
 
   return (
     <section
       id="blade-archive"
-      className="relative overflow-x-clip bg-black px-6 py-20 md:px-10 md:py-24 lg:px-16"
+      className="relative overflow-x-clip bg-black px-6 py-12 md:px-10 md:py-16 lg:px-16"
     >
       <AmbientField className="opacity-60" />
       <div
@@ -422,13 +426,13 @@ function BladeArchive({ onOpenCheckout, onOpenSpecs }) {
           className="mb-12 flex flex-col gap-4"
         >
           <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-red-500 md:tracking-[0.28em]">
-            BLADE ARCHIVE / ACTIVE VARIANTS
+            PRODUCT CATALOG
           </span>
           <h2 className="font-display text-4xl uppercase tracking-[0.05em] text-white md:text-6xl md:tracking-[0.1em]">
-            CHOOSE YOUR RELIC
+            CHOOSE YOUR BLADE
           </h2>
           <p className="max-w-2xl text-base leading-8 text-white/58 md:text-lg">
-            Seven sealed variants. One myth. Each blade carries a different signal, material language, and combat ritual.
+            Multiple color variants available. Choose the one that fits your style.
           </p>
         </motion.div>
 
@@ -480,7 +484,7 @@ function BladeArchive({ onOpenCheckout, onOpenSpecs }) {
                     }}
                     className="absolute left-5 top-5 rounded-full border bg-black/55 px-3 py-1 font-mono text-[9px] uppercase tracking-[0.14em] md:tracking-[0.22em]"
                   >
-                    ACTIVE RECORD / {activeBlade.id}
+                    VIEWING / {activeBlade.id}
                   </div>
                 </div>
 
@@ -495,7 +499,7 @@ function BladeArchive({ onOpenCheckout, onOpenSpecs }) {
                       style={{ color: `rgb(${activeBlade.accent})` }}
                       className="font-mono text-[10px] uppercase tracking-[0.16em] md:tracking-[0.28em]"
                     >
-                      SIGNAL LOCKED / {activeBlade.id}
+                      SELECTED / {activeBlade.id}
                     </span>
                     <h3 className="font-display text-3xl uppercase tracking-[0.05em] text-white md:text-5xl md:tracking-[0.1em]">
                       {activeBlade.name}
@@ -508,39 +512,35 @@ function BladeArchive({ onOpenCheckout, onOpenSpecs }) {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.35 }}
-                    className="grid gap-4 text-sm text-white/48 sm:grid-cols-2 lg:grid-cols-1"
+                    className="grid gap-3 text-sm text-white/48 sm:grid-cols-2 lg:grid-cols-2"
                   >
-                    <div className="border-t border-white/10 pt-4">
-                      <div
-                        style={{ color: `rgb(${activeBlade.accent})` }}
-                        className="font-mono text-[10px] uppercase tracking-[0.16em] md:tracking-[0.24em]"
-                      >
-                        Variant
-                      </div>
-                      <div className="mt-2">{activeBlade.series}</div>
+                    <div className="border-t border-white/10 pt-3">
+                      <div style={{ color: `rgb(${activeBlade.accent})` }} className="font-mono text-[9px] uppercase tracking-[0.16em]">Blade Material</div>
+                      <div className="mt-1 font-mono text-xs text-white/80">{activeBlade.specs.material}</div>
                     </div>
-                    <div className="border-t border-white/10 pt-4">
-                      <div
-                        style={{ color: `rgb(${activeBlade.accent})` }}
-                        className="font-mono text-[10px] uppercase tracking-[0.16em] md:tracking-[0.24em]"
-                      >
-                        Record State
-                      </div>
-                      <div className="mt-2">Relic online</div>
+                    <div className="border-t border-white/10 pt-3">
+                      <div style={{ color: `rgb(${activeBlade.accent})` }} className="font-mono text-[9px] uppercase tracking-[0.16em]">Plasma Edge</div>
+                      <div className="mt-1 font-mono text-xs text-white/80">{activeBlade.specs.edge}</div>
+                    </div>
+                    <div className="border-t border-white/10 pt-3">
+                      <div style={{ color: `rgb(${activeBlade.accent})` }} className="font-mono text-[9px] uppercase tracking-[0.16em]">Grip System</div>
+                      <div className="mt-1 font-mono text-xs text-white/80">{activeBlade.specs.grip}</div>
+                    </div>
+                    <div className="border-t border-white/10 pt-3">
+                      <div style={{ color: `rgb(${activeBlade.accent})` }} className="font-mono text-[9px] uppercase tracking-[0.16em]">Sheath Tech</div>
+                      <div className="mt-1 font-mono text-xs text-white/80">{activeBlade.specs.sheath}</div>
+                    </div>
+                    <div className="border-t border-white/10 pt-3">
+                      <div style={{ color: `rgb(${activeBlade.accent})` }} className="font-mono text-[9px] uppercase tracking-[0.16em]">Dimensions</div>
+                      <div className="mt-1 font-mono text-xs text-white/80">{activeBlade.specs.length}</div>
+                    </div>
+                    <div className="border-t border-white/10 pt-3">
+                      <div style={{ color: `rgb(${activeBlade.accent})` }} className="font-mono text-[9px] uppercase tracking-[0.16em]">Status</div>
+                      <div className="mt-1 font-mono text-xs text-white/80">Available</div>
                     </div>
                   </motion.div>
 
-                  <div className="flex flex-col gap-4">
-                    <button
-                      onMouseEnter={playHover}
-                      onClick={() => {
-                        playClick();
-                        onOpenSpecs();
-                      }}
-                      className="inline-flex items-center justify-center gap-2 border border-white/12 bg-white/[0.03] px-6 py-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-red-500/55 hover:bg-red-950/20 md:tracking-[0.28em]"
-                    >
-                      Open Build File
-                    </button>
+                  <div className="flex flex-col gap-4 mt-2">
                     <button
                       onMouseEnter={playHover}
                       onClick={() => {
@@ -553,7 +553,7 @@ function BladeArchive({ onOpenCheckout, onOpenSpecs }) {
                       }}
                       className="inline-flex items-center justify-center gap-2 border px-6 py-4 font-mono text-[10px] uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-white/55 hover:bg-white hover:text-black md:tracking-[0.28em]"
                     >
-                      Acquire Variant
+                      Buy Now
                     </button>
                   </div>
                 </div>
@@ -616,7 +616,7 @@ function BladeArchive({ onOpenCheckout, onOpenSpecs }) {
                           {item.id}
                         </span>
                         <span className="font-mono text-[8px] uppercase tracking-[0.14em] text-white/38 md:tracking-[0.2em]">
-                          {isActive ? 'ACTIVE' : 'SEALED'}
+                          {isActive ? 'SELECTED' : 'UNAVAILABLE'}
                         </span>
                       </div>
                       <span className="font-display text-lg uppercase tracking-[0.04em] text-white md:text-xl">
@@ -626,7 +626,7 @@ function BladeArchive({ onOpenCheckout, onOpenSpecs }) {
                         style={{ color: isActive ? `rgb(${item.accent})` : undefined }}
                         className="truncate font-mono text-[8px] uppercase tracking-[0.12em] text-white/40 md:text-[9px] md:tracking-[0.18em]"
                       >
-                        {isActive ? 'ACTIVE VARIANT' : 'SIGNAL LOCKED'}
+                        {isActive ? 'SELECTED' : 'UNSELECTED'}
                       </span>
                     </div>
                   </div>
@@ -642,7 +642,7 @@ function BladeArchive({ onOpenCheckout, onOpenSpecs }) {
 
 function BuildFile() {
   return (
-    <section className="relative bg-black px-6 py-20 md:px-10 md:py-24 lg:px-16">
+    <section id="build-file" className="relative bg-black px-6 py-12 md:px-10 md:py-16 lg:px-16">
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.015),transparent_24%)]" />
       <AmbientField className="opacity-40" />
 
@@ -655,13 +655,13 @@ function BuildFile() {
           className="mb-12 flex flex-col gap-4"
         >
           <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-red-500 md:tracking-[0.28em]">
-            STUDIO TRANSMISSION / BUILD FILE
+            DESIGN & DEVELOPMENT
           </span>
           <h2 className="font-display text-4xl uppercase tracking-[0.05em] text-white md:text-5xl md:tracking-[0.1em]">
-            THE SYSTEM BEHIND THE BLADE
+            HOW WE BUILT IT
           </h2>
           <p className="max-w-2xl text-base leading-8 text-white/55">
-            A breakdown of the design decisions, motion principles, and product mythology that power this experience.
+            A breakdown of the design decisions, motion principles, and product storytelling that power this experience.
           </p>
         </motion.div>
 
@@ -686,7 +686,7 @@ function BuildFile() {
                 <div className="flex items-end justify-between gap-3">
                   <span className="font-display text-5xl text-white/14">{card.id}</span>
                   <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-red-500 md:tracking-[0.22em]">
-                    SYSTEM NOTE
+                    NOTE
                   </span>
                 </div>
               </div>
@@ -707,10 +707,10 @@ function BuildFile() {
           className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.04] sm:grid-cols-4"
         >
           {[
-            { label: 'TOTAL VARIANTS', value: '07', sub: 'sealed archive' },
-            { label: 'SCROLL STAGES', value: '12', sub: 'motion sequences' },
-            { label: 'SIGNAL LAYERS', value: '04', sub: 'audio + visual' },
-            { label: 'ARCHIVE STATUS', value: 'LIVE', sub: 'transmission open' },
+            { label: 'COLORS AVAILABLE', value: '07', sub: 'in stock' },
+            { label: 'ANIMATIONS', value: '12', sub: 'scroll effects' },
+            { label: 'SOUNDS', value: '04', sub: 'sound effects' },
+            { label: 'STATUS', value: 'ONLINE', sub: 'ready to buy' },
           ].map((item) => (
             <div key={item.label} className="flex flex-col gap-2 bg-black/60 px-5 py-5">
               <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-red-500">{item.label}</span>
@@ -724,207 +724,148 @@ function BuildFile() {
   );
 }
 
-function FinalCTA({ onOpenCheckout, onOpenSpecs }) {
+function FinalCTA({ onOpenCheckout }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'end start'],
   });
 
-  const imageY = useTransform(scrollYProgress, [0, 1], [24, -24]);
-  const glowPulse = useTransform(scrollYProgress, [0.1, 0.6], [0.6, 1.1]);
+  const imageY = useTransform(scrollYProgress, [0, 1], [40, -40]);
+  const glowPulse = useTransform(scrollYProgress, [0.1, 0.6], [0.6, 1.2]);
+  const scaleImage = useTransform(scrollYProgress, [0, 1], [1.1, 1]);
 
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden bg-black px-6 py-24 md:px-10 md:py-32 lg:px-16"
+      className="relative flex flex-col items-center justify-center overflow-hidden bg-black px-6 py-16 md:px-10 md:py-20 lg:px-16 min-h-[60vh]"
     >
-      {/* Subtle ambient background — no image, just atmosphere */}
-      <motion.div
-        style={{ scale: glowPulse }}
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_80%_50%,rgba(220,38,38,0.13),transparent_42%)]"
-      />
-      <AmbientField className="opacity-30" />
+      {/* Immersive Background */}
+      <div className="absolute inset-0 z-0">
+        <motion.div
+          style={{ scale: glowPulse }}
+          className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.15),transparent_60%)]"
+        />
+        <motion.div style={{ y: imageY, scale: scaleImage }} className="absolute inset-0 opacity-40">
+          <KatanaImage
+            src={asset('katanas/final-silhouette.webp')}
+            alt="X-01 final silhouette"
+            priority
+            accent="220,38,38"
+            className="h-full w-full object-cover object-center"
+          />
+          {/* Heavy vignette to push focus to center text */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_10%,rgba(0,0,0,0.95)_70%)]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+        </motion.div>
+        <AmbientField className="opacity-40" />
+      </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl">
-        {/* Two-column grid: text left, katana image right */}
-        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:gap-16">
+      {/* Centered Foreground Content */}
+      <div className="relative z-10 flex max-w-4xl flex-col items-center text-center">
+        <motion.span
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6 }}
+          className="mb-6 font-mono text-[10px] uppercase tracking-[0.3em] text-red-500 md:text-[11px]"
+        >
+          CONCLUSION
+        </motion.span>
 
-          {/* LEFT: Text content */}
-          <motion.div
-            initial={{ opacity: 0, y: 28 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.65 }}
-            className="flex flex-col gap-7"
+        <motion.h2
+          initial={{ opacity: 0, filter: 'blur(10px)', y: 20 }}
+          whileInView={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.9, delay: 0.1 }}
+          className="font-display text-5xl uppercase leading-[1.05] tracking-[0.05em] text-white sm:text-6xl md:text-7xl lg:text-8xl"
+        >
+          CREATE MEMORABLE<br />EXPERIENCES.
+        </motion.h2>
+
+        <motion.p
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mx-auto mt-8 max-w-xl text-base leading-relaxed text-white/50 md:text-lg"
+        >
+          Cyber Katana X-01 is a fictional product experience built to showcase cinematic web design, motion language, and premium product storytelling.
+        </motion.p>
+
+        {/* Action Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.45 }}
+          className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5"
+        >
+          <button
+            onMouseEnter={playHover}
+            onClick={() => { playClick(); onOpenCheckout(); }}
+            className="group relative overflow-hidden border border-red-500/50 bg-red-600/10 px-8 py-4 font-mono text-[10px] uppercase tracking-[0.25em] text-white transition-all duration-500 hover:border-red-500 hover:bg-red-600 hover:shadow-[0_0_40px_rgba(220,38,38,0.4)]"
           >
-            <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-red-500 md:text-[11px]">
-              FINAL TRANSMISSION
+            <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-red-500 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            <span className="relative z-10 flex items-center gap-3">
+              Buy Now <ArrowRight size={12} />
             </span>
-
-            <motion.h2
-              initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
-              whileInView={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
-              viewport={{ once: true, amount: 0.35 }}
-              transition={{ duration: 0.8, delay: 0.08 }}
-              className="font-display text-5xl uppercase leading-[1.05] tracking-[0.04em] text-white md:text-6xl lg:text-7xl"
-            >
-              BUILD A WORLD<br />THEY REMEMBER.
-            </motion.h2>
-
-            <motion.p
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{ duration: 0.55, delay: 0.18 }}
-              className="max-w-md text-base leading-8 text-white/55 md:text-lg"
-            >
-              Cyber Katana X-01 is a fictional product experience built to showcase cinematic web design, motion language, and premium product storytelling.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.5, delay: 0.26 }}
-              className="flex flex-wrap gap-3"
-            >
-              <button
-                onMouseEnter={playHover}
-                onClick={() => { playClick(); onOpenCheckout(); }}
-                className="inline-flex items-center gap-2 border border-red-500/55 bg-red-600 px-7 py-4 font-mono text-[10px] uppercase tracking-[0.22em] text-white transition-all duration-300 hover:bg-white hover:text-black"
-              >
-                Commission This Style
-              </button>
-              <button
-                onMouseEnter={playHover}
-                onClick={() => { playClick(); window.location.href = 'mailto:your@email.com'; }}
-                className="inline-flex items-center gap-2 border border-white/14 bg-white/[0.03] px-7 py-4 font-mono text-[10px] uppercase tracking-[0.22em] text-white transition-all duration-300 hover:border-red-500/45 hover:bg-red-950/20"
-              >
-                Send Transmission
-              </button>
-              <button
-                onMouseEnter={playHover}
-                onClick={() => { playClick(); scrollToId('blade-archive'); }}
-                className="inline-flex items-center gap-2 border border-white/14 bg-white/[0.03] px-7 py-4 font-mono text-[10px] uppercase tracking-[0.22em] text-white transition-all duration-300 hover:border-red-500/45 hover:bg-red-950/20"
-              >
-                Inspect Archive
-              </button>
-            </motion.div>
-
-            {/* Divider */}
-            <motion.div
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.9, delay: 0.38 }}
-              className="h-px origin-left bg-gradient-to-r from-red-500/35 via-white/8 to-transparent"
-            />
-
-            {/* Meta row */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.48 }}
-              className="flex flex-wrap items-center gap-5"
-            >
-              <div className="flex items-center gap-2">
-                <ArrowRight size={10} className="text-red-400" />
-                <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-white/30">X-01 Crimson Archive</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Shield size={10} className="text-red-400" />
-                <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-white/30">S-Class Relic / Ltd. Collector</span>
-              </div>
-              <button
-                onMouseEnter={playHover}
-                onClick={() => { playClick(); onOpenSpecs(); }}
-                className="font-mono text-[8px] uppercase tracking-[0.2em] text-white/30 transition-colors hover:text-red-400"
-              >
-                Open Build File →
-              </button>
-            </motion.div>
-          </motion.div>
-
-          {/* RIGHT: Katana image — self-contained, no bleed into left col */}
-          <motion.div
-            initial={{ opacity: 0, x: 32 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.15 }}
-            transition={{ duration: 0.8, delay: 0.12 }}
-            className="relative"
+          </button>
+          
+          <button
+            onMouseEnter={playHover}
+            onClick={() => { playClick(); window.location.href = 'mailto:your@email.com'; }}
+            className="group relative border border-white/10 bg-white/[0.02] px-8 py-4 font-mono text-[10px] uppercase tracking-[0.25em] text-white transition-all duration-300 hover:border-white/30 hover:bg-white/[0.05]"
           >
-            {/* Frame card */}
-            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-black/50 shadow-[0_0_80px_rgba(220,38,38,0.1)]">
-              {/* Top HUD bar */}
-              <div className="flex items-center justify-between border-b border-white/8 px-5 py-3">
-                <span className="font-mono text-[8px] uppercase tracking-[0.22em] text-red-400">
-                  FINAL RECORD / X-01
-                </span>
-                <div className="flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-red-500 shadow-[0_0_6px_rgba(220,38,38,0.8)]" />
-                  <span className="font-mono text-[7px] uppercase tracking-[0.16em] text-white/30">LIVE</span>
-                </div>
-              </div>
+            Contact Us
+          </button>
+          
+          <button
+            onMouseEnter={playHover}
+            onClick={() => { playClick(); scrollToId('blade-archive'); }}
+            className="group relative border border-white/10 bg-white/[0.02] px-8 py-4 font-mono text-[10px] uppercase tracking-[0.25em] text-white transition-all duration-300 hover:border-white/30 hover:bg-white/[0.05]"
+          >
+            View Catalog
+          </button>
+        </motion.div>
 
-              {/* Image */}
-              <motion.div
-                style={{ y: imageY }}
-                className="relative aspect-[3/4] overflow-hidden"
-              >
-                <KatanaImage
-                  src={asset('katanas/final-silhouette.webp')}
-                  alt="X-01 final silhouette"
-                  accent="220,38,38"
-                  className="h-full w-full object-cover object-center"
-                />
-                {/* Subtle red glow overlay */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_60%,rgba(220,38,38,0.15),transparent_50%)]" />
-                {/* Bottom fade into card */}
-                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/80 to-transparent" />
-              </motion.div>
-
-              {/* Bottom stat strip */}
-              <div className="grid grid-cols-3 divide-x divide-white/8 border-t border-white/8">
-                {[
-                  { label: 'CLASS', value: 'X-01' },
-                  { label: 'SIGNAL', value: 'CRIMSON' },
-                  { label: 'TIER', value: 'S-CLASS' },
-                ].map((s) => (
-                  <div key={s.label} className="flex flex-col items-center gap-1 py-3">
-                    <span className="font-mono text-[7px] uppercase tracking-[0.16em] text-red-500/70">{s.label}</span>
-                    <span className="font-mono text-xs font-semibold uppercase tracking-wide text-white/80">{s.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Decorative corner label */}
-            <div className="absolute -bottom-6 right-4 font-mono text-[7px] uppercase tracking-[0.2em] text-white/18">
-              RELIC ARCHIVE / COLLECTOR EDITION
-            </div>
-          </motion.div>
-
-        </div>
+        {/* Bottom Meta */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.7 }}
+          className="mt-16 flex items-center justify-center gap-6 font-mono text-[8px] uppercase tracking-[0.2em] text-white/30"
+        >
+          <div className="flex items-center gap-2">
+            <span className="h-1 w-1 rounded-full bg-red-500 shadow-[0_0_8px_rgba(220,38,38,1)]" />
+            ONLINE
+          </div>
+          <span className="h-px w-8 bg-white/10" />
+          <button
+            onMouseEnter={playHover}
+            onClick={() => { playClick(); scrollToId('build-file'); }}
+            className="flex items-center gap-2 transition-colors hover:text-red-400"
+          >
+            Read Notes <Shield size={10} />
+          </button>
+        </motion.div>
       </div>
     </section>
   );
 }
 
-export default function ArchiveSections({ onOpenCheckout, onOpenSpecs }) {
+export default function ArchiveSections({ onOpenCheckout }) {
   return (
     <>
       <LoreScene />
       <TransitionWipe variant="scan" />
       <BladeArchive
         onOpenCheckout={onOpenCheckout}
-        onOpenSpecs={onOpenSpecs}
       />
       <BuildFile />
       <FinalCTA
         onOpenCheckout={onOpenCheckout}
-        onOpenSpecs={onOpenSpecs}
       />
     </>
   );
