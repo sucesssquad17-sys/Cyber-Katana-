@@ -845,134 +845,182 @@ function FinalCTA({ onOpenCheckout, onOpenSpecs }) {
     offset: ['start end', 'end start'],
   });
 
-  const imageY = useTransform(scrollYProgress, [0, 1], [30, -30]);
-  const bloomScale = useTransform(scrollYProgress, [0.15, 0.85], [0.8, 1.25]);
+  const imageY = useTransform(scrollYProgress, [0, 1], [24, -24]);
+  const glowPulse = useTransform(scrollYProgress, [0.1, 0.6], [0.6, 1.1]);
 
   return (
     <section
       ref={ref}
-      className="relative flex min-h-screen items-center overflow-hidden bg-black px-6 py-20 md:px-10 md:py-24 lg:px-16"
+      className="relative overflow-hidden bg-black px-6 py-24 md:px-10 md:py-32 lg:px-16"
     >
+      {/* Subtle ambient background — no image, just atmosphere */}
       <motion.div
-        style={{ scale: bloomScale }}
-        className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(220,38,38,0.22),transparent_28%),linear-gradient(180deg,#000_10%,rgba(0,0,0,0.94)_100%)]"
+        style={{ scale: glowPulse }}
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_80%_50%,rgba(220,38,38,0.13),transparent_42%)]"
       />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,#000_0%,rgba(0,0,0,0.82)_46%,rgba(0,0,0,0.25)_100%)]" />
-      <motion.div
-        style={{ y: imageY }}
-        className="absolute inset-y-0 right-0 w-full lg:w-[62%]"
-      >
-        <KatanaImage
-          src={asset('katanas/final-silhouette.webp')}
-          alt="Final X-01 silhouette"
-          accent="220,38,38"
-          className="h-full w-full object-cover object-right"
-        />
-      </motion.div>
+      <AmbientField className="opacity-30" />
 
-      <div className="relative z-10 mx-auto w-full max-w-4xl">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.25 }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col gap-7"
-        >
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-red-500 md:text-[11px] md:tracking-[0.32em]">
-            FINAL TRANSMISSION
-          </span>
-          <motion.h2
-            initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
-            whileInView={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
-            viewport={{ once: true, amount: 0.45 }}
-            transition={{ duration: 0.7 }}
-            className="font-display text-5xl uppercase tracking-[0.05em] text-white md:text-7xl md:tracking-[0.1em] lg:text-8xl"
-          >
-            BUILD A WORLD<br />THEY REMEMBER.
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.55, delay: 0.15 }}
-            className="max-w-lg text-base leading-8 text-white/60 md:text-lg"
-          >
-            Cyber Katana X-01 is a fictional product experience built to showcase cinematic web design, motion language, and premium product storytelling.
-          </motion.p>
+      <div className="relative z-10 mx-auto max-w-7xl">
+        {/* Two-column grid: text left, katana image right */}
+        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:gap-16">
 
+          {/* LEFT: Text content */}
           <motion.div
-            initial={{ opacity: 0, y: 18 }}
+            initial={{ opacity: 0, y: 28 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.55, delay: 0.25 }}
-            className="flex flex-wrap gap-3"
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.65 }}
+            className="flex flex-col gap-7"
           >
-            <button
-              onMouseEnter={playHover}
-              onClick={() => {
-                playClick();
-                onOpenCheckout();
-              }}
-              className="inline-flex items-center gap-2 border border-red-500/55 bg-red-600 px-7 py-4 font-mono text-[10px] uppercase tracking-[0.22em] text-white transition-all duration-300 hover:bg-white hover:text-black md:tracking-[0.28em]"
+            <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-red-500 md:text-[11px]">
+              FINAL TRANSMISSION
+            </span>
+
+            <motion.h2
+              initial={{ opacity: 0, clipPath: 'inset(0 100% 0 0)' }}
+              whileInView={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{ duration: 0.8, delay: 0.08 }}
+              className="font-display text-5xl uppercase leading-[1.05] tracking-[0.04em] text-white md:text-6xl lg:text-7xl"
             >
-              Commission This Style
-            </button>
-            <button
-              onMouseEnter={playHover}
-              onClick={() => {
-                playClick();
-                window.location.href = 'mailto:your@email.com';
-              }}
-              className="inline-flex items-center gap-2 border border-white/15 bg-white/[0.04] px-7 py-4 font-mono text-[10px] uppercase tracking-[0.22em] text-white transition-all duration-300 hover:border-red-500/55 hover:bg-red-950/25 md:tracking-[0.28em]"
+              BUILD A WORLD<br />THEY REMEMBER.
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.55, delay: 0.18 }}
+              className="max-w-md text-base leading-8 text-white/55 md:text-lg"
             >
-              Send Transmission
-            </button>
-            <button
-              onMouseEnter={playHover}
-              onClick={() => {
-                playClick();
-                scrollToId('blade-archive');
-              }}
-              className="inline-flex items-center gap-2 border border-white/15 bg-white/[0.04] px-7 py-4 font-mono text-[10px] uppercase tracking-[0.22em] text-white transition-all duration-300 hover:border-red-500/55 hover:bg-red-950/25 md:tracking-[0.28em]"
+              Cyber Katana X-01 is a fictional product experience built to showcase cinematic web design, motion language, and premium product storytelling.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.26 }}
+              className="flex flex-wrap gap-3"
             >
-              Inspect Archive
-            </button>
+              <button
+                onMouseEnter={playHover}
+                onClick={() => { playClick(); onOpenCheckout(); }}
+                className="inline-flex items-center gap-2 border border-red-500/55 bg-red-600 px-7 py-4 font-mono text-[10px] uppercase tracking-[0.22em] text-white transition-all duration-300 hover:bg-white hover:text-black"
+              >
+                Commission This Style
+              </button>
+              <button
+                onMouseEnter={playHover}
+                onClick={() => { playClick(); window.location.href = 'mailto:your@email.com'; }}
+                className="inline-flex items-center gap-2 border border-white/14 bg-white/[0.03] px-7 py-4 font-mono text-[10px] uppercase tracking-[0.22em] text-white transition-all duration-300 hover:border-red-500/45 hover:bg-red-950/20"
+              >
+                Send Transmission
+              </button>
+              <button
+                onMouseEnter={playHover}
+                onClick={() => { playClick(); scrollToId('blade-archive'); }}
+                className="inline-flex items-center gap-2 border border-white/14 bg-white/[0.03] px-7 py-4 font-mono text-[10px] uppercase tracking-[0.22em] text-white transition-all duration-300 hover:border-red-500/45 hover:bg-red-950/20"
+              >
+                Inspect Archive
+              </button>
+            </motion.div>
+
+            {/* Divider */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9, delay: 0.38 }}
+              className="h-px origin-left bg-gradient-to-r from-red-500/35 via-white/8 to-transparent"
+            />
+
+            {/* Meta row */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.48 }}
+              className="flex flex-wrap items-center gap-5"
+            >
+              <div className="flex items-center gap-2">
+                <ArrowRight size={10} className="text-red-400" />
+                <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-white/30">X-01 Crimson Archive</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Shield size={10} className="text-red-400" />
+                <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-white/30">S-Class Relic / Ltd. Collector</span>
+              </div>
+              <button
+                onMouseEnter={playHover}
+                onClick={() => { playClick(); onOpenSpecs(); }}
+                className="font-mono text-[8px] uppercase tracking-[0.2em] text-white/30 transition-colors hover:text-red-400"
+              >
+                Open Build File →
+              </button>
+            </motion.div>
           </motion.div>
 
-          {/* Subtle divider */}
+          {/* RIGHT: Katana image — self-contained, no bleed into left col */}
           <motion.div
-            initial={{ scaleX: 0, opacity: 0 }}
-            whileInView={{ scaleX: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="h-px w-full origin-left bg-gradient-to-r from-red-500/40 via-white/10 to-transparent"
-          />
-
-          {/* Bottom meta row */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="flex flex-wrap items-center gap-6"
+            initial={{ opacity: 0, x: 32 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.8, delay: 0.12 }}
+            className="relative"
           >
-            <div className="flex items-center gap-2">
-              <ArrowRight size={11} className="text-red-400" />
-              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/35">X-01 Crimson Archive</span>
+            {/* Frame card */}
+            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-black/50 shadow-[0_0_80px_rgba(220,38,38,0.1)]">
+              {/* Top HUD bar */}
+              <div className="flex items-center justify-between border-b border-white/8 px-5 py-3">
+                <span className="font-mono text-[8px] uppercase tracking-[0.22em] text-red-400">
+                  FINAL RECORD / X-01
+                </span>
+                <div className="flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-red-500 shadow-[0_0_6px_rgba(220,38,38,0.8)]" />
+                  <span className="font-mono text-[7px] uppercase tracking-[0.16em] text-white/30">LIVE</span>
+                </div>
+              </div>
+
+              {/* Image */}
+              <motion.div
+                style={{ y: imageY }}
+                className="relative aspect-[3/4] overflow-hidden"
+              >
+                <KatanaImage
+                  src={asset('katanas/final-silhouette.webp')}
+                  alt="X-01 final silhouette"
+                  accent="220,38,38"
+                  className="h-full w-full object-cover object-center"
+                />
+                {/* Subtle red glow overlay */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_60%,rgba(220,38,38,0.15),transparent_50%)]" />
+                {/* Bottom fade into card */}
+                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/80 to-transparent" />
+              </motion.div>
+
+              {/* Bottom stat strip */}
+              <div className="grid grid-cols-3 divide-x divide-white/8 border-t border-white/8">
+                {[
+                  { label: 'CLASS', value: 'X-01' },
+                  { label: 'SIGNAL', value: 'CRIMSON' },
+                  { label: 'TIER', value: 'S-CLASS' },
+                ].map((s) => (
+                  <div key={s.label} className="flex flex-col items-center gap-1 py-3">
+                    <span className="font-mono text-[7px] uppercase tracking-[0.16em] text-red-500/70">{s.label}</span>
+                    <span className="font-mono text-xs font-semibold uppercase tracking-wide text-white/80">{s.value}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Shield size={11} className="text-red-400" />
-              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/35">S-Class Relic / Ltd. Collector</span>
+
+            {/* Decorative corner label */}
+            <div className="absolute -bottom-6 right-4 font-mono text-[7px] uppercase tracking-[0.2em] text-white/18">
+              RELIC ARCHIVE / COLLECTOR EDITION
             </div>
-            <button
-              onMouseEnter={playHover}
-              onClick={() => { playClick(); onOpenSpecs(); }}
-              className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/35 underline-offset-4 transition-colors hover:text-red-400"
-            >
-              Open Build File →
-            </button>
           </motion.div>
-        </motion.div>
+
+        </div>
       </div>
     </section>
   );
