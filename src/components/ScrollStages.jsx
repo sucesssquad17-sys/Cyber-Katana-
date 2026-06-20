@@ -10,7 +10,7 @@ function scrollToArchive() {
   }
 }
 
-export default function ScrollStages({ scrollYProgress, onOpenSpecs, onOpenCheckout }) {
+export default function ScrollStages({ scrollYProgress, onOpenCheckout }) {
   const previous = useRef(0);
 
   useMotionValueEvent(scrollYProgress, 'change', (latest) => {
@@ -40,41 +40,42 @@ export default function ScrollStages({ scrollYProgress, onOpenSpecs, onOpenCheck
 
   return (
     <div className="absolute inset-0 z-30 pointer-events-none">
+      {/* Hero Section */}
       <motion.div
         style={{ opacity: heroOpacity, y: heroY }}
         className="absolute inset-0 flex items-center"
       >
-        <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-6 md:px-10 lg:px-16 pointer-events-auto">
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 md:gap-10 px-6 md:px-10 lg:px-16 pointer-events-auto">
           <div className="max-w-2xl">
-            <span className="font-mono text-[11px] uppercase tracking-[0.5em] text-red-500">
+            <span className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.3em] md:tracking-[0.5em] text-red-500">
               Cyber Katana / X-01 Concept
             </span>
-            <h1 className="mt-6 font-display text-5xl uppercase tracking-[0.14em] text-white md:text-7xl lg:text-8xl">
+            <h1 className="mt-3 md:mt-6 font-display text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-8xl uppercase tracking-[0.06em] md:tracking-[0.14em] text-white leading-[1.1]">
               A premium
               <br />
               design concept.
             </h1>
-            <div className="mt-6 border-l border-red-500/50 pl-4">
+            <div className="mt-4 md:mt-6 border-l border-red-500/50 pl-4">
               <motion.p
                 style={{ clipPath: heroClip }}
-                className="font-mono text-sm uppercase tracking-[0.28em] text-white/58"
+                className="font-mono text-xs uppercase tracking-[0.2em] md:tracking-[0.28em] text-white/58"
               >
                 Loading assets and animations...
               </motion.p>
             </div>
-            <p className="mt-8 max-w-xl text-base leading-8 text-white/68 md:text-lg">
+            <p className="mt-4 md:mt-8 max-w-xl text-sm md:text-lg leading-relaxed text-white/68">
               Multiple color variants available. Explore this cinematic landing page concept featuring interactive 3D elements and scroll animations.
             </p>
           </div>
 
-          <div className="flex flex-col gap-4 sm:flex-row">
+          <div className="flex flex-col gap-3 sm:flex-row w-full sm:w-auto">
             <button
               onMouseEnter={() => audio.playGlassTap()}
               onClick={() => {
                 audio.playBeep();
                 scrollToArchive();
               }}
-              className="cyber-button px-6 py-4 text-[10px]"
+              className="cyber-button min-h-[44px] px-6 py-3.5 text-[10px] w-full sm:w-auto"
             >
               View Catalog
             </button>
@@ -82,21 +83,22 @@ export default function ScrollStages({ scrollYProgress, onOpenSpecs, onOpenCheck
               onMouseEnter={() => audio.playGlassTap()}
               onClick={() => {
                 audio.playBeep();
-                onOpenCheckout();
+                onOpenCheckout('X-09');
               }}
-              className="cyber-button cyber-button--ghost px-6 py-4 text-[10px]"
+              className="cyber-button cyber-button--ghost min-h-[44px] px-6 py-3.5 text-[10px] w-full sm:w-auto"
             >
-              Buy Now
+              Reserve Blade
             </button>
           </div>
         </div>
       </motion.div>
 
+      {/* Systems Panel - Positioned responsive side or bottom */}
       <motion.div
         style={{ opacity: systemsOpacity, x: systemsX }}
-        className="absolute inset-y-0 right-0 flex items-center justify-end px-6 md:px-10 lg:px-16"
+        className="absolute inset-x-6 bottom-20 md:bottom-auto md:right-0 md:inset-y-0 flex items-center justify-end md:px-10 lg:px-16"
       >
-        <div className="grid w-full max-w-xl gap-4 pointer-events-auto">
+        <div className="grid w-full max-w-sm md:max-w-xl grid-cols-1 gap-2 md:gap-4 pointer-events-auto">
           <StagePanel
             icon={Crosshair}
             label="Grip"
@@ -118,32 +120,33 @@ export default function ScrollStages({ scrollYProgress, onOpenSpecs, onOpenCheck
         </div>
       </motion.div>
 
+      {/* Loading Complete System Check */}
       <motion.div
         style={{ opacity: unlockOpacity, y: unlockY }}
-        className="absolute inset-x-0 bottom-12 px-6 md:bottom-14 md:px-10 lg:px-16"
+        className="absolute inset-x-6 bottom-10 md:bottom-14 md:px-10 lg:px-16"
       >
         <div className="mx-auto max-w-7xl">
           <div className="relative max-w-3xl">
             <motion.div
               style={{ scaleX: slashScaleX, opacity: slashOpacity }}
-              className="mb-6 h-px origin-left bg-gradient-to-r from-red-600 via-white to-red-600 shadow-[0_0_24px_rgba(248,113,113,0.8)]"
+              className="mb-4 h-px origin-left bg-gradient-to-r from-red-600 via-white to-red-600 shadow-[0_0_24px_rgba(248,113,113,0.8)]"
             />
-            <div className="flex flex-col gap-4 rounded-[1.75rem] border border-white/10 bg-black/55 px-6 py-6 backdrop-blur-md md:flex-row md:items-center md:justify-between">
-              <div className="flex flex-col gap-2">
-                <span className="font-mono text-[11px] uppercase tracking-[0.44em] text-red-500">
+            <div className="flex flex-col gap-3 rounded-[1.2rem] md:rounded-[1.75rem] border border-white/10 bg-black/55 px-4 py-4 md:px-6 md:py-6 backdrop-blur-md md:flex-row md:items-center md:justify-between">
+              <div className="flex flex-col gap-1">
+                <span className="font-mono text-[9px] md:text-[11px] uppercase tracking-[0.3em] md:tracking-[0.44em] text-red-500">
                   System Check
                 </span>
-                <h2 className="font-display text-3xl uppercase tracking-[0.12em] text-white md:text-4xl">
+                <h2 className="font-display text-xl md:text-4xl uppercase tracking-[0.12em] text-white">
                   Loading Complete.
                 </h2>
-                <p className="text-sm text-white/55 md:text-base">
+                <p className="text-xs md:text-sm text-white/55">
                   Welcome to the showcase.
                 </p>
               </div>
-              <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-white/55">
-                <ScanLine size={16} className="text-red-400" />
+              <div className="flex items-center gap-2 font-mono text-[9px] md:text-[10px] uppercase tracking-[0.2em] md:tracking-[0.28em] text-white/55 mt-2 md:mt-0">
+                <ScanLine size={14} className="text-red-400" />
                 scroll to continue
-                <ArrowRight size={16} className="text-red-400" />
+                <ArrowRight size={14} className="text-red-400" />
               </div>
             </div>
           </div>
@@ -157,18 +160,18 @@ function StagePanel({ icon: Icon, label, title, copy }) {
   return (
     <div
       onMouseEnter={() => audio.playGlassTap()}
-      className="blade-panel rounded-[1.5rem] bg-black/45 px-5 py-5"
+      className="blade-panel rounded-[1rem] md:rounded-[1.5rem] bg-black/45 px-4 py-3 md:px-5 md:py-5"
     >
-      <div className="mb-4 flex items-center justify-between gap-4">
-        <span className="font-mono text-[10px] uppercase tracking-[0.38em] text-red-500">
+      <div className="mb-2 md:mb-4 flex items-center justify-between gap-4">
+        <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.38em] text-red-500">
           {label}
         </span>
-        <Icon className="text-white/35" size={16} />
+        <Icon className="text-white/35" size={14} />
       </div>
-      <h3 className="font-display text-2xl uppercase tracking-[0.1em] text-white">
+      <h3 className="font-display text-lg md:text-2xl uppercase tracking-[0.1em] text-white">
         {title}
       </h3>
-      <p className="mt-3 max-w-md text-sm leading-7 text-white/60">{copy}</p>
+      <p className="mt-1 md:mt-3 max-w-md text-xs md:text-sm leading-relaxed text-white/60">{copy}</p>
     </div>
   );
 }

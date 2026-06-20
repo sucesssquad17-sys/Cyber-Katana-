@@ -1,0 +1,163 @@
+export const KATANAS = [
+  {
+    id: 'X-09',
+    name: 'Void Reaper X-09',
+    series: 'Null Series',
+    class: 'Mythic Cyber Katana',
+    price: '$3,899',
+    src: 'katanas/x05-ghost-white.webp',
+    accent: '226,232,240', // Ghost White
+    specs: {
+      bladeLength: '72cm',
+      weight: '1.12kg',
+      coreMaterial: 'Dark Matter Poly-Carbon',
+      edgeType: 'Absolute Zero Mono-Carbon Plasma',
+      handleMaterial: 'Carbon-Wrapped Neural Hilt',
+      powerSource: 'Obsidian Ion Mini-Reactor',
+      specialAbility: 'Creates a short-range distortion trail during high-speed strikes',
+      weakness: 'Reactor overheats after continuous full-power use, triggering cooldown shutdown',
+    },
+    lore: 'Forged in Neo-Tokyo Sector 7 after the Black Circuit Collapse of 2088. Designed for stealth operations and cyber-assassins operating in dark industrial voids.',
+    included: ['Magnetic sheath', 'Reactor key', 'Authentication chip', 'Carbon fiber display stand'],
+    maintenance: 'Requires weekly plasma alignment and cooling gel refills every 48 operating hours.',
+    disclaimer: 'Fictional collectible concept for portfolio/demo use. Not functional, does not emit plasma.'
+  },
+  {
+    id: 'MK-II',
+    name: 'Sakura Pulse MK-II',
+    series: 'Ceremony Series',
+    class: 'Agile Energy Blade',
+    price: '$3,499',
+    src: 'katanas/x04-royal-purple.webp',
+    accent: '168,85,247', // Violet
+    specs: {
+      bladeLength: '70cm',
+      weight: '0.98kg',
+      coreMaterial: 'Resonant Crystal Alloy',
+      edgeType: 'Pink/Blue Dual Energy Edge',
+      handleMaterial: 'Silk-Woven Nano-Fiber Grip',
+      powerSource: 'Quantum Heart Core',
+      specialAbility: 'Tuned frequency that cuts through electronic shielding effortlessly',
+      weakness: 'Lower physical durability, prone to micro-fractures if blocked by heavy kinetic weapons',
+    },
+    lore: 'Commissioned by the Neo-Kyoto Cybernetic Guard. The Sakura Pulse MK-II combines traditional katana aesthetics with neon-pink energy currents for high-speed guard maneuvers.',
+    included: ['Ceremonial sheath', 'Quantum charger', 'Maintenance kit', 'Gloss display stand'],
+    maintenance: 'Frequency tuning required after every major deflection. Do not submerge in liquid nitrogen.',
+    disclaimer: 'Fictional collectible concept for portfolio/demo use. Do not attempt to power with high voltage.'
+  },
+  {
+    id: 'V7',
+    name: 'Neon Ronin V7',
+    series: 'Signal Series',
+    class: 'Street Cyberpunk Balanced',
+    price: '$2,899',
+    src: 'katanas/x02-electric-blue.webp',
+    accent: '59,130,246', // Blue
+    specs: {
+      bladeLength: '71cm',
+      weight: '1.25kg',
+      coreMaterial: 'Titanium-Cobalt Composite',
+      edgeType: 'Ionized Laser Core',
+      handleMaterial: 'Synthetic Tech-Leather Wrap',
+      powerSource: 'Lithium-Plasma Cell Pack',
+      specialAbility: 'Deflects incoming energy projectiles up to 90% efficiency',
+      weakness: 'Heavy energy consumption; battery runs out in 2 hours of continuous active shield mode',
+    },
+    lore: 'Modified from salvaged industrial plasma cutters by street hackers in Neo-Chiba. The Ronin V7 is the definitive choice for street mercenaries and independent couriers.',
+    included: ['Quick-release mag-sheath', 'Spare battery cell', 'Belt mount harness', 'Acrylic stand'],
+    maintenance: 'Check battery contacts regularly for corrosion. Wipe blade edge with specialized ion fluid.',
+    disclaimer: 'Fictional collectible concept for portfolio/demo use. Shield deflection is simulated.'
+  },
+  {
+    id: 'EX',
+    name: 'Crimson Shogun EX',
+    series: 'Crimson Series',
+    class: 'Heavy Elite Variant',
+    price: '$4,599',
+    src: 'katanas/x01-crimson-red.webp',
+    accent: '239,68,68', // Red
+    specs: {
+      bladeLength: '75cm',
+      weight: '1.68kg',
+      coreMaterial: 'Heavy Tungsten-Plasma Core',
+      edgeType: 'Superheated Redline Thermal Conduit',
+      handleMaterial: 'Textured Neuro-Grip Sheathing',
+      powerSource: 'Dual Fusion Micro-Cell',
+      specialAbility: 'Melts through physical armor on contact due to superheated thermal edge',
+      weakness: 'Extreme weight reduces swinging speed; requires cybernetic arms or high physical strength',
+    },
+    lore: 'Designed for the corporate executives of Arasaka Tactical. A heavy-duty weapon intended to make a statement of absolute authority and power in boardrooms and blockades.',
+    included: ['Arasaka-branded hard case', 'Mag-lock sheath', 'Neural link interface cable', 'Polished steel stand'],
+    maintenance: 'Thermal cell calibration every 3 months. Do not touch blade edge even when powered off.',
+    disclaimer: 'Fictional collectible concept for portfolio/demo use. Heavy object, handle with caution.'
+  },
+  {
+    id: 'X-03',
+    name: 'Viper Coil',
+    series: 'Venom Series',
+    class: 'Rare Toxic Blade',
+    price: '$2,699',
+    src: 'katanas/x03-emerald-green.webp',
+    accent: '34,197,94', // Green
+    specs: {
+      bladeLength: '75cm',
+      weight: '1.30kg',
+      coreMaterial: 'Carbon Fiber Weave',
+      edgeType: 'Acidic Green Glow Lattice',
+      handleMaterial: 'Bio-Synthetic Green Leather Wrap',
+      powerSource: 'Acid-Plasma Core',
+      specialAbility: 'Injects disruptive micro-toxins into mechanical targets to jam servos',
+      weakness: 'Toxin canister leaks if structural integrity falls below 40%, harming the hilt integrity',
+    },
+    lore: 'Sourced from the underground bio-tech labs of the Emerald Syndicate. Fuses toxic chemical energy with high-frequency vibrations for maximum structural disruption.',
+    included: ['Sealed containment sheath', '3x bio-toxin refills', 'Safety gloves', 'Stand'],
+    maintenance: 'Change toxin filters monthly. Handle chemical components with extreme care.',
+    disclaimer: 'Fictional collectible concept for portfolio/demo use. No real toxins included.'
+  },
+  {
+    id: 'X-06',
+    name: 'Solar Circuit',
+    series: 'Crown Series',
+    class: 'Molten Gold Collector',
+    price: '$5,999',
+    src: 'katanas/x06-molten-gold.webp',
+    accent: '245,158,11', // Gold
+    specs: {
+      bladeLength: '74cm',
+      weight: '1.45kg',
+      coreMaterial: 'Tungsten-Gold Composite',
+      edgeType: 'Molten Thermal Bloom Line',
+      handleMaterial: 'Heat-Resistant Imperial Wrap',
+      powerSource: 'Miniaturized Solar Singularity Cell',
+      specialAbility: 'Emits a bright blinding flash of light when drawn from the sheath',
+      weakness: 'Singularity cell requires direct sunlight exposure to recharge after 10 flashes',
+    },
+    lore: 'Crafted for the high council of the Neo-Vatican. A gold-plated masterpiece representing solar purity and blinding speed.',
+    included: ['Imperial velvet box', 'Solar charging dock', 'Authentication certificate', 'Gold-plated stand'],
+    maintenance: 'Polishing cloth included. Wipe gold accents after every touch to prevent oxidation.',
+    disclaimer: 'Fictional collectible concept for portfolio/demo use. Do not stare directly into the flash.'
+  },
+  {
+    id: 'X-07',
+    name: 'Cyan Rift',
+    series: 'Rift Series',
+    class: 'Quantum Phase Blade',
+    price: '$3,299',
+    src: 'katanas/x07-neon-cyan.webp',
+    accent: '20,184,166', // Cyan
+    specs: {
+      bladeLength: '72cm',
+      weight: '1.18kg',
+      coreMaterial: 'Quantum-Infused Glass Alloy',
+      edgeType: 'High-Frequency Tachyon Current',
+      handleMaterial: 'Phase-Shifting Poly-Wrap',
+      powerSource: 'Tachyon Grid Capacitor',
+      specialAbility: 'Can temporarily phase through other weapons, bypassing blocks once per encounter',
+      weakness: 'Phasing depletes capacitor instantly, leaving blade inactive for 30 seconds',
+    },
+    lore: 'A prototype weapon smuggled out of the Horizon Research Facility. It exists half in our dimension and half in a parallel digital quantum state.',
+    included: ['Dimensional lock sheath', 'Grid capacitor charger', 'Display hologram stand'],
+    maintenance: 'Recalibrate quantum phase modulator monthly using the provided grid software.',
+    disclaimer: 'Fictional collectible concept. Phasing is a simulated visual concept.'
+  }
+];

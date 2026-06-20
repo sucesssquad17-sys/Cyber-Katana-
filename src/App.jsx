@@ -9,8 +9,12 @@ const CheckoutPanel = lazy(() => import('./components/CheckoutPanel'));
 function App() {
   const [audioInitialized, setAudioInitialized] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [selectedKatanaId, setSelectedKatanaId] = useState('X-09');
 
-  const handleOpenCheckout = useCallback(() => {
+  const handleOpenCheckout = useCallback((katanaId) => {
+    if (katanaId && typeof katanaId === 'string') {
+      setSelectedKatanaId(katanaId);
+    }
     setIsCheckoutOpen(true);
   }, []);
 
@@ -31,6 +35,7 @@ function App() {
   };
 
   useEffect(() => {
+    // When checkout is open, add scroll lock. We will also add scroll lock class in CheckoutPanel.
     const shouldLockScroll = !audioInitialized || isCheckoutOpen;
     document.body.style.overflow = shouldLockScroll ? 'hidden' : 'auto';
 
@@ -78,7 +83,12 @@ function App() {
 
 
       <Suspense fallback={null}>
-        <CheckoutPanel isOpen={isCheckoutOpen} onClose={handleCloseCheckout} />
+        <CheckoutPanel 
+          key={selectedKatanaId || 'closed'}
+          isOpen={isCheckoutOpen} 
+          onClose={handleCloseCheckout} 
+          selectedKatanaId={selectedKatanaId}
+        />
       </Suspense>
 
       <main className="relative">
